@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/action_qustion_list"
+        android:title="All Questions List"
+        android:icon="@drawable/ic_format_list_numbered_black_24dp"
+        app:showAsAction="always"/>
+    <item android:id="@+id/action_bookmarked_list"
+        android:title="Bookmarked Questions"
+        android:icon="@drawable/ic_book_black_24dp"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/action_about_me"
+        android:title="About Me"
+        android:icon="@drawable/ic_perm_identity_black_24dp"
+        app:showAsAction="always"/>
+</menu>

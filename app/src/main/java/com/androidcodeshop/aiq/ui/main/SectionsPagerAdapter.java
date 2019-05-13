@@ -41,6 +41,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 2 total pages.
-        return new Questions().getNumberOfQuestion();
+        return Questions.getNumberOfQuestion();
     }
 }

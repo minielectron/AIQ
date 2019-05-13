@@ -13,6 +13,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 
 import com.androidcodeshop.aiq.R;
+import com.androidcodeshop.aiq.model.QuestionAnswerModel;
 
 /**
  * A placeholder fragment containing a simple view.

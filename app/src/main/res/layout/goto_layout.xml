@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="24dp"
+    android:gravity="center"
+    android:elevation="24dp"
+    >
+
+    <TextView
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:text="Goto Question No:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:layout_marginTop="10dp"
+        android:id="@+id/page_number_et"
+        android:layout_width="130dp"
+        android:inputType="number"
+        android:gravity="center"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:text="last"
+            android:drawableEnd="@drawable/ic_navigate_next_white_24dp"
+            android:id="@+id/last_btn"
+            android:layout_marginTop="10dp"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:text="goto"
+            android:drawableEnd="@drawable/ic_navigate_next_white_24dp"
+            android:id="@+id/goto_btn"
+            android:layout_marginTop="10dp"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

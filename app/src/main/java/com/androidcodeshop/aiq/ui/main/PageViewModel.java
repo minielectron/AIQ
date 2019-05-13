@@ -8,6 +8,7 @@ import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
 import com.androidcodeshop.aiq.Questions;
+import com.androidcodeshop.aiq.model.QuestionAnswerModel;
 
 import java.util.ArrayList;
 
@@ -16,23 +17,26 @@ class PageViewModel extends ViewModel {
     private static final String TAG = "PageViewModel";
     private ArrayList<QuestionAnswerModel> questionAnswerModels = new ArrayList<>();
     private MutableLiveData<Integer> mIndex = new MutableLiveData<>();
-    private LiveData<QuestionAnswerModel> mText = Transformations.map(mIndex, new Function<Integer, QuestionAnswerModel>() {
+    /**
+     * This method maps the Questions and Answer according to fargment index
+     * */
+    private LiveData<QuestionAnswerModel> questionAnswerModelLiveData = Transformations.map(mIndex, new Function<Integer, QuestionAnswerModel>() {
         @Override
         public QuestionAnswerModel apply(Integer input) {
             Log.i(TAG, "apply: input"+input);
             if(input <= questionAnswerModels.size()-1)
                return questionAnswerModels.get(input);
-            else return new QuestionAnswerModel("NA","NA");
+            else return new QuestionAnswerModel("0","NA","NA");
         }
     });
 
-    public void setIndex(int index) {
+    void setIndex(int index) {
         mIndex.setValue(index);
-        questionAnswerModels.addAll(new Questions().getQuestionsAns());
+        questionAnswerModels.addAll(Questions.getInstance());
     }
 
 
     public LiveData<QuestionAnswerModel> getText() {
-        return mText;
+        return questionAnswerModelLiveData;
     }
 }
