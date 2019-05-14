@@ -1,17 +1,18 @@
 package com.androidcodeshop.aiq.model;
 
 public class QuestionAnswerModel {
-    private String question ;
-    private String answer ;
-    private String questionNumber;
+    private String question;
+    private String answer;
+    private int questionNumber;
+    private boolean bookmarked = false;
 
-    public QuestionAnswerModel(String questionNumber,String question, String answer) {
+    public QuestionAnswerModel(int questionNumber, String question, String answer) {
         this.question = question;
         this.answer = answer;
         this.questionNumber = questionNumber;
     }
 
-    public String getQuestionNumber() {
+    public int getQuestionNumber() {
         return questionNumber;
     }
 
@@ -21,5 +22,13 @@ public class QuestionAnswerModel {
 
     public String getAnswer() {
         return answer;
+    }
+
+    public boolean isBookmarked() {
+        return bookmarked;
+    }
+
+    public void setBookmarked(boolean bookmarked) {
+        this.bookmarked = bookmarked;
     }
 }

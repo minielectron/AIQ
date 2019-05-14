@@ -1,6 +1,7 @@
 package com.androidcodeshop.aiq.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import com.androidcodeshop.aiq.R;
 import com.androidcodeshop.aiq.model.QuestionAnswerModel;
 
 import java.util.ArrayList;
+
+import static android.content.ContentValues.TAG;
 
 public class QuestionListAdapter extends BaseAdapter {
 
@@ -49,7 +52,8 @@ public class QuestionListAdapter extends BaseAdapter {
             convertView.setTag(holder);
         }else holder = (ViewHolder) convertView.getTag();
         holder.question.setText(questionAnswerModel.get(position).getQuestion());
-        holder.qno.setText(questionAnswerModel.get(position).getQuestionNumber());
+        Log.i(TAG, "getView: " +questionAnswerModel.get(position).getQuestionNumber());
+        holder.qno.setText(String.valueOf(questionAnswerModel.get(position).getQuestionNumber()));
         return convertView;
     }
 

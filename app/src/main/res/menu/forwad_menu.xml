@@ -4,7 +4,7 @@
 
     <item android:id="@+id/action_copy"
         android:title="Copy and Share"
-        android:icon="@drawable/ic_content_copy_white_24dp"
+        android:icon="@drawable/ic_share_white_24dp"
         app:showAsAction="always"/>
     <item android:id="@+id/action_goto"
         android:title="Goto"

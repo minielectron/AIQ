@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,7 @@ import butterknife.ButterKnife;
 
 public class QuestionsListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
+    private static final String TAG = "QuestionsListActivity";
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.list_view)
@@ -43,11 +45,9 @@ public class QuestionsListActivity extends AppCompatActivity implements SearchVi
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView qestTv = view.findViewById(R.id.question_number);
                 int pageNum = Integer.valueOf(qestTv.getText().toString());
+                Log.i(TAG, "onItemClick: page from questTv"+ pageNum);
                 FragmentManager manager = getSupportFragmentManager();
-                AnswerDisplayDialog displayDialog = new AnswerDisplayDialog();
-                Bundle bundle = new Bundle();
-                bundle.putInt("page", pageNum - 1);
-                displayDialog.setArguments(bundle);
+                AnswerDisplayDialog displayDialog = AnswerDisplayDialog.getInstance(pageNum-1);
                 displayDialog.show(manager, "answer-display");
             }
         });

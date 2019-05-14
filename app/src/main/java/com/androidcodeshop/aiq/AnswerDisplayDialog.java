@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,26 +13,23 @@ import android.widget.TextView;
 
 import electrophile.mutils.fragments.FullScreenBottomSheetDialogFragment;
 
+import static android.content.ContentValues.TAG;
+
 public class AnswerDisplayDialog extends FullScreenBottomSheetDialogFragment {
-    AnswerDisplayDialog answerDisplayDialog = null;
+    private static AnswerDisplayDialog answerDisplayDialog = null;
 
     public AnswerDisplayDialog() {
         super();
     }
 
-    public AnswerDisplayDialog getInstance(int page) {
+    private static int page = 0;
 
+    public static AnswerDisplayDialog getInstance(int page) {
         answerDisplayDialog = new AnswerDisplayDialog();
-        Bundle bundle = new Bundle();
-        bundle.putInt("page", page);
-        setArguments(bundle);
+        AnswerDisplayDialog.page = page;
         return answerDisplayDialog;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,10 +41,11 @@ public class AnswerDisplayDialog extends FullScreenBottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setRetainInstance(true);
         View view = inflater.inflate(R.layout.answer_display, container, false);
+        Log.i(TAG, "onCreateView: page " + page);
         TextView ques = view.findViewById(R.id.question_label);
-        ques.setText(Questions.getInstance().get(getArguments().getInt("page")).getQuestion());
+        ques.setText(Questions.getInstance().get(page).getQuestion());
         TextView ans = view.findViewById(R.id.answer_label);
-        ans.setText(Questions.getInstance().get(getArguments().getInt("page")).getAnswer());
+        ans.setText(Questions.getInstance().get(page).getAnswer());
         return view;
     }
 

@@ -144,20 +144,19 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     @Override
     protected void onResume() {
         super.onResume();
-        if(getIntent() != null){
-            page = getIntent().getIntExtra(PAGE_NUM,0);
-            viewPager.setCurrentItem(page-1);
-        }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
+        Intent intent = new Intent(this, QuestionsListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         switch (menuItem.getItemId()){
             case R.id.action_qustion_list:
-
-                Intent intent = new Intent(this, QuestionsListActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                drawerLayout.closeDrawer(Gravity.START);
+                break;
+            case R.id.action_bookmarked_list:
+                intent.putExtra("bookmarked",true);
                 startActivity(intent);
                 drawerLayout.closeDrawer(Gravity.START);
                 break;
