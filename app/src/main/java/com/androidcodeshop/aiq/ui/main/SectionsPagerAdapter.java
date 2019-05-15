@@ -2,13 +2,11 @@ package com.androidcodeshop.aiq.ui.main;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.androidcodeshop.aiq.Questions;
-import com.androidcodeshop.aiq.R;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -16,7 +14,7 @@ import com.androidcodeshop.aiq.R;
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-//    @StringRes
+    //    @StringRes
 //    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2};
     private final Context mContext;
 
@@ -35,7 +33,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return "Question : " + (position+1);
+        return "Question : " + (position + 1);
     }
 
     @Override

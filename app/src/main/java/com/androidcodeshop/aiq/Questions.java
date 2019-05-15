@@ -435,7 +435,151 @@ public class Questions {
                         "Inspect Traces File\n" +
                         "\n" +
                         "When ANR happens, Android logs some info related to the case in a txt file on device itself. You can use ADB to gather logs and have a look."));
-        questionsAns.add(new QuestionAnswerModel(44, "", ""));
-        questionsAns.add(new QuestionAnswerModel(45, "", ""));
+        questionsAns.add(new QuestionAnswerModel(44, "What is Application Class ?",
+                "The Application class in Android is the base class within an Android app that contains all other components such as activities and services. The Application class, or any subclass of the Application class, is instantiated before any other class when the process for your application/package is created.\n" +
+                        "This class is primarily used for initialization of global state before the first Activity is displayed. Note that custom Application objects should be used carefully and are often not needed at all.\n" +
+                        "for information please visit \n" +
+                        "https://github.com/codepath/android_guides/wiki/Understanding-the-Android-Application-Class"));
+        questionsAns.add(new QuestionAnswerModel(45, "What is services in android ?",
+                "A Service is an application component that can perform long-running operations in the background, and it doesn't provide a user interface. Another application component can start a service, and it continues to run in the background even if the user switches to another application. Additionally, a component can bind to a service to interact with it and even perform interprocess communication (IPC). For example, a service can handle network transactions, play music, perform file I/O, or interact with a content provider, all from the background." +
+                        "\n" +
+                        "There are three kind of services namely :\n" +
+                        "1.Foreground\n" +
+                        "A foreground service performs some operation that is noticeable to the user. For example, an audio app would use a foreground service to play an audio track. Foreground services must display a Notification. Foreground services continue running even when the user isn't interacting with the app.\n" +
+                        "2.Background\n" +
+                        "A background service performs an operation that isn't directly noticed by the user. For example, if an app used a service to compact its storage, that would usually be a background service.\n" +
+                        "Bound\n" +
+                        "A service is bound when an application component binds to it by calling bindService(). A bound service offers a client-server interface that allows components to interact with the service, send requests, receive results, and even do so across processes with interprocess communication (IPC). A bound service runs only as long as another application component is bound to it. Multiple components can bind to the service at once, but when all of them unbind, the service is destroyed."));
+        questionsAns.add(new QuestionAnswerModel(46,"How to choose between a service and thread ?",
+                "If you must perform work outside of your main thread, but only while the user is interacting with your application, you should instead create a new thread. For example, if you want to play some music, but only while your activity is running, you might create a thread in onCreate(), start running it in onStart(), and stop it in onStop(). Also consider using AsyncTask or HandlerThread instead of the traditional Thread class.\n" +
+                        "\n" +
+                        "Remember that if you do use a service, it still runs in your application's main thread by default, so you should still create a new thread within the service if it performs intensive or blocking operations.\n"));
+        questionsAns.add(new QuestionAnswerModel(47,"What is the difference between Service and IntentService ?",
+                "The main difference between the service and IntentService is , Service class doesn't provide the Thread implementation for you and you are responsible creating the background thread and stopping the service by calling stopService() or stopSelf() method. On the other hand Intent \n" +
+                        "service provides a background thread for you and invokes the callback onHandleIntent(intent). If another thread is delivered to this service before \n" +
+                        "the worker thread has completed the earlier intent, the new intent will sit and wait.\n" +
+                        "Once all the intents are processed, the service will stop itself."));
+        questionsAns.add(new QuestionAnswerModel(48,"What are the different components or context from which a service can be binded ?",
+                "Binding is allowed from an Application Context, an Activity, another service or Content Provider but NOT from Fragment and BroadcastReceiver."));
+        questionsAns.add(new QuestionAnswerModel(49,"What is Local Service and Remote Service ?",
+                "Local Service : The Service which is only accessible to the application that is hosting it, and not accessible from other application installed on the device is know as Local Service. It can be initialized by bindService() or startService().\n\n" +
+                        "Remote Service : These are accessible by external application. We defines the Remote services using Android Interface Definition Language(AIDL). It supports RPC call. It is always initialized by bindService()"));
+        questionsAns.add(new QuestionAnswerModel(50,"How to create a Service ?",
+                "The service create pattern is as follow : \n" +
+                        "1. Create a class and extends to Service class.\n" +
+                        "2. Create a Worker Thread Runnable \n" +
+                        "3. Attach the Worker thread to Service in background service\n" +
+                        "4. Start the service.\n" +
+                        "Visit this link for implementation details \n" +
+                        "https://developer.android.com/training/run-background-service/create-service"));
+        questionsAns.add(new QuestionAnswerModel(51,"What is AsyncTask ?",
+                "Android AsyncTask is an abstract class provided by Android which gives us the liberty to perform heavy tasks in the background and keep the UI thread light thus making the application more responsive.\n" +
+                        "Android application runs on a single thread when launched. Due to this single thread model tasks that take longer time to fetch the response can make the application non-responsive. To avoid this we use android AsyncTask to perform the heavy tasks in background on a dedicated thread and passing the results back to the UI thread. Hence use of AsyncTask in android application keeps the UI thread responsive at all times.\n" +
+                        "For more information please visit : \n" +
+                        "https://www.journaldev.com/9708/android-asynctask-example-tutorial"));
+        questionsAns.add(new QuestionAnswerModel(52,"What will happen if we execute two AsyncTask one after each ? ",
+                "When first introduced, AsyncTasks were executed serially on a single background thread. Starting with Build.VERSION_CODES.DONUT, this was changed to a pool of threads allowing multiple tasks to operate in parallel. Starting with Build.VERSION_CODES.HONEYCOMB, tasks are executed on a single thread to avoid common application errors caused by parallel execution. So it is not valid to call task.execute() more than one.\n" +
+                        "\n" +
+                        "If you truly want parallel execution, you can invoke executeOnExecutor(java.util.concurrent.Executor, java.lang.Object[]) with THREAD_POOL_EXECUTOR.\n" +
+                        "For more information please visit :\n" +
+                        "https://stackoverflow.com/a/4072832/5163725"));
+        questionsAns.add(new QuestionAnswerModel(53,"What is managed dialogs ?",
+                "The dialogs which can be recreated with the Activity creation is called the managed dialogs."));
+        questionsAns.add(new QuestionAnswerModel(56,"What are the new Features in Android 8.0(API 26) ?",
+                "There is a major update in android 8.0+, some features are listed as follow : \n" +
+                        "1.Picture in Picture (PIP) - Special type of multi-window feature, Mainly used for video playbacks.\n" +
+                        "When activity is in PIP mode, it is in paused state, but should continue showing the content.\n" +
+                        "2.A Major update in Notifications :" +
+                        "   -Notification Channel\n" +
+                        "   -Notification dots\n" +
+                        "   -Snoozing\n" +
+                        "   -Notification timeout\n" +
+                        "   -Notification Setting\n" +
+                        "   -Notification Dismissal\n" +
+                        "   -Background Colors\n" +
+                        "\n" +
+                        "3.AutoFill Frameworks : Account creation, login, and credit card transactions take time and are prone to errors. Users can easily get frustrated with apps that require these types of repetitive tasks.\n" +
+                        "4.Downloadable fonts : Android Support Library 26 let you request fonts from a provider application instead of bundling fonts into the APK or letting the APK download fonts. This feature reduces your APK size, increases the app installation success rate, and allows multiple apps to share the same font.\n" +
+                        "5.Fonts in XML\n" +
+                        "6.Autosizing TextView\n" +
+                        "7.Adaptive icons\n" +
+                        "8.Color management\n" +
+                        "9.WebView APIs\n" +
+                        "10.Pinning shortcuts and widgets\n" +
+                        "11.Maximum screen aspect ratio\n" +
+                        "12.Multi-display support\n" +
+                        "13.Unified layout margins and padding\n" +
+                        "14.App categories\n" +
+                        "15.AnimatorSet\n" +
+                        "16.Input Animation\n" +
+                        "and so on.... please visit this to see all explanation : \n" +
+                        "https://developer.android.com/about/versions/oreo/android-8.0"));
+        questionsAns.add(new QuestionAnswerModel(57,"What are the background execution limits in 8.0 ?",
+                "c. The more apps are running at once, the more load is placed on the system. If additional apps or services are running in the background, this places additional loads on the system, which could result in a poor user experience; for example, the music app might be suddenly shut down.\n" +
+                        "\n" +
+                        "To lower the chance of these problems, Android 8.0 places limitations on what apps can do while users aren't directly interacting with them. Apps are restricted in two ways:\n" +
+                        "\n" +
+                        "Background Service Limitations: While an app is idle, there are limits to its use of background services. This does not apply to foreground services, which are more noticeable to the user.\n" +
+                        "\n" +
+                        "Broadcast Limitations: With limited exceptions, apps cannot use their manifest to register for implicit broadcasts. They can still register for these broadcasts at runtime, and they can use the manifest to register for explicit broadcasts targeted specifically at their app.\n" +
+                        "\nVisit this for more info : \n" +
+                        "https://developer.android.com/about/versions/oreo/background"));
+        questionsAns.add(new QuestionAnswerModel(58,"What are latest feature in Android Oreo Go(8.1) api 27 ?",
+                "These are the different features in 8.1+ \n" +
+                        "Android Go : Android Go is our initiative to optimize the Android experience for billions of people coming online around the world. Starting with Android 8.1, we’re making Android a great platform for entry-level devices.\n" +
+                        "Neural Network API \n" +
+                        "Autofill framework is also updated\n" +
+                        "EditText update : Beginning with API level 27, the EditText.getText() method returns an Editable; previously it returned a CharSequence. This change is backward-compatible, as Editable implements CharSequence.\n" +
+                        "\n" +
+                        "The Editable interface provides valuable additional functionality. For example, because Editable also implements the Spannable interface, you can apply markup to content within an instance of EditText.\n" +
+                        "\nSafe Browsing\n" +
+                        "Shared Memory APIs and WallpaperColor APIs are addedn\n" +
+                        "Fingerprint Updates and \n" +
+                        "Cryptographic Updates are added, visit the below link for detailed explanation..\n" +
+                        "https://developer.android.com/about/versions/oreo/android-8.1"));
+        questionsAns.add(new QuestionAnswerModel(59,"What are new fetures of android pie (9.0) API 28 ?",
+                "Visit the link....\n" +
+                        "https://developer.android.com/about/versions/pie/android-9.0"));
+        questionsAns.add(new QuestionAnswerModel(60,"",""));
+        questionsAns.add(new QuestionAnswerModel(61,"",""));
+        questionsAns.add(new QuestionAnswerModel(62,"",""));
+        questionsAns.add(new QuestionAnswerModel(63,"",""));
+        questionsAns.add(new QuestionAnswerModel(64,"",""));
+        questionsAns.add(new QuestionAnswerModel(65,"",""));
+        questionsAns.add(new QuestionAnswerModel(66,"",""));
+        questionsAns.add(new QuestionAnswerModel(67,"",""));
+        questionsAns.add(new QuestionAnswerModel(68,"",""));
+        questionsAns.add(new QuestionAnswerModel(69,"",""));
+        questionsAns.add(new QuestionAnswerModel(70,"",""));
+        questionsAns.add(new QuestionAnswerModel(71,"",""));
+        questionsAns.add(new QuestionAnswerModel(72,"",""));
+        questionsAns.add(new QuestionAnswerModel(73,"",""));
+        questionsAns.add(new QuestionAnswerModel(74,"",""));
+        questionsAns.add(new QuestionAnswerModel(75,"",""));
+        questionsAns.add(new QuestionAnswerModel(76,"",""));
+        questionsAns.add(new QuestionAnswerModel(77,"",""));
+        questionsAns.add(new QuestionAnswerModel(78,"",""));
+        questionsAns.add(new QuestionAnswerModel(79,"",""));
+        questionsAns.add(new QuestionAnswerModel(80,"",""));
+        questionsAns.add(new QuestionAnswerModel(81,"",""));
+        questionsAns.add(new QuestionAnswerModel(82,"",""));
+        questionsAns.add(new QuestionAnswerModel(83,"",""));
+        questionsAns.add(new QuestionAnswerModel(84,"",""));
+        questionsAns.add(new QuestionAnswerModel(85,"",""));
+        questionsAns.add(new QuestionAnswerModel(86,"",""));
+        questionsAns.add(new QuestionAnswerModel(87,"",""));
+        questionsAns.add(new QuestionAnswerModel(88,"",""));
+        questionsAns.add(new QuestionAnswerModel(89,"",""));
+        questionsAns.add(new QuestionAnswerModel(90,"",""));
+        questionsAns.add(new QuestionAnswerModel(91,"",""));
+        questionsAns.add(new QuestionAnswerModel(92,"",""));
+        questionsAns.add(new QuestionAnswerModel(93,"",""));
+        questionsAns.add(new QuestionAnswerModel(94,"",""));
+        questionsAns.add(new QuestionAnswerModel(95,"",""));
+        questionsAns.add(new QuestionAnswerModel(96,"",""));
+        questionsAns.add(new QuestionAnswerModel(97,"",""));
+        questionsAns.add(new QuestionAnswerModel(98,"",""));
+        questionsAns.add(new QuestionAnswerModel(99,"",""));
+        questionsAns.add(new QuestionAnswerModel(100,"",""));
     }
 }

@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidcodeshop.aiq.Questions;
 import com.androidcodeshop.aiq.R;
 
 import butterknife.BindView;
@@ -61,11 +62,16 @@ public class PlaceholderFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
         final TextView question = root.findViewById(R.id.question_label);
         final TextView answer = root.findViewById(R.id.answer_label);
-        pageViewModel.getText().observe(this, s -> {
+        pageViewModel.getQuestionAnswers().observe(this, s -> {
             question.setText(s.getQuestion());
             answer.setText(String.format("Answer : %s", s.getAnswer()));
             questionNo.setText(String.valueOf(s.getQuestionNumber()));
 
+            if (s.isBookmarked()) {
+                bookmarkIb.setImageResource(R.drawable.ic_bookmark_gray_24dp);
+            } else {
+                bookmarkIb.setImageResource(R.drawable.ic_bookmark_border_white_24dp);
+            }
         });
         unbinder = ButterKnife.bind(this, root);
         return root;
@@ -79,7 +85,15 @@ public class PlaceholderFragment extends Fragment {
 
     @OnClick(R.id.bookmark_ib)
     public void onViewClicked() {
-        Toast.makeText(getActivity(), "Bookmarked Successfully", Toast.LENGTH_SHORT).show();
-        bookmarkIb.setImageResource(R.drawable.ic_bookmark_gray_24dp);
+        if (Questions.getInstance().get(Integer.valueOf(questionNo.getText().toString())).isBookmarked()) {
+            bookmarkIb.setImageResource(R.drawable.ic_bookmark_border_white_24dp);
+            Toast.makeText(getContext(), "Un-Bookmarked", Toast.LENGTH_SHORT).show();
+            Questions.getInstance().get(Integer.valueOf(questionNo.getText().toString())).setBookmarked(false);
+
+        } else {
+            Toast.makeText(getActivity(), questionNo.getText() + "-Bookmarked Successfully", Toast.LENGTH_SHORT).show();
+            bookmarkIb.setImageResource(R.drawable.ic_bookmark_gray_24dp);
+            Questions.getInstance().get(Integer.valueOf(questionNo.getText().toString())).setBookmarked(true);
+        }
     }
 }

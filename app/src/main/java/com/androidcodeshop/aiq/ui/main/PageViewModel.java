@@ -38,7 +38,7 @@ public class PageViewModel extends AndroidViewModel {
     }
 
 
-    public LiveData<QuestionAnswerModel> getText() {
+    public LiveData<QuestionAnswerModel> getQuestionAnswers() {
         return questionAnswerModelLiveData;
     }
 }
