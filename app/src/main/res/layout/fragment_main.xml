@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:orientation="vertical"
+    android:descendantFocusability="blocksDescendants"
     android:background="@android:color/white"
     tools:context=".ui.main.PlaceholderFragment">
 
@@ -55,11 +56,11 @@
             android:background="@drawable/answer_back_rectangle"
             android:fontFamily="@font/roboto"
             android:padding="10dp"
-            android:text="Answer :"
+            android:text="@string/answer"
+            android:linksClickable="true"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="14sp"
-            android:autoLink="all"
-            android:textIsSelectable="true"
+            android:autoLink="web"
             android:textStyle="bold" />
     </ScrollView>
 </LinearLayout>

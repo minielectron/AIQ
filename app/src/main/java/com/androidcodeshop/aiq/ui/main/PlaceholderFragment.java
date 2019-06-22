@@ -1,6 +1,7 @@
 package com.androidcodeshop.aiq.ui.main;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -63,6 +64,7 @@ public class PlaceholderFragment extends Fragment {
         final TextView question = root.findViewById(R.id.question_label);
         final TextView answer = root.findViewById(R.id.answer_label);
         pageViewModel.getQuestionAnswers().observe(this, s -> {
+            assert s != null;
             question.setText(s.getQuestion());
             answer.setText(String.format("Answer : %s", s.getAnswer()));
             questionNo.setText(String.valueOf(s.getQuestionNumber()));

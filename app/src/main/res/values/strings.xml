@@ -8,4 +8,5 @@
     <string name="user">User</string>
     <string name="login">Login</string>
     <string name="search">Search</string>
+    <string name="answer">Answer :</string>
 </resources>
