@@ -1,4 +1,4 @@
-package com.androidcodeshop.aiq;
+package com.androidcodeshop.aiq.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+
+import com.androidcodeshop.aiq.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,10 +66,16 @@ public class WebViewActivity extends AppCompatActivity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 webView.getSettings().setSafeBrowsingEnabled(true);
             }
+            webView.getSettings().setAllowContentAccess(true);
+            webView.getSettings().setAppCacheEnabled(true);
+            webView.getSettings().setSupportMultipleWindows(false);
+            webView.getSettings().setLoadWithOverviewMode(true);
+            webView.getSettings().setUseWideViewPort(true);
+
             webView.loadUrl(url);
         } else {
             webView.loadData("<html>" +
-                    "<body><b>Internet connection is not available</b></body>" +
+                    "<body><b> \n\n Internet connection is not available</b></body>" +
                     "</html>", "text/html; charset-UTF-8", null);
             progressBar.setVisibility(View.INVISIBLE);
         }
@@ -86,7 +94,6 @@ public class WebViewActivity extends AppCompatActivity {
                     }
                     return true;
             }
-
         }
         return super.onKeyDown(keyCode, event);
     }

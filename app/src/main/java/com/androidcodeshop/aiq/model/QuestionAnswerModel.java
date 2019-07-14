@@ -1,10 +1,20 @@
 package com.androidcodeshop.aiq.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
+@Entity(tableName = "AIQ_TABLE")
 public class QuestionAnswerModel {
+
+    @NonNull
     private String question;
+    @NonNull
     private String answer;
+    @PrimaryKey
+
     private int questionNumber;
-    private boolean bookmarked = false;
+    private int bookmarked = 0; // 0 indicates non bookmarked
 
     public QuestionAnswerModel(int questionNumber, String question, String answer) {
         this.question = question;
@@ -16,19 +26,21 @@ public class QuestionAnswerModel {
         return questionNumber;
     }
 
+    @NonNull
     public String getQuestion() {
         return question;
     }
 
+    @NonNull
     public String getAnswer() {
         return answer;
     }
 
-    public boolean isBookmarked() {
+    public int getBookmarked() {
         return bookmarked;
     }
 
-    public void setBookmarked(boolean bookmarked) {
+    public void setBookmarked(int bookmarked) {
         this.bookmarked = bookmarked;
     }
 }

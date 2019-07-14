@@ -1,4 +1,4 @@
-package com.androidcodeshop.aiq;
+package com.androidcodeshop.aiq.utils;
 
 import com.androidcodeshop.aiq.model.QuestionAnswerModel;
 
@@ -1141,7 +1141,91 @@ public class Questions {
                         "<TextView\n" +
                         "    android:text=\"@{viewmodel.userName}\" /> \n" +
                         "if we use data binding."));
-        questionsAns.add(new QuestionAnswerModel(121,"",""));
-        questionsAns.add(new QuestionAnswerModel(122,"",""));
+        questionsAns.add(new QuestionAnswerModel(121,"What is Lifecycle components in Jetpack ?",
+                "Lifecycle-aware components perform actions in response to a change in the lifecycle status of another component, such as activities and fragments. These components help you produce better-organized, and often lighter-weight code, that is easier to maintain.\n" +
+                        "\n" +
+                        "A common pattern is to implement the actions of the dependent components in the lifecycle methods of activities and fragments. However, this pattern leads to a poor organization of the code and to the proliferation of errors. By using lifecycle-aware components, you can move the code of dependent components out of the lifecycle methods and into the components themselves.\n" +
+                        "\n" +
+                        "The android.arch.lifecycle package provides classes and interfaces that let you build lifecycle-aware components—which are components that can automatically adjust their behavior based on the current lifecycle state of an activity or fragment.\n" +
+                        "for more information visit : \n" +
+                        "https://developer.android.com/topic/libraries/architecture/lifecycle"));
+        questionsAns.add(new QuestionAnswerModel(122,"What is LiveData ?",
+                "LiveData is an observable data holder class. Unlike a regular observable, LiveData is lifecycle-aware, meaning it respects the lifecycle of other app components, such as activities, fragments, or services. This awareness ensures LiveData only updates app component observers that are in an active lifecycle state.\n" +
+                        "For more info please visit : \n" +
+                        "https://developer.android.com/topic/libraries/architecture/livedata"));
+
+        questionsAns.add(new QuestionAnswerModel(123, "What are the mandatory functions to be implemented in AsyncTask?",
+                "doInBackground() is the only mandatory function that has to be implemented in AsyncTask Class."));
+
+        questionsAns.add(new QuestionAnswerModel(124,"What is AndroidX ?",
+                "AndroidX is the open-source project that the Android team uses to develop, test, package, version and release libraries within Jetpack.\n" +
+                        "\n" +
+                        "AndroidX is a major improvement to the original Android Support Library. Like the Support Library, AndroidX ships separately from the Android OS and provides backwards-compatibility across Android releases. AndroidX fully replaces the Support Library by providing feature parity and new libraries.\n" +
+                        "\n" +
+                        "All packages in AndroidX live in a consistent namespace starting with the string androidx. The Support Library packages have been mapped into corresponding androidx.* packages. For a full mapping of all the old classes and build artifacts to the new ones, see the Package Refactoring page.\n" +
+                        "\n" +
+                        "Unlike the Support Library, AndroidX packages are separately maintained and updated. The androidx packages use strict Semantic Versioning starting with version 1.0.0. You can update AndroidX libraries in your project independently.\n" +
+                        "\n" +
+                        "All new Support Library development will occur in the AndroidX library. This includes maintenance of the original Support Library artifacts and introduction of new Jetpack components."));
+        questionsAns.add(new QuestionAnswerModel(125,"What is Navigation in Jetpack ?",
+                "Navigation refers to the interactions that allow users to navigate across, into, and back out from the different pieces of " +
+                        "content within your app. Android Jetpack's Navigation component helps you implement navigation, from simple button clicks to more complex patterns, such as app bars and the navigation drawer." +
+                        " The Navigation component also ensures a consistent and predictable user experience by adhering to an established set of principles.\n" +
+                        "The Navigation component consists of three key parts that are described below:\n" +
+                        "1.Navigation graph\n" +
+                        "2.NavHost\n" +
+                        "3.NavController\n" +
+                        "For detailed information visit : \n" +
+                        "https://developer.android.com/guide/navigation/"));
+        questionsAns.add(new QuestionAnswerModel(126,"What is Room Persistence Library ?",
+                "The Room persistence library provides an abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.\n" +
+                        "\n" +
+                        "The library helps you create a cache of your app's data on a device that's running your app. This cache, which serves as " +
+                        "your app's single source of truth, allows users to view a consistent copy of key information within your app, regardless of " +
+                        "whether users have an internet connection.\n" +
+                        "For more information : \n" +
+                        "https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#0"));
+        questionsAns.add(new QuestionAnswerModel(127,"What is AppCompat ?",
+                "AppCompat is backward compatiblity library. " +
+                        "Android users use a wide range of " +
+                        "Android OS versions. While the changes from release to release may be small or may " +
+                        "be large, the combined changes from older versions of Android to newer ones can be " +
+                        "vast.\n" +
+                        "AppCompat tries to help. It gives us an API for our activities and fragments that " +
+                        "resembles the latest-and-greatest version of Android. When your app runs on older " +
+                        "devices, AppCompat tries to fill in the gaps of UI functionality where it can. While " +
+                        "using AppCompat makes your APK a lot larger and makes app development more " +
+                        "confusing, many developers are grateful for the backwards-compatibility that it " +
+                        "offers."));
+        questionsAns.add(new QuestionAnswerModel(128,"What is WorkManager ?",
+                "Many times, the work that we need to do on background threads has to be " +
+                        "performed in near-real time. But sometimes the work that we need to do can " +
+                        "happen totally independently from what the user may (or may not) being doing in " +
+                        "our UI. So while a “pull to refresh” UI operation requires us to do a refresh right now," +
+                        "a periodic refresh from the server might happen every few hours, even if the user is " +
+                        "not in the app right now.\n" +
+                        "While there have been many solutions over the years for this problem, Google is " +
+                        "steering us towards WorkManager right now. We can teach WorkManager about " +
+                        "background work to be performed, then schedule that work to occur. That schedule " +
+                        "might be based in part on time (“do it soon”, “do it every few hours”, etc.). That " +
+                        "schedule might be based in part on the state of the device (“do it when the device is " +
+                        "on a charger”, “do it when the device is on WiFi”, etc.). Then, WorkManager will " +
+                        "arrange to do the work, even if the user leaves our UI."));
+        questionsAns.add(new QuestionAnswerModel(129,"What is AndroidKTX ?",
+                "AndroidKTX is collection of new features in Kotlin such as extension function, designed to make android SDK a bit easier to use with both language support."));
+        questionsAns.add(new QuestionAnswerModel(130,"What is R file ?",
+                ""));
+        questionsAns.add(new QuestionAnswerModel(131,"",""));
+        questionsAns.add(new QuestionAnswerModel(132,"",""));
+        questionsAns.add(new QuestionAnswerModel(133,"",""));
+        questionsAns.add(new QuestionAnswerModel(134,"",""));
+        questionsAns.add(new QuestionAnswerModel(135,"",""));
+        questionsAns.add(new QuestionAnswerModel(136,"",""));
+        questionsAns.add(new QuestionAnswerModel(137,"",""));
+        questionsAns.add(new QuestionAnswerModel(138,"",""));
+        questionsAns.add(new QuestionAnswerModel(139,"",""));
+        questionsAns.add(new QuestionAnswerModel(140,"",""));
+        questionsAns.add(new QuestionAnswerModel(141,"",""));
+        questionsAns.add(new QuestionAnswerModel(142,"",""));
     }
 }

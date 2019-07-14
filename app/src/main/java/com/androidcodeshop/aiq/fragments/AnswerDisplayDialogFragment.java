@@ -1,6 +1,5 @@
-package com.androidcodeshop.aiq;
+package com.androidcodeshop.aiq.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,23 +10,26 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.androidcodeshop.aiq.utils.Questions;
+import com.androidcodeshop.aiq.R;
+
 import electrophile.mutils.fragments.FullScreenBottomSheetDialogFragment;
 
 import static android.content.ContentValues.TAG;
 
-public class AnswerDisplayDialog extends FullScreenBottomSheetDialogFragment {
-    private static AnswerDisplayDialog answerDisplayDialog = null;
+public class AnswerDisplayDialogFragment extends FullScreenBottomSheetDialogFragment {
+    private static AnswerDisplayDialogFragment answerDisplayDialogFragment = null;
 
-    public AnswerDisplayDialog() {
+    public AnswerDisplayDialogFragment() {
         super();
     }
 
     private static int page = 0;
 
-    public static AnswerDisplayDialog getInstance(int page) {
-        answerDisplayDialog = new AnswerDisplayDialog();
-        AnswerDisplayDialog.page = page;
-        return answerDisplayDialog;
+    public static AnswerDisplayDialogFragment getInstance(int page) {
+        answerDisplayDialogFragment = new AnswerDisplayDialogFragment();
+        AnswerDisplayDialogFragment.page = page;
+        return answerDisplayDialogFragment;
     }
 
 

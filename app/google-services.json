@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "363833444592",
+    "firebase_url": "https://aiqfirebaseproject.firebaseio.com",
+    "project_id": "aiqfirebaseproject",
+    "storage_bucket": "aiqfirebaseproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:363833444592:android:e337b84274dd0fbe",
+        "android_client_info": {
+          "package_name": "com.androidcodeshop.aiq"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "363833444592-6ng8a31cil2eiceq2a48b28nrubltd2u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.androidcodeshop.aiq",
+            "certificate_hash": "1e437eedb800b915595185edb41be757945fe61c"
+          }
+        },
+        {
+          "client_id": "363833444592-g24bqilp535qi267m4oi970evh781o77.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqxz12ppDMGJDRxJYSrofswjHPyvtZKQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "363833444592-g24bqilp535qi267m4oi970evh781o77.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

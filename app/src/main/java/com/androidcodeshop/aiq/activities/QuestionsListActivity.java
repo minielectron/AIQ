@@ -1,4 +1,4 @@
-package com.androidcodeshop.aiq;
+package com.androidcodeshop.aiq.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +13,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.androidcodeshop.aiq.fragments.AnswerDisplayDialogFragment;
+import com.androidcodeshop.aiq.utils.Questions;
+import com.androidcodeshop.aiq.R;
 import com.androidcodeshop.aiq.adapter.QuestionListAdapter;
 
 import butterknife.BindView;
@@ -20,6 +23,7 @@ import butterknife.ButterKnife;
 
 public class QuestionsListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
+    private boolean icon;
     private static final String TAG = "QuestionsListActivity";
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -32,12 +36,9 @@ public class QuestionsListActivity extends AppCompatActivity implements SearchVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questions_list);
         ButterKnife.bind(this);
+        toolbar.setTitle("All Questions");
         setSupportActionBar(toolbar);
-        toolbar.setTitle("All Questions List");
-        String[] questions = new String[Questions.getNumberOfQuestion()];
-        for (int i = 0; i <= Questions.getNumberOfQuestion() - 1; i++) {
-            questions[i] = Questions.getInstance().get(i).getQuestion();
-        }
+        icon = getIntent().getBooleanExtra(MainActivity.ICONIFIED,true);
         adapter = new QuestionListAdapter(Questions.getInstance(), this);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -47,7 +48,7 @@ public class QuestionsListActivity extends AppCompatActivity implements SearchVi
                 int pageNum = Integer.valueOf(qestTv.getText().toString());
                 Log.i(TAG, "onItemClick: page from questTv"+ pageNum);
                 FragmentManager manager = getSupportFragmentManager();
-                AnswerDisplayDialog displayDialog = AnswerDisplayDialog.getInstance(pageNum-1);
+                AnswerDisplayDialogFragment displayDialog = AnswerDisplayDialogFragment.getInstance(pageNum-1);
                 displayDialog.show(manager, "answer-display");
             }
         });
@@ -59,7 +60,7 @@ public class QuestionsListActivity extends AppCompatActivity implements SearchVi
         MenuItem searchViewItem = menu.findItem(R.id.app_bar_search);
         SearchView searchView = (SearchView) searchViewItem.getActionView();
         searchView.setQueryHint("Search Question");
-        searchView.setIconified(false);
+        searchView.setIconified(icon);
         searchView.setOnQueryTextListener(this);
         return true;
     }

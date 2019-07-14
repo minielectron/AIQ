@@ -7,6 +7,15 @@
     <string name="close">Close</string>
     <string name="user">User</string>
     <string name="login">Login</string>
+    <string name="answer">Answer : %s</string>
     <string name="search">Search</string>
-    <string name="answer">Answer :</string>
+    <string name="go_to">Goto</string>
+    <string name="bookmarked_questions">Bookmarked Questions</string>
+    <string name="all_questions_list">All Questions List</string>
+    <string name="about_me">About Me</string>
+    <string name="banner_ad_unit_id">ca-app-pub-9503287726630019~6070601719</string>
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="question">Question :</string>
 </resources>
