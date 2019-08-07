@@ -2,17 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/action_qustion_list"
-        android:title="@string/all_questions_list"
+    <item
+        android:id="@+id/action_qustion_list"
         android:icon="@drawable/ic_format_list_numbered_black_24dp"
-        app:showAsAction="ifRoom"/>
-    <item android:id="@+id/action_bookmarked_list"
-        android:title="@string/bookmarked_questions"
+        android:title="@string/all_questions_list"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_bookmarked_list"
         android:icon="@drawable/ic_book_black_24dp"
-        app:showAsAction="always"/>
+        android:title="@string/bookmarked_questions"
+        app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/action_about_me"
-        android:title="@string/about_me"
+    <item
+        android:id="@+id/action_about_me"
         android:icon="@drawable/ic_perm_identity_black_24dp"
-        app:showAsAction="always"/>
+        android:title="@string/about_me"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/share_app"
+        android:icon="@drawable/ic_share_white_24dp"
+        android:title="@string/share_application"
+        app:showAsAction="always" />
 </menu>

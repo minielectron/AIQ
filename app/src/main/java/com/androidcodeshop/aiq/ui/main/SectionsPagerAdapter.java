@@ -1,10 +1,11 @@
 package com.androidcodeshop.aiq.ui.main;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.androidcodeshop.aiq.utils.Questions;
 
@@ -14,13 +15,8 @@ import com.androidcodeshop.aiq.utils.Questions;
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-    //    @StringRes
-//    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2};
-    private final Context mContext;
-
     public SectionsPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
-        mContext = context;
     }
 
     @Override

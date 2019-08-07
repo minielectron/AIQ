@@ -1,25 +1,24 @@
 package com.androidcodeshop.aiq.ui.main;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Transformations;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
+
 import com.androidcodeshop.aiq.model.QuestionAnswerModel;
-import com.androidcodeshop.aiq.room.MyDatabase;
+import com.androidcodeshop.aiq.utils.Questions;
 
 import java.util.ArrayList;
-import java.util.concurrent.Executors;
 
 public class PageViewModel extends AndroidViewModel {
 
     private static final String TAG = "PageViewModel";
     private ArrayList<QuestionAnswerModel> questionAnswerModels = new ArrayList<>();
     private MutableLiveData<Integer> mIndex = new MutableLiveData<>();
-    private MyDatabase database = MyDatabase.getDatabase(getApplication());
     /**
      * This method maps the Questions and Answer according to fargment index
      */
@@ -35,13 +34,8 @@ public class PageViewModel extends AndroidViewModel {
         updateDbData();
     }
 
-    public void updateDbData() {
-        Executors.newSingleThreadExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                questionAnswerModels.addAll(database.aiqDao().getAllQuestionAnswers());
-            }
-        });
+    private void updateDbData() {
+        questionAnswerModels.addAll(Questions.getInstance());
     }
 
     void setIndex(int index) {

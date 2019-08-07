@@ -6,33 +6,34 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.ViewPager;
+
 import com.androidcodeshop.aiq.R;
+import com.androidcodeshop.aiq.ShowSnackBar;
 import com.androidcodeshop.aiq.fragments.GotoPageFragmentDialogFragment;
 import com.androidcodeshop.aiq.model.QuestionAnswerModel;
 import com.androidcodeshop.aiq.room.MyDatabase;
 import com.androidcodeshop.aiq.ui.main.SectionsPagerAdapter;
 import com.androidcodeshop.aiq.utils.Questions;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -40,7 +41,7 @@ import java.util.concurrent.Executors;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements GotoPageFragmentDialogFragment.OnGotoFragmentLister, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements GotoPageFragmentDialogFragment.OnGotoFragmentLister, NavigationView.OnNavigationItemSelectedListener, ShowSnackBar {
 
     private static final String TAG = "MainActivity";
     public static final String PAGE_NUM = "page_num";
@@ -58,13 +59,12 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     private SharedPreferences.Editor editor;
     private SharedPreferences preferences;
     private AdView mAdView;
+    public static SectionsPagerAdapter sectionsPagerAdapter;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Utils.makeActivityFullScreen(getWindow());
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
@@ -72,23 +72,14 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
         toolbar.setTitle("Android Questions");
         setSupportActionBar(toolbar);
 
-//        runOnUiThread(() -> {
-//            mAdView = findViewById(R.id.adView);
-//            AdRequest adRequest = new AdRequest.Builder().build();
-////            mAdView.setAdSize(AdSize.BANNER);
-////            mAdView.setAdUnitId(getString(R.string.banner_ad_unit_id));
-//            mAdView.loadAd(adRequest);
-//        });
-
-
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
+        sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
         setUpNavigationDrawer();
         editor = getSharedPreferences(AIQ_PREFS, MODE_PRIVATE).edit();
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         preferences = getSharedPreferences(AIQ_PREFS, MODE_PRIVATE);
         fab.setOnClickListener(view -> viewPager.setCurrentItem((viewPager.getCurrentItem() + 1) % Questions.getNumberOfQuestion()));
 
@@ -156,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                     Toast.makeText(this, "Q & A Copied Successfully to share", Toast.LENGTH_SHORT).show();
                     Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                     sharingIntent.setType("text/plain");
-                    sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Important Questions");
+                    sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Important Question");
                     sharingIntent.putExtra(Intent.EXTRA_TEXT, clipboard.getText().toString());
                     startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_using)));
                 }
@@ -191,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     protected void onResume() {
         super.onResume();
         if (preferences != null) {
-            int lastVisited = preferences.getInt("last_visited_question", 1);
+            int lastVisited = preferences.getInt("last_visited_question", 0);
             viewPager.setCurrentItem(lastVisited);
         }
     }
@@ -205,14 +196,23 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                 intent.putExtra(ICONIFIED, true);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-                drawerLayout.closeDrawer(Gravity.START);
+                drawerLayout.closeDrawer(GravityCompat.START);
                 break;
             case R.id.action_bookmarked_list:
                 intent = new Intent(this, BookmarkedListActivity.class);
                 intent.putExtra("bookmarked", true);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-                drawerLayout.closeDrawer(Gravity.START);
+                drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+            case R.id.share_app:
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT,
+                        "Hey check out my app at: https://www.androidcodeshop.com");
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+                drawerLayout.closeDrawer(GravityCompat.START);
                 break;
         }
         return true;
@@ -223,6 +223,19 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
         super.onStop();
         editor.putInt("last_visited_question", viewPager.getCurrentItem());
         editor.apply();
+    }
+
+    @Override
+    public void showSnack() {
+        Snackbar.make(fab, "Done! Check Bookmark List",Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, BookmarkedListActivity.class);
+                intent.putExtra("bookmarked", true);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        }).show();
     }
 }
 

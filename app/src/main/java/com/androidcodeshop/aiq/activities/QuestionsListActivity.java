@@ -1,10 +1,10 @@
 package com.androidcodeshop.aiq.activities;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,10 +13,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.androidcodeshop.aiq.fragments.AnswerDisplayDialogFragment;
-import com.androidcodeshop.aiq.utils.Questions;
+import androidx.core.view.MenuItemCompat;
+
 import com.androidcodeshop.aiq.R;
 import com.androidcodeshop.aiq.adapter.QuestionListAdapter;
+import com.androidcodeshop.aiq.fragments.AnswerDisplayDialogFragment;
+import com.androidcodeshop.aiq.utils.Questions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,7 +60,7 @@ public class QuestionsListActivity extends AppCompatActivity implements SearchVi
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
         MenuItem searchViewItem = menu.findItem(R.id.app_bar_search);
-        SearchView searchView = (SearchView) searchViewItem.getActionView();
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchViewItem);
         searchView.setQueryHint("Search Question");
         searchView.setIconified(icon);
         searchView.setOnQueryTextListener(this);

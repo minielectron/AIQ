@@ -11,8 +11,10 @@ public class Questions {
     }
 
     public static ArrayList<QuestionAnswerModel> getInstance() {
-        questionsAns = new ArrayList<>();
-        populateQuestions();
+        if (questionsAns == null) {
+            questionsAns = new ArrayList<>();
+            populateQuestions();
+        }
         return questionsAns;
     }
 
@@ -944,7 +946,7 @@ public class Questions {
                         "  3 | Can handle user input\n" +
                         "  4 | Good for showing warning/info type messages to user that needs attention. "
 
-                ));
+        ));
         questionsAns.add(new QuestionAnswerModel(90, "What is ListFragment ?",
                 "A fragment that displays a list of items by binding to a data source such as an array or Cursor, and exposes event handlers when the user selects an item.\n" +
                         "\n" +
@@ -990,18 +992,18 @@ public class Questions {
                         ""));
         questionsAns.add(new QuestionAnswerModel(100, "What happens to the permissions when user clear the app data ?",
                 "If user clear app data then the permissions will be reset and You need to ask them again."));
-        questionsAns.add(new QuestionAnswerModel(102,"What is PermissionChecker ?",
+        questionsAns.add(new QuestionAnswerModel(102, "What is PermissionChecker ?",
                 "The problem will the checkSelfPermission() method is that it returns always PERMISSION_GRANTED if either :" +
                         "1.Your app has targetSdkVersion below 23 or \n" +
                         "2.Your app is running on device older than android 6.0\n" +
                         "PermissionChecker class provides a static method checkPermission() which is used to resolve this problem.If you are on android 6.0+ with older targetSdkVersion, then it will return PERMISSION_DENIED_APP_OP if user revoked the permissions in settings."));
-        questionsAns.add(new QuestionAnswerModel(103,"What is model fragment ?",
+        questionsAns.add(new QuestionAnswerModel(103, "What is model fragment ?",
                 "A model fragment is one that simply uses setRetainInstance(true) to ensure that it stick around as configuration changes. It has no UI. This fragments then holds onto any model data that its host activity needs," +
                         " so as that activity get destroyed and recreated, the model data sticks around in the model fragment.\n" +
                         "Google recommends the use of model fragments instead using the setRetainInstance(true) with regular fragment."));
-        questionsAns.add(new QuestionAnswerModel(104,"Why should we use fragments instead of activities ?",
+        questionsAns.add(new QuestionAnswerModel(104, "Why should we use fragments instead of activities ?",
                 "The fragments are more flexible then activities. We can reuse the UI of fragments in different places in same application. It helps in supporting wide ranges of screens size. The ViewPager also uses fragments as a page. Fragments can retain state of application. The user has more control over fragments."));
-        questionsAns.add(new QuestionAnswerModel(105,"What are different types of fragments in android ?",
+        questionsAns.add(new QuestionAnswerModel(105, "What are different types of fragments in android ?",
                 "There are four types of fragments:\n" +
                         "\n" +
                         "ListFragment\n" +
@@ -1009,10 +1011,10 @@ public class Questions {
                         "PreferenceFragment\n" +
                         "WebViewFragment\n" +
                         ""));
-        questionsAns.add(new QuestionAnswerModel(106,"What is dialog fragment ?",
+        questionsAns.add(new QuestionAnswerModel(106, "What is dialog fragment ?",
                 "A fragment that displays a dialog window, floating on top of its activity's window. This fragment contains a Dialog object, which it displays as appropriate based on the fragment's state. Control of the dialog (deciding when to show, hide, dismiss it) should be done through the API here, not with direct calls on the dialog\n" +
                         "for detailed explaination and implementation visit: https://developer.android.com/reference/android/app/DialogFragment "));
-        questionsAns.add(new QuestionAnswerModel(107,"How to embed a DialogFragment?",
+        questionsAns.add(new QuestionAnswerModel(107, "How to embed a DialogFragment?",
                 "To display a dialog as floating we use : \n" +
                         " DialogFragment newFragment = MyDialogFragment.newInstance();\n" +
                         "    newFragment.show(getFragmentManager(), \"dialog\");\n\n" +
@@ -1021,7 +1023,7 @@ public class Questions {
                         "DialogFragment newFragment = MyDialogFragment.newInstance();\n" +
                         "ft.add(R.id.embedded, newFragment);\n" +
                         "ft.commit();"));
-        questionsAns.add(new QuestionAnswerModel(108,"How to create an AlertDialog ?",
+        questionsAns.add(new QuestionAnswerModel(108, "How to create an AlertDialog ?",
                 "Instead of (or in addition to) implementing Fragment.onCreateView(LayoutInflater, ViewGroup, Bundle) to generate the view hierarchy inside of a dialog, you may implement onCreateDialog(android.os.Bundle) to create your own custom Dialog object.\n" +
                         "\n" +
                         "public static class MyAlertDialogFragment extends DialogFragment {\n" +
@@ -1058,7 +1060,7 @@ public class Questions {
                         "                .create();\n" +
                         "    }\n" +
                         "}"));
-        questionsAns.add(new QuestionAnswerModel(109,"What is annotations in java ?",
+        questionsAns.add(new QuestionAnswerModel(109, "What is annotations in java ?",
                 "Annotations was introduced in java 5.0. \n" +
                         "One word to explain Annotation is Metadata. Metadata is data about data. So Annotations are metadata for code. For example look at following piece of code.\n" +
                         "\n" +
@@ -1073,13 +1075,13 @@ public class Questions {
                         "method name as toStrring() {double r} and if I wouldn’t have used @Override, my code would have compiled and executed successfully" +
                         " but outcome would be" +
                         " different from what I would have accepted. So now we understand what annotations are but still it’s good to read formal definitions"));
-        questionsAns.add(new QuestionAnswerModel(110,"What is annotations in Android ?",
+        questionsAns.add(new QuestionAnswerModel(110, "What is annotations in Android ?",
                 "Android Annotations is an annotation-driven framework that allows you to simplify the code in your applications and reduces the boilerplate of common patterns, such as setting click listeners, enforcing ui/background thread executions, etc.\n" +
                         "\nLibraries such as ButterKnife, Dagger2 etc uses the annotations for generating the boilerplate code and makes developers life easy"));
-        questionsAns.add(new QuestionAnswerModel(111,"How to create Custom Annotations ?",
+        questionsAns.add(new QuestionAnswerModel(111, "How to create Custom Annotations ?",
                 "Please visit the link for detailed explaination : \n" +
                         "https://medium.com/@iammert/annotation-processing-dont-repeat-yourself-generate-your-code-8425e60c6657"));
-        questionsAns.add(new QuestionAnswerModel(112,"What is REST Api? ",
+        questionsAns.add(new QuestionAnswerModel(112, "What is REST Api? ",
                 "REST is acronym for REpresentational State Transfer. It is architectural style for distributed hypermedia systems and was first presented by Roy Fielding in 2000." +
                         "\n" +
                         "The six guiding pricipal of rest are : \n" +
@@ -1090,13 +1092,13 @@ public class Questions {
                         "Layered system – The layered system style allows an architecture to be composed of hierarchical layers by constraining component behavior such that each component cannot “see” beyond the immediate layer with which they are interacting.\n" +
                         "Code on demand (optional) – REST allows client functionality to be extended by downloading and executing code in the form of applets or scripts. This simplifies clients by reducing the number of features required to be pre-implemented.\n" +
                         "for more info visit : https://restfulapi.net/"));
-        questionsAns.add(new QuestionAnswerModel(113,"What is SOAP ?",
+        questionsAns.add(new QuestionAnswerModel(113, "What is SOAP ?",
                 "SOAP ( Simple Object Access Protocol) is a message protocol that allows distributed elements of an application to" +
                         " communicate. SOAP can be carried over a variety of lower-level protocols, including the web-related Hypertext Transfer" +
                         " Protocol (HTTP).  SOAP defines a header structure that identifies the actions that various SOAP nodes are expected to " +
                         "take on the message, in addition to a payload structure for carrying information. The concept of routing a message through a" +
                         " string of nodes that perform different functions is how SOAP supports things like addressing, security and format-independence."));
-        questionsAns.add(new QuestionAnswerModel(114,"What is the difference between REST and SOAP ?",
+        questionsAns.add(new QuestionAnswerModel(114, "What is the difference between REST and SOAP ?",
                 "REST : \n" +
                         "1.Representational State Transfer protocol\n" +
                         "2.Inherit security from underlying transport \n" +
@@ -1111,27 +1113,27 @@ public class Questions {
                         "3.No Error Handling\n" +
                         "4.XML Based Protocol\n" +
                         "5.Result is not human readable\n"));
-        questionsAns.add(new QuestionAnswerModel(115,"What is deep links in android ?",
+        questionsAns.add(new QuestionAnswerModel(115, "What is deep links in android ?",
                 "Deeplinks are a concept that help users navigate between the web and applications. They are basically URLs which navigate users directly to the specific content in applications.\n" +
                         "A deep link is an intent filter system that allows users to directly enter a specific activity in an Android app. However there is an issue about this process. When a user click an URL, it might open a dialog which asks the user to select one of multiple apps handling the given URL.\n"));
-        questionsAns.add(new QuestionAnswerModel(116,"What is App Link in android ?",
+        questionsAns.add(new QuestionAnswerModel(116, "What is App Link in android ?",
                 "Android App Links allow an app to designate itself as the default handler of application domain or URL. Unfortunately It works only on on Android 6.0 (API level 23) and higher.\n" +
                         ""));
-        questionsAns.add(new QuestionAnswerModel(117,"What is the difference between deep links and app links?",
+        questionsAns.add(new QuestionAnswerModel(117, "What is the difference between deep links and app links?",
                 "A deep link is an intent filter system that allows users to directly enter a specific activity in an Android app. However there is an issue about this process. When a user click an URL, it might open a dialog which asks the user to select one of multiple apps handling the given URL.\n" +
                         "\n" +
                         "On the other hand, An Android App Link is a deep link based on your website URL that has been verified to belong to your website. When user clicks that URL, it opens your app."));
-        questionsAns.add(new QuestionAnswerModel(118,"What is android Jetpack ?",
+        questionsAns.add(new QuestionAnswerModel(118, "What is android Jetpack ?",
                 "Jetpack is a suite of libraries, tools, and guidance to help developers write high-quality apps easier. These components help you follow best practices, free you from writing boilerplate code, and simplify complex tasks, so you can focus on the code you care about.\n" +
                         "\n" +
                         "Jetpack comprises the androidx.* package libraries, unbundled from the platform APIs. This means that it offers backward compatibility and is updated more frequently than the Android platform, making sure you always have access to the latest and greatest versions of the Jetpack components."));
-        questionsAns.add(new QuestionAnswerModel(119,"What are different Jetpack Components ?",
+        questionsAns.add(new QuestionAnswerModel(119, "What are different Jetpack Components ?",
                 "There are four jetpack components  :\n" +
                         "1.Foundation : Foundation components provide cross-cutting functionality like backwards compatibility, testing and Kotlin language support. It includes - Android KTX(kotlin support), AppCompat, Security, Mutlidex, Test etx.\n" +
                         "2.Architecture : Architecture components help you design robust, testable and maintainable apps. It includes - Data Binding, LiveData, Room, Paging, Navigation ViewModel, and WorkManager etc \n" +
                         "3.UI : Architecture components help you design robust, testable and maintainable apps. It includes - Animatation and transition, Emoji, Fragments, Layout and palette etc..\n" +
                         "4.Behaviour : Behavior components help your app integrate with standard Android services like notifications, permissions, sharing and the Assistant. It includex CameraX, Download Manager, Media, Permissions, Notification and so on."));
-        questionsAns.add(new QuestionAnswerModel(120,"What is data binding ?",
+        questionsAns.add(new QuestionAnswerModel(120, "What is data binding ?",
                 "The Data Binding Library is a support library that allows you to bind UI components in your layouts to data sources in your app using a declarative format rather than programmatically.\n" +
                         "\n" +
                         "Layouts are often defined in activities with code that calls UI framework methods. For example, the code below calls findViewById() to find a TextView widget and bind it to the userName property of the viewModel variable:\n" +
@@ -1141,7 +1143,7 @@ public class Questions {
                         "<TextView\n" +
                         "    android:text=\"@{viewmodel.userName}\" /> \n" +
                         "if we use data binding."));
-        questionsAns.add(new QuestionAnswerModel(121,"What is Lifecycle components in Jetpack ?",
+        questionsAns.add(new QuestionAnswerModel(121, "What is Lifecycle components in Jetpack ?",
                 "Lifecycle-aware components perform actions in response to a change in the lifecycle status of another component, such as activities and fragments. These components help you produce better-organized, and often lighter-weight code, that is easier to maintain.\n" +
                         "\n" +
                         "A common pattern is to implement the actions of the dependent components in the lifecycle methods of activities and fragments. However, this pattern leads to a poor organization of the code and to the proliferation of errors. By using lifecycle-aware components, you can move the code of dependent components out of the lifecycle methods and into the components themselves.\n" +
@@ -1149,7 +1151,7 @@ public class Questions {
                         "The android.arch.lifecycle package provides classes and interfaces that let you build lifecycle-aware components—which are components that can automatically adjust their behavior based on the current lifecycle state of an activity or fragment.\n" +
                         "for more information visit : \n" +
                         "https://developer.android.com/topic/libraries/architecture/lifecycle"));
-        questionsAns.add(new QuestionAnswerModel(122,"What is LiveData ?",
+        questionsAns.add(new QuestionAnswerModel(122, "What is LiveData ?",
                 "LiveData is an observable data holder class. Unlike a regular observable, LiveData is lifecycle-aware, meaning it respects the lifecycle of other app components, such as activities, fragments, or services. This awareness ensures LiveData only updates app component observers that are in an active lifecycle state.\n" +
                         "For more info please visit : \n" +
                         "https://developer.android.com/topic/libraries/architecture/livedata"));
@@ -1157,7 +1159,7 @@ public class Questions {
         questionsAns.add(new QuestionAnswerModel(123, "What are the mandatory functions to be implemented in AsyncTask?",
                 "doInBackground() is the only mandatory function that has to be implemented in AsyncTask Class."));
 
-        questionsAns.add(new QuestionAnswerModel(124,"What is AndroidX ?",
+        questionsAns.add(new QuestionAnswerModel(124, "What is AndroidX ?",
                 "AndroidX is the open-source project that the Android team uses to develop, test, package, version and release libraries within Jetpack.\n" +
                         "\n" +
                         "AndroidX is a major improvement to the original Android Support Library. Like the Support Library, AndroidX ships separately from the Android OS and provides backwards-compatibility across Android releases. AndroidX fully replaces the Support Library by providing feature parity and new libraries.\n" +
@@ -1167,7 +1169,7 @@ public class Questions {
                         "Unlike the Support Library, AndroidX packages are separately maintained and updated. The androidx packages use strict Semantic Versioning starting with version 1.0.0. You can update AndroidX libraries in your project independently.\n" +
                         "\n" +
                         "All new Support Library development will occur in the AndroidX library. This includes maintenance of the original Support Library artifacts and introduction of new Jetpack components."));
-        questionsAns.add(new QuestionAnswerModel(125,"What is Navigation in Jetpack ?",
+        questionsAns.add(new QuestionAnswerModel(125, "What is Navigation in Jetpack ?",
                 "Navigation refers to the interactions that allow users to navigate across, into, and back out from the different pieces of " +
                         "content within your app. Android Jetpack's Navigation component helps you implement navigation, from simple button clicks to more complex patterns, such as app bars and the navigation drawer." +
                         " The Navigation component also ensures a consistent and predictable user experience by adhering to an established set of principles.\n" +
@@ -1177,7 +1179,7 @@ public class Questions {
                         "3.NavController\n" +
                         "For detailed information visit : \n" +
                         "https://developer.android.com/guide/navigation/"));
-        questionsAns.add(new QuestionAnswerModel(126,"What is Room Persistence Library ?",
+        questionsAns.add(new QuestionAnswerModel(126, "What is Room Persistence Library ?",
                 "The Room persistence library provides an abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.\n" +
                         "\n" +
                         "The library helps you create a cache of your app's data on a device that's running your app. This cache, which serves as " +
@@ -1185,7 +1187,7 @@ public class Questions {
                         "whether users have an internet connection.\n" +
                         "For more information : \n" +
                         "https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#0"));
-        questionsAns.add(new QuestionAnswerModel(127,"What is AppCompat ?",
+        questionsAns.add(new QuestionAnswerModel(127, "What is AppCompat ?",
                 "AppCompat is backward compatiblity library. " +
                         "Android users use a wide range of " +
                         "Android OS versions. While the changes from release to release may be small or may " +
@@ -1197,7 +1199,7 @@ public class Questions {
                         "using AppCompat makes your APK a lot larger and makes app development more " +
                         "confusing, many developers are grateful for the backwards-compatibility that it " +
                         "offers."));
-        questionsAns.add(new QuestionAnswerModel(128,"What is WorkManager ?",
+        questionsAns.add(new QuestionAnswerModel(128, "What is WorkManager ?",
                 "Many times, the work that we need to do on background threads has to be " +
                         "performed in near-real time. But sometimes the work that we need to do can " +
                         "happen totally independently from what the user may (or may not) being doing in " +
@@ -1211,21 +1213,21 @@ public class Questions {
                         "schedule might be based in part on the state of the device (“do it when the device is " +
                         "on a charger”, “do it when the device is on WiFi”, etc.). Then, WorkManager will " +
                         "arrange to do the work, even if the user leaves our UI."));
-        questionsAns.add(new QuestionAnswerModel(129,"What is AndroidKTX ?",
+        questionsAns.add(new QuestionAnswerModel(129, "What is AndroidKTX ?",
                 "AndroidKTX is collection of new features in Kotlin such as extension function, designed to make android SDK a bit easier to use with both language support."));
-        questionsAns.add(new QuestionAnswerModel(130,"What is R file ?",
+        questionsAns.add(new QuestionAnswerModel(130, "What is R file ?",
                 ""));
-        questionsAns.add(new QuestionAnswerModel(131,"",""));
-        questionsAns.add(new QuestionAnswerModel(132,"",""));
-        questionsAns.add(new QuestionAnswerModel(133,"",""));
-        questionsAns.add(new QuestionAnswerModel(134,"",""));
-        questionsAns.add(new QuestionAnswerModel(135,"",""));
-        questionsAns.add(new QuestionAnswerModel(136,"",""));
-        questionsAns.add(new QuestionAnswerModel(137,"",""));
-        questionsAns.add(new QuestionAnswerModel(138,"",""));
-        questionsAns.add(new QuestionAnswerModel(139,"",""));
-        questionsAns.add(new QuestionAnswerModel(140,"",""));
-        questionsAns.add(new QuestionAnswerModel(141,"",""));
-        questionsAns.add(new QuestionAnswerModel(142,"",""));
+//        questionsAns.add(new QuestionAnswerModel(131,"",""));
+//        questionsAns.add(new QuestionAnswerModel(132,"",""));
+//        questionsAns.add(new QuestionAnswerModel(133,"",""));
+//        questionsAns.add(new QuestionAnswerModel(134,"",""));
+//        questionsAns.add(new QuestionAnswerModel(135,"",""));
+//        questionsAns.add(new QuestionAnswerModel(136,"",""));
+//        questionsAns.add(new QuestionAnswerModel(137,"",""));
+//        questionsAns.add(new QuestionAnswerModel(138,"",""));
+//        questionsAns.add(new QuestionAnswerModel(139,"",""));
+//        questionsAns.add(new QuestionAnswerModel(140,"",""));
+//        questionsAns.add(new QuestionAnswerModel(141,"",""));
+//        questionsAns.add(new QuestionAnswerModel(142,"",""));
     }
 }

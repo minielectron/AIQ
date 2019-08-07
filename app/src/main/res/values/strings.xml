@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">AndroidIQ</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
     <string name="share_using">Share Using</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
@@ -13,9 +11,11 @@
     <string name="bookmarked_questions">Bookmarked Questions</string>
     <string name="all_questions_list">All Questions List</string>
     <string name="about_me">About Me</string>
-    <string name="banner_ad_unit_id">ca-app-pub-9503287726630019~6070601719</string>
+    <!--<string name="banner_ad_unit_id">ca-app-pub-9503287726630019~6070601719</string>-->
+    <string name="banner_ad_unit_id">ca-app-pub-9503287726630019/8669035817</string>
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="question">Question :</string>
+    <string name="share_application">Share Application</string>
 </resources>
