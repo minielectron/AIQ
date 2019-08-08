@@ -6,13 +6,14 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.androidcodeshop.aiq.R;
 
@@ -21,7 +22,7 @@ import butterknife.ButterKnife;
 import electrophile.mutils.MiniNetworkingUtils;
 
 public class WebViewActivity extends AppCompatActivity {
-    private static final String DEFAULT_URL = "https://www.hyundai.com/in/en";
+    private static final String DEFAULT_URL = "https://androidcodeshop.com/about-me/";
     @BindView(R.id.web_view)
     WebView webView;
     @BindView(R.id.progress_bar)
@@ -38,7 +39,8 @@ public class WebViewActivity extends AppCompatActivity {
         String url = DEFAULT_URL;
         Intent intent = getIntent();
         Uri data = intent.getData();
-        url = data.toString();
+        if (data != null)
+            url = data.toString();
         setSupportActionBar(toolbar);
 //        AppUtils.makeActivityFullScreen(getWindow());
         // check the internet connection

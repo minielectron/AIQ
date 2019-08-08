@@ -216,6 +216,13 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                 startActivity(sendIntent);
                 drawerLayout.closeDrawer(GravityCompat.START);
                 break;
+
+            case R.id.action_about_me:
+                Intent aboutIntent = new Intent(this, WebViewActivity.class);
+                aboutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(aboutIntent);
+                drawerLayout.closeDrawer(GravityCompat.START);
+                break;
         }
         return true;
     }
