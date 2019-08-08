@@ -992,18 +992,18 @@ public class Questions {
                         ""));
         questionsAns.add(new QuestionAnswerModel(100, "What happens to the permissions when user clear the app data ?",
                 "If user clear app data then the permissions will be reset and You need to ask them again."));
-        questionsAns.add(new QuestionAnswerModel(102, "What is PermissionChecker ?",
+        questionsAns.add(new QuestionAnswerModel(101, "What is PermissionChecker ?",
                 "The problem will the checkSelfPermission() method is that it returns always PERMISSION_GRANTED if either :" +
                         "1.Your app has targetSdkVersion below 23 or \n" +
                         "2.Your app is running on device older than android 6.0\n" +
                         "PermissionChecker class provides a static method checkPermission() which is used to resolve this problem.If you are on android 6.0+ with older targetSdkVersion, then it will return PERMISSION_DENIED_APP_OP if user revoked the permissions in settings."));
-        questionsAns.add(new QuestionAnswerModel(103, "What is model fragment ?",
+        questionsAns.add(new QuestionAnswerModel(102, "What is model fragment ?",
                 "A model fragment is one that simply uses setRetainInstance(true) to ensure that it stick around as configuration changes. It has no UI. This fragments then holds onto any model data that its host activity needs," +
                         " so as that activity get destroyed and recreated, the model data sticks around in the model fragment.\n" +
                         "Google recommends the use of model fragments instead using the setRetainInstance(true) with regular fragment."));
-        questionsAns.add(new QuestionAnswerModel(104, "Why should we use fragments instead of activities ?",
+        questionsAns.add(new QuestionAnswerModel(103, "Why should we use fragments instead of activities ?",
                 "The fragments are more flexible then activities. We can reuse the UI of fragments in different places in same application. It helps in supporting wide ranges of screens size. The ViewPager also uses fragments as a page. Fragments can retain state of application. The user has more control over fragments."));
-        questionsAns.add(new QuestionAnswerModel(105, "What are different types of fragments in android ?",
+        questionsAns.add(new QuestionAnswerModel(104, "What are different types of fragments in android ?",
                 "There are four types of fragments:\n" +
                         "\n" +
                         "ListFragment\n" +
@@ -1011,6 +1011,8 @@ public class Questions {
                         "PreferenceFragment\n" +
                         "WebViewFragment\n" +
                         ""));
+        questionsAns.add(new QuestionAnswerModel(105, "What is R file ?",
+                "In android AAPT(Android Asset Packaging Tool) Generated the R.java file which allows access to the layouts and widget within those layouts directly from your java code."));
         questionsAns.add(new QuestionAnswerModel(106, "What is dialog fragment ?",
                 "A fragment that displays a dialog window, floating on top of its activity's window. This fragment contains a Dialog object, which it displays as appropriate based on the fragment's state. Control of the dialog (deciding when to show, hide, dismiss it) should be done through the API here, not with direct calls on the dialog\n" +
                         "for detailed explaination and implementation visit: https://developer.android.com/reference/android/app/DialogFragment "));
@@ -1215,19 +1217,7 @@ public class Questions {
                         "arrange to do the work, even if the user leaves our UI."));
         questionsAns.add(new QuestionAnswerModel(129, "What is AndroidKTX ?",
                 "AndroidKTX is collection of new features in Kotlin such as extension function, designed to make android SDK a bit easier to use with both language support."));
-        questionsAns.add(new QuestionAnswerModel(130, "What is R file ?",
-                ""));
-//        questionsAns.add(new QuestionAnswerModel(131,"",""));
-//        questionsAns.add(new QuestionAnswerModel(132,"",""));
-//        questionsAns.add(new QuestionAnswerModel(133,"",""));
-//        questionsAns.add(new QuestionAnswerModel(134,"",""));
-//        questionsAns.add(new QuestionAnswerModel(135,"",""));
-//        questionsAns.add(new QuestionAnswerModel(136,"",""));
-//        questionsAns.add(new QuestionAnswerModel(137,"",""));
-//        questionsAns.add(new QuestionAnswerModel(138,"",""));
-//        questionsAns.add(new QuestionAnswerModel(139,"",""));
-//        questionsAns.add(new QuestionAnswerModel(140,"",""));
-//        questionsAns.add(new QuestionAnswerModel(141,"",""));
-//        questionsAns.add(new QuestionAnswerModel(142,"",""));
+
+        questionsAns.add(new QuestionAnswerModel(130,"",""));
     }
 }

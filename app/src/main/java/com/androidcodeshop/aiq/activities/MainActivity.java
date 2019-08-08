@@ -23,8 +23,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.androidcodeshop.aiq.R;
-import com.androidcodeshop.aiq.ShowSnackBar;
 import com.androidcodeshop.aiq.fragments.GotoPageFragmentDialogFragment;
+import com.androidcodeshop.aiq.interfaces.ShowSnackBar;
 import com.androidcodeshop.aiq.model.QuestionAnswerModel;
 import com.androidcodeshop.aiq.room.MyDatabase;
 import com.androidcodeshop.aiq.ui.main.SectionsPagerAdapter;
@@ -81,7 +81,9 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
         editor = getSharedPreferences(AIQ_PREFS, MODE_PRIVATE).edit();
         fab = findViewById(R.id.fab);
         preferences = getSharedPreferences(AIQ_PREFS, MODE_PRIVATE);
-        fab.setOnClickListener(view -> viewPager.setCurrentItem((viewPager.getCurrentItem() + 1) % Questions.getNumberOfQuestion()));
+        fab.setOnClickListener(view -> {
+            viewPager.setCurrentItem((viewPager.getCurrentItem() + 1) % Questions.getNumberOfQuestion());
+        });
 
         if (preferences.getString(SAVED, null) == null) insertAllDataToDb();
     }
@@ -90,8 +92,8 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
         MyDatabase database = MyDatabase.getDatabase(this);
         ArrayList<QuestionAnswerModel> answerModels = Questions.getInstance();
         Executors.newSingleThreadExecutor().execute(() -> {
-            for (QuestionAnswerModel questionAnswerModel : answerModels)
-                database.aiqDao().insert(questionAnswerModel);
+            for (int i = 0; i < Questions.getNumberOfQuestion(); i++)
+                database.aiqDao().insert(Questions.getInstance().get(i));
             Log.d(TAG, "insertAllDataToDb: All data inserted");
             editor.putString(SAVED, SAVED);
             editor.apply();
@@ -227,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
 
     @Override
     public void showSnack() {
-        Snackbar.make(fab, "Done! Check Bookmark List",Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
+        Snackbar.make(fab, "Done! Check Bookmark List", Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, BookmarkedListActivity.class);
