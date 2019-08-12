@@ -11,8 +11,6 @@
     <string name="bookmarked_questions">Bookmarked Questions</string>
     <string name="all_questions_list">All Questions List</string>
     <string name="about_me">About Me</string>
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-    <!--<string name="banner_ad_unit_id">ca-app-pub-8264712955626792/7659663320</string> original id-->
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>

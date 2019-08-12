@@ -83,7 +83,7 @@
                     android:layout_gravity="bottom"
                     android:layout_marginTop="16dp"
                     ads:adSize="BANNER"
-                    ads:adUnitId="@string/banner_ad_unit_id" />
+                    ads:adUnitId="@string/ad_unit_id" />
             </LinearLayout>
 
 

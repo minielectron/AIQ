@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
 //        myRef.addChildEventListener(childEventListener);
 
         // firebase database code ended
+        Toast.makeText(this, ""+getString(R.string.test), Toast.LENGTH_LONG).show();
         sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);

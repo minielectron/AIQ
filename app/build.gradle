@@ -16,6 +16,21 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue "string", "ad_app_id", "ca-app-pub-8264712955626792~6123467795"
+            resValue "string", "ad_unit_id", "ca-app-pub-8264712955626792/7659663320"
+            resValue "string", "test", "Release mode is running"
+
+
+        }
+
+        debug {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue "string", "ad_app_id", "ca-app-pub-3940256099942544~3347511713"
+            resValue "string", "ad_unit_id", "ca-app-pub-3940256099942544/6300978111"
+            resValue "string", "test", "Debug mode is running"
+
         }
     }
     compileOptions {
