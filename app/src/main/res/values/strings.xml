@@ -17,4 +17,5 @@
     <string name="question">Question :</string>
     <string name="share_application">Share Application</string>
     <string name="copy_and_share">Copy and Share</string>
+    <string name="bookmarked_ques">bookmarked_questions</string>
 </resources>

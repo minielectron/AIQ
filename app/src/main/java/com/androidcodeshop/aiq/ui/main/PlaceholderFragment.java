@@ -10,18 +10,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.androidcodeshop.aiq.R;
-import com.androidcodeshop.aiq.interfaces.ShowSnackBar;
 import com.androidcodeshop.aiq.activities.MainActivity;
+import com.androidcodeshop.aiq.interfaces.ShowSnackBar;
+import com.androidcodeshop.aiq.model.QuestionAnswerModel;
 import com.androidcodeshop.aiq.room.MyDatabase;
+import com.androidcodeshop.aiq.utils.Questions;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.concurrent.Executors;
 
@@ -46,6 +56,10 @@ public class PlaceholderFragment extends Fragment {
 
     private PageViewModel pageViewModel;
     private ShowSnackBar showSnackBar;
+    private DatabaseReference databaseReference;
+    private FirebaseDatabase firebaseDatabase;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
 
     public PlaceholderFragment() {
 
@@ -78,6 +92,13 @@ public class PlaceholderFragment extends Fragment {
         }
         pageViewModel.setIndex(index);
         Log.i(TAG, "onCreate: index" + index);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser() != null) {
+            firebaseUser = firebaseAuth.getCurrentUser();
+            databaseReference = firebaseDatabase.getReference(firebaseUser.getUid()).child(getContext().getString(R.string.bookmarked_ques));
+        }
+
     }
 
     @Override
@@ -97,7 +118,7 @@ public class PlaceholderFragment extends Fragment {
             question.setText(page.getQuestion());
             answer.setText(String.format(getString(R.string.answer), page.getAnswer()));
             questionNo.setText(String.valueOf(page.getQuestionNumber()));
-            if (database.aiqDao().getAllQuestionAnswers().get(page.getQuestionNumber()-1).getBookmarked() == 1) {
+            if (database.aiqDao().getAllQuestionAnswers().get(page.getQuestionNumber() - 1).getBookmarked() == 1) {
                 bookmarkIb.setImageResource(R.drawable.ic_bookmark_gray_24dp);
             } else {
                 bookmarkIb.setImageResource(R.drawable.ic_bookmark_border_white_24dp);
@@ -116,7 +137,31 @@ public class PlaceholderFragment extends Fragment {
 
     @OnClick(R.id.bookmark_ib)
     void onViewClicked() {
+        if (firebaseUser == null) {
+            Toast.makeText(getContext(), "Login to bookmark!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         int quesNum = Integer.valueOf(questionNo.getText().toString());
+        QuestionAnswerModel currentQuestion = Questions.getInstance().get(quesNum - 1);
+        databaseReference.child(String.valueOf(quesNum)).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    currentQuestion.setBookmarked((dataSnapshot.getValue(QuestionAnswerModel.class).getBookmarked() + 1) % 2);
+                    databaseReference.child(String.valueOf(quesNum)).setValue(currentQuestion);
+                }else{
+                    currentQuestion.setBookmarked(1);
+                    databaseReference.child(String.valueOf(quesNum)).setValue(currentQuestion);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+//        currentQuestion.setBookmarked((database.aiqDao().getAllQuestionAnswers().get(quesNum - 1).getBookmarked() + 1) % 2);
         bookmarkIb.setVisibility(View.GONE);
         showSnackBar.showSnack();
         Executors.newSingleThreadExecutor().execute(() -> database.aiqDao().replaceBookmark(quesNum, (database.aiqDao().getAllQuestionAnswers().get(quesNum - 1).getBookmarked() + 1) % 2));

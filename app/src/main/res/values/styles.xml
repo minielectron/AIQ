@@ -7,12 +7,6 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <!--<style name="AppTheme.NoActionBar">-->
-        <!--<item name="windowActionBar">false</item>-->
-        <!--<item name="windowNoTitle">true</item>-->
-        <!--<item name="android:windowTranslucentStatus">true</item>-->
-    <!--</style>-->
-
     <style name="ThemeOverlay.MyTheme" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:colorBackground">@color/WhiteSmoke</item>
         <item name="android:textColor">@color/Black</item>
@@ -20,16 +14,9 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <!--<style name="FullscreenTheme" parent="AppTheme">-->
-        <!--<item name="actionBarStyle">@style/FullscreenActionBarStyle</item>-->
-        <!--<item name="windowActionBarOverlay">true</item>-->
-        <!--<item name="android:windowBackground">@null</item>-->
-        <!--<item name="metaButtonBarStyle">?attr/buttonBarStyle</item>-->
-        <!--<item name="metaButtonBarButtonStyle">?attr/buttonBarButtonStyle</item>-->
-    <!--</style>-->
+    <style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/win_background</item>
+    </style>
 
-    <!--<style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">-->
-        <!--<item name="background">@color/black_overlay</item>-->
-    <!--</style>-->
 
 </resources>

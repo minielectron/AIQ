@@ -24,8 +24,8 @@ android {
         }
 
         debug {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             resValue "string", "ad_app_id", "ca-app-pub-3940256099942544~3347511713"
             resValue "string", "ad_unit_id", "ca-app-pub-3940256099942544/6300978111"
@@ -57,8 +57,15 @@ dependencies {
     // for real time firebase database
     implementation 'com.google.firebase:firebase-database:18.0.1'
 
+    //firebase authentication ui
+    implementation 'com.firebaseui:firebase-ui-auth:4.3.2'
+    implementation 'com.google.firebase:firebase-auth:18.1.0'
+
     implementation 'androidx.room:room-runtime:2.1.0'
     annotationProcessor 'androidx.room:room-compiler:2.1.0'
+    // Glide library
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
 
 }

@@ -1393,82 +1393,9 @@ public class Questions {
                         "    }\n\n" +
                         "For android version >=5.0 (API-21): \n" +
                         "In android 5.0 ART"));
-        //
-        questionsAns.add(new QuestionAnswerModel(160,"",""));
+        //--------------- firebase authentication --------------------------------------------------------------------------//
+        questionsAns.add(new QuestionAnswerModel(160,"What are the different kind of firebase token  ?",
+                ""));
         questionsAns.add(new QuestionAnswerModel(161,"",""));
-        questionsAns.add(new QuestionAnswerModel(162,"",""));
-        questionsAns.add(new QuestionAnswerModel(163,"",""));
-        questionsAns.add(new QuestionAnswerModel(164,"",""));
-        questionsAns.add(new QuestionAnswerModel(165,"",""));
-        questionsAns.add(new QuestionAnswerModel(166,"",""));
-        questionsAns.add(new QuestionAnswerModel(167,"",""));
-        questionsAns.add(new QuestionAnswerModel(168,"",""));
-        questionsAns.add(new QuestionAnswerModel(169,"",""));
-        questionsAns.add(new QuestionAnswerModel(170,"",""));
-        questionsAns.add(new QuestionAnswerModel(171,"",""));
-        questionsAns.add(new QuestionAnswerModel(172,"",""));
-        questionsAns.add(new QuestionAnswerModel(173,"",""));
-        questionsAns.add(new QuestionAnswerModel(174,"",""));
-        questionsAns.add(new QuestionAnswerModel(175,"",""));
-        questionsAns.add(new QuestionAnswerModel(176,"",""));
-        questionsAns.add(new QuestionAnswerModel(178,"",""));
-        questionsAns.add(new QuestionAnswerModel(179,"",""));
-        questionsAns.add(new QuestionAnswerModel(180,"",""));
-        questionsAns.add(new QuestionAnswerModel(181,"",""));
-        questionsAns.add(new QuestionAnswerModel(182,"",""));
-        questionsAns.add(new QuestionAnswerModel(183,"",""));
-        questionsAns.add(new QuestionAnswerModel(184,"",""));
-        questionsAns.add(new QuestionAnswerModel(185,"",""));
-        questionsAns.add(new QuestionAnswerModel(186,"",""));
-        questionsAns.add(new QuestionAnswerModel(188,"",""));
-        questionsAns.add(new QuestionAnswerModel(189,"",""));
-        questionsAns.add(new QuestionAnswerModel(190,"",""));
-        questionsAns.add(new QuestionAnswerModel(191,"",""));
-        questionsAns.add(new QuestionAnswerModel(192,"",""));
-        questionsAns.add(new QuestionAnswerModel(193,"",""));
-        questionsAns.add(new QuestionAnswerModel(194,"",""));
-        questionsAns.add(new QuestionAnswerModel(195,"",""));
-        questionsAns.add(new QuestionAnswerModel(196,"",""));
-        questionsAns.add(new QuestionAnswerModel(198,"",""));
-        questionsAns.add(new QuestionAnswerModel(199,"",""));
-        questionsAns.add(new QuestionAnswerModel(200,"",""));
-        questionsAns.add(new QuestionAnswerModel(201,"",""));
-        questionsAns.add(new QuestionAnswerModel(202,"",""));
-        questionsAns.add(new QuestionAnswerModel(203,"",""));
-        questionsAns.add(new QuestionAnswerModel(204,"",""));
-        questionsAns.add(new QuestionAnswerModel(205,"",""));
-        questionsAns.add(new QuestionAnswerModel(206,"",""));
-        questionsAns.add(new QuestionAnswerModel(207,"",""));
-        questionsAns.add(new QuestionAnswerModel(208,"",""));
-        questionsAns.add(new QuestionAnswerModel(209,"",""));
-        questionsAns.add(new QuestionAnswerModel(210,"",""));
-        questionsAns.add(new QuestionAnswerModel(211,"",""));
-        questionsAns.add(new QuestionAnswerModel(212,"",""));
-        questionsAns.add(new QuestionAnswerModel(213,"",""));
-        questionsAns.add(new QuestionAnswerModel(214,"",""));
-        questionsAns.add(new QuestionAnswerModel(215,"",""));
-        questionsAns.add(new QuestionAnswerModel(216,"",""));
-        questionsAns.add(new QuestionAnswerModel(217,"",""));
-        questionsAns.add(new QuestionAnswerModel(218,"",""));
-        questionsAns.add(new QuestionAnswerModel(219,"",""));
-        questionsAns.add(new QuestionAnswerModel(220,"",""));
-        questionsAns.add(new QuestionAnswerModel(221,"",""));
-        questionsAns.add(new QuestionAnswerModel(222,"",""));
-        questionsAns.add(new QuestionAnswerModel(223,"",""));
-        questionsAns.add(new QuestionAnswerModel(224,"",""));
-        questionsAns.add(new QuestionAnswerModel(225,"",""));
-        questionsAns.add(new QuestionAnswerModel(226,"",""));
-        questionsAns.add(new QuestionAnswerModel(227,"",""));
-        questionsAns.add(new QuestionAnswerModel(228,"",""));
-        questionsAns.add(new QuestionAnswerModel(229,"",""));
-        questionsAns.add(new QuestionAnswerModel(230,"",""));
-        questionsAns.add(new QuestionAnswerModel(231,"",""));
-        questionsAns.add(new QuestionAnswerModel(232,"",""));
-        questionsAns.add(new QuestionAnswerModel(233,"",""));
-        questionsAns.add(new QuestionAnswerModel(234,"",""));
-        questionsAns.add(new QuestionAnswerModel(235,"",""));
-        questionsAns.add(new QuestionAnswerModel(236,"",""));
-        questionsAns.add(new QuestionAnswerModel(237,"",""));
-
     }
 }

@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.androidcodeshop.aiq.utils.Questions;
+import com.androidcodeshop.aiq.model.QuestionAnswerModel;
+
+import java.util.ArrayList;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -15,8 +17,11 @@ import com.androidcodeshop.aiq.utils.Questions;
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-    public SectionsPagerAdapter(Context context, FragmentManager fm) {
+    ArrayList<QuestionAnswerModel> questionAnswerModels;
+
+    public SectionsPagerAdapter(Context context, FragmentManager fm, ArrayList<QuestionAnswerModel> questionAnswerModelArrayList) {
         super(fm);
+        this.questionAnswerModels = questionAnswerModelArrayList;
     }
 
     @Override
@@ -32,6 +37,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return Questions.getNumberOfQuestion();
+        return questionAnswerModels.size();
     }
 }

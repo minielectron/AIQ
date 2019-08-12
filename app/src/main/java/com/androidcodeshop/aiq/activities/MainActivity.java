@@ -10,10 +10,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -30,19 +31,22 @@ import com.androidcodeshop.aiq.model.QuestionAnswerModel;
 import com.androidcodeshop.aiq.room.MyDatabase;
 import com.androidcodeshop.aiq.ui.main.SectionsPagerAdapter;
 import com.androidcodeshop.aiq.utils.Questions;
+import com.bumptech.glide.Glide;
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Executors;
 
 import butterknife.BindView;
@@ -54,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     public static final String PAGE_NUM = "page_num";
     public static final String ICONIFIED = "iconified";
     private static final String SAVED = "saved";
+    private  static String userDispalyName = "User";
+    private static final int RC_SIGN_IN = 100;
     @BindView(R.id.navigation_view)
     NavigationView navigationView;
     @BindView(R.id.drawer_layout)
@@ -102,20 +108,29 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
 //    };
     private DatabaseReference myRef;
     private FirebaseDatabase database;
+    private View headerview;
+    private FirebaseUser firebaseUser;
+    private TextView name;
+    private TextView state;
+    private FirebaseAuth mFirebaseAuth ;
+    private ImageView headerProfileImage;
+    private ArrayList<QuestionAnswerModel> questionAnswerModelArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         ButterKnife.bind(this);
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Android Questions");
         setSupportActionBar(toolbar);
-
+        //--------initialize the variable --------------//
+        questionAnswerModelArrayList = Questions.getInstance();
         // write all the questions message to db
         database = FirebaseDatabase.getInstance();
         database.setPersistenceEnabled(true); // for offline support
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
 //        myRef = database.getReference("questions");
 
 //        myRef.setValue(null);// clear the whole list
@@ -127,12 +142,24 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
 
         // firebase database code ended
         Toast.makeText(this, ""+getString(R.string.test), Toast.LENGTH_LONG).show();
-        sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
+        sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager(),questionAnswerModelArrayList);
         viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
+
         setUpNavigationDrawer();
+        firebaseUser = mFirebaseAuth.getCurrentUser();
+        //---------------set firebase firebaseUser -----------------//
+        if(firebaseUser != null){
+            name.setText(firebaseUser.getDisplayName());
+            state.setText("Logout");
+            Log.d(TAG, "onCreate: firebaseUser logged in already");
+        }else{
+            name.setText(userDispalyName);
+            state.setText("Login");
+        }
+        //--------------------------------------------------//
         editor = getSharedPreferences(AIQ_PREFS, MODE_PRIVATE).edit();
         fab = findViewById(R.id.fab);
         preferences = getSharedPreferences(AIQ_PREFS, MODE_PRIVATE);
@@ -173,8 +200,70 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        headerview = navigationView.getHeaderView(0);
+        name  = headerview.findViewById(R.id.header_name_tv);
+        state = headerview.findViewById(R.id.header_email_tv);
+        headerProfileImage = headerview.findViewById(R.id.header_profile_image);
+        headerview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(firebaseUser == null) {
+                    List<AuthUI.IdpConfig> providers = Arrays.asList(
+                            new AuthUI.IdpConfig.PhoneBuilder().build(),
+                            new AuthUI.IdpConfig.GoogleBuilder().build());
+                    startActivityForResult(
+                            AuthUI.getInstance()
+                                    .createSignInIntentBuilder()
+                                    .setAvailableProviders(providers)
+                                    .setIsSmartLockEnabled(false)
+                                    .setTheme(R.style.LoginTheme)
+                                    .setLogo(R.drawable.qbitlogo)
+                                    .build(),
+                            RC_SIGN_IN);
+                }else {
+                    mFirebaseAuth.signOut();
+                    userDispalyName = "User";
+                    name.setText(userDispalyName);
+                    state.setText("Login");
+                    Glide.with(getApplicationContext()).load(R.drawable.ic_profile_icon).into(headerProfileImage);
+                    Toast.makeText(MainActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+                }
+                drawerLayout.closeDrawer(GravityCompat.START);
+
+            }
+        });
         actionBarDrawerToggle.getDrawerArrowDrawable().setColor(ContextCompat.getColor(this, R.color.white));
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            if (resultCode == RESULT_OK) {
+                // Successfully signed in
+                firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                Toast.makeText(this, "User logged in successfully" + firebaseUser.getDisplayName(), Toast.LENGTH_SHORT).show();
+                if(firebaseUser.getDisplayName() != null) userDispalyName = firebaseUser.getDisplayName();
+                name.setText(userDispalyName);
+                state.setText("Logout");
+                if(firebaseUser.getPhotoUrl() != null)
+                    Glide.with(getApplicationContext()).load(firebaseUser.getPhotoUrl()).into(headerProfileImage);
+                else Glide.with(getApplicationContext()).load(R.drawable.ic_profile_icon).into(headerProfileImage);
+                // ...
+            } else {
+                Toast.makeText(this, "Login Cancelled", Toast.LENGTH_SHORT).show();
+                // Sign in failed. If response is null the firebaseUser canceled the
+                // sign-in flow using the back button. Otherwise check
+                // response.getError().getErrorCode() and handle the error.
+                // ...
+            }
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
