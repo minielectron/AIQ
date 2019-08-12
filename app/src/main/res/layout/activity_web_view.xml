@@ -10,9 +10,21 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@color/colorPrimary"
-        app:title="Web Search"
-        app:titleTextColor="@color/white" />
+        android:background="@color/colorPrimary" >
+        <TextView
+            android:textIsSelectable="true"
+            android:text="www.androidcodeshop.com"
+            android:id="@+id/toolbar_text"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:ellipsize="end"
+            android:autoLink="web"
+            android:singleLine="true"
+            android:textColorLink="@color/WhiteSmoke"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.appcompat.widget.Toolbar>
 
     <WebView
         android:id="@+id/web_view"

@@ -1,9 +1,13 @@
 package com.androidcodeshop.aiq.model;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.annotation.NonNull;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
+@IgnoreExtraProperties
 @Entity(tableName = "AIQ_TABLE")
 public class QuestionAnswerModel {
 
@@ -15,6 +19,11 @@ public class QuestionAnswerModel {
 
     private int questionNumber;
     private int bookmarked = 0; // 0 indicates non bookmarked
+
+    @Ignore
+    public QuestionAnswerModel() {
+        // for room database to write the object to the realtime db, it is mandatory to use this
+    }
 
     public QuestionAnswerModel(int questionNumber, String question, String answer) {
         this.question = question;

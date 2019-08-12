@@ -4,9 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/action_copy"
-        android:title="Copy and Share"
+        android:title="@string/copy_and_share"
         android:icon="@drawable/ic_share_white_24dp"
-        app:showAsAction="always"/>
+        app:showAsAction="collapseActionView"/>
     <item android:id="@+id/action_goto"
         android:title="@string/go_to"
         android:icon="@drawable/ic_forward_white_24dp"

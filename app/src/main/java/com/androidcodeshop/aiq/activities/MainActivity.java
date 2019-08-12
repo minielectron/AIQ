@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -34,6 +35,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -62,6 +69,40 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     public static SectionsPagerAdapter sectionsPagerAdapter;
     private FloatingActionButton fab;
 
+
+//    ChildEventListener childEventListener = new ChildEventListener() {
+//        @Override
+//        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//            if (dataSnapshot.getValue() != null)
+//                Toast.makeText(MainActivity.this, dataSnapshot.getValue(QuestionAnswerModel.class).getQuestion(), Toast.LENGTH_SHORT).show();
+//        }
+//
+//        @Override
+//        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//            if (dataSnapshot.getValue() != null) {
+//                Toast.makeText(MainActivity.this, dataSnapshot.getValue(QuestionAnswerModel.class).getQuestion() + "Changed", Toast.LENGTH_LONG).show();
+//                Log.d(TAG, "onChildChanged: "+dataSnapshot.getKey());
+//            }
+//        }
+//
+//        @Override
+//        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//        }
+//
+//        @Override
+//        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//        }
+//
+//        @Override
+//        public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//        }
+//    };
+    private DatabaseReference myRef;
+    private FirebaseDatabase database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +113,19 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
         toolbar.setTitle("Android Questions");
         setSupportActionBar(toolbar);
 
+        // write all the questions message to db
+        database = FirebaseDatabase.getInstance();
+        database.setPersistenceEnabled(true); // for offline support
+//        myRef = database.getReference("questions");
+
+//        myRef.setValue(null);// clear the whole list
+//        for(int i = 0 ; i < Questions.getNumberOfQuestion() ; i++){
+//            myRef.push().setValue(Questions.getInstance().get(i));
+//        }
+
+//        myRef.addChildEventListener(childEventListener);
+
+        // firebase database code ended
         sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
@@ -230,6 +284,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     @Override
     protected void onStop() {
         super.onStop();
+//        myRef.removeEventListener(childEventListener);
         editor.putInt("last_visited_question", viewPager.getCurrentItem());
         editor.apply();
     }
@@ -246,6 +301,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
             }
         }).show();
     }
+
 }
 
 //125 page number

@@ -18,4 +18,5 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="question">Question :</string>
     <string name="share_application">Share Application</string>
+    <string name="copy_and_share">Copy and Share</string>
 </resources>

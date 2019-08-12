@@ -11,6 +11,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -29,6 +30,8 @@ public class WebViewActivity extends AppCompatActivity {
     ProgressBar progressBar;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.toolbar_text)
+    TextView toolbarText;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -42,13 +45,16 @@ public class WebViewActivity extends AppCompatActivity {
         if (data != null)
             url = data.toString();
         setSupportActionBar(toolbar);
-//        AppUtils.makeActivityFullScreen(getWindow());
+        toolbarText.setText(url);
+        // AppUtils.makeActivityFullScreen(getWindow());
         // check the internet connection
+
         if (MiniNetworkingUtils.isConnected(this)) {
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String request) {
                     view.loadUrl(request);
+                    toolbarText.setText(request);
                     return super.shouldOverrideUrlLoading(view, request);
                 }
 
@@ -73,7 +79,6 @@ public class WebViewActivity extends AppCompatActivity {
             webView.getSettings().setSupportMultipleWindows(false);
             webView.getSettings().setLoadWithOverviewMode(true);
             webView.getSettings().setUseWideViewPort(true);
-
             webView.loadUrl(url);
         } else {
             webView.loadData("<html>" +

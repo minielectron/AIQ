@@ -17,8 +17,8 @@ import static android.content.ContentValues.TAG;
 
 public class QuestionListAdapter extends BaseAdapter {
 
-    private ArrayList<QuestionAnswerModel> questionAnswerModel;
-    private ArrayList<QuestionAnswerModel> questionAnswerModelCopy = new ArrayList<>();
+    private ArrayList<QuestionAnswerModel> questionAnswerModel; // original list
+    private ArrayList<QuestionAnswerModel> questionAnswerModelCopy = new ArrayList<>(); // copy list
     private Context context;
 
     public QuestionListAdapter(ArrayList<QuestionAnswerModel> questionAnswerModel, Context context) {
@@ -29,7 +29,7 @@ public class QuestionListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return questionAnswerModel.size();
+        return questionAnswerModelCopy == null ? 0 : questionAnswerModelCopy.size();
     }
 
     @Override
@@ -44,37 +44,38 @@ public class QuestionListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder ;
-        if(convertView == null){
+        ViewHolder holder;
+        if (convertView == null) {
             //will be called once to fetch the id not multiple times
             convertView = LayoutInflater.from(context).inflate(R.layout.question_list_item, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
-        }else holder = (ViewHolder) convertView.getTag();
-        holder.question.setText(questionAnswerModel.get(position).getQuestion());
-        Log.i(TAG, "getView: " +questionAnswerModel.get(position).getQuestionNumber());
-        holder.qno.setText(String.valueOf(questionAnswerModel.get(position).getQuestionNumber()));
+        } else holder = (ViewHolder) convertView.getTag();
+        holder.question.setText(questionAnswerModelCopy.get(position).getQuestion());
+        Log.i(TAG, "getView: " + questionAnswerModelCopy.get(position).getQuestionNumber());
+        holder.qno.setText(String.valueOf(questionAnswerModelCopy.get(position).getQuestionNumber()));
         return convertView;
     }
 
     public void filter(String queryText) {
-        questionAnswerModel.clear();
+        questionAnswerModelCopy.clear();
         if (queryText.isEmpty()) {
-            questionAnswerModel.addAll(questionAnswerModelCopy);
+            questionAnswerModelCopy.addAll(questionAnswerModel);
         } else {
-            for (QuestionAnswerModel question : questionAnswerModelCopy) {
+            for (QuestionAnswerModel question : questionAnswerModel) {
                 if (question.getQuestion().toLowerCase().contains(queryText.toLowerCase())) {
-                    questionAnswerModel.add(question);
+                    questionAnswerModelCopy.add(question);
                 }
             }
         }
         notifyDataSetChanged();
     }
 
-    private class ViewHolder{
+    private class ViewHolder {
 
-        TextView question , qno ;
-        ViewHolder(View view){
+        TextView question, qno;
+
+        ViewHolder(View view) {
             question = view.findViewById(R.id.question_label);
             qno = view.findViewById(R.id.question_number);
         }

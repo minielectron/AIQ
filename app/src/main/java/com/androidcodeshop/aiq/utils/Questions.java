@@ -1218,6 +1218,117 @@ public class Questions {
         questionsAns.add(new QuestionAnswerModel(129, "What is AndroidKTX ?",
                 "AndroidKTX is collection of new features in Kotlin such as extension function, designed to make android SDK a bit easier to use with both language support."));
 
-        questionsAns.add(new QuestionAnswerModel(130,"",""));
+        questionsAns.add(new QuestionAnswerModel(130,"What happens to shared preferences if we re-install the application ?",
+                "In Android Marshmallow Google introduced the \"Auto Backup\" feature which is turned on by default if your targetSdkVersion is >=23.\n" +
+                        "\n" +
+                        "This will back up your database and SharedPreferences by default and restore it when you re-install the application. To turn this feature off you have to add android:allowBackup=\"false\" to your AndroidManifest.xml"));
+
+        questionsAns.add(new QuestionAnswerModel(131, "Which files are backed up and where when we set allowBackup=ture ?",
+                "By default, Auto Backup includes files in most of the directories that are assigned to your app by the system:\n" +
+                        "\n" +
+                        "Shared preferences files.\n" +
+                        "Files saved to your app's internal storage, accessed by getFilesDir() or getDir(String, int).\n" +
+                        "Files in the directory returned by getDatabasePath(String), which also includes files created with the SQLiteOpenHelper class.\n" +
+                        "Files on external storage in the directory returned by getExternalFilesDir(String).\n" +
+                        "Auto Backup excludes files in directories returned by getCacheDir(), getCodeCacheDir(), or getNoBackupFilesDir(). The files saved in these locations are only needed temporarily, or are intentionally excluded from backup operations."));
+        questionsAns.add(new QuestionAnswerModel(132, "Where does the backup files got stored ?",
+                "The backup files are stored in user personal google drive and limit upto 25MB.The saved data does not count towards the user's personal Google Drive quota. Only the most recent backup is stored. When a backup is made, the previous backup (if one exists) is deleted. The backup data can't be read by the user or other apps on the device."));
+        questionsAns.add(new QuestionAnswerModel(133, "What happens to backup when we exceed the limit(25M)?",
+                " If the amount of data is over 25MB, the system calls onQuotaExceeded() and doesn't back up data to the cloud. The system periodically checks whether the amount of data later falls under the 25MB threshold and continues Auto Backup when it does."));
+        questionsAns.add(new QuestionAnswerModel(134, "How can we include and exclude files needs to back up ?",
+                "By default, the system backs up almost all app data.\n" +
+                        "We can define the custom data back-up as follow : \n" +
+                        "step 1: In AndroidManifest.xml, add the android:fullBackupContent attribute to the <application> element. This attribute points to an XML file that contains backup rules. For example:\n" +
+                        "<application ...\n" +
+                        "    android:fullBackupContent=\"@xml/my_backup_rules\">\n" +
+                        "</application>\n\n" +
+                        "step 2: Create an XML file called my_backup_rules.xml in the res/xml/ directory. Inside the file, add rules with the <include> and <exclude> elements. The following sample backs up all shared preferences except device.xml:\n" +
+                        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+                        "<full-backup-content>\n" +
+                        "    <include domain=\"sharedpref\" path=\".\"/>\n" +
+                        "    <exclude domain=\"sharedpref\" path=\"device.xml\"/>\n" +
+                        "</full-backup-content>\n" +
+                        "" +
+                        "Inside full-backup-content you can define which things to be included and which one to be exclude.\n\n" +
+                        "for more detailed explaination please visit : https://developer.android.com/guide/topics/data/autobackup.html#IncludingFiles"));
+
+      //----------------------------------------firebase questions-----------------------------------------------------//
+        questionsAns.add(new QuestionAnswerModel(135, "What is firebase ?",
+                "Firebase is a serverless platform for unified development of applications for mobile devices and for the Web. It uses the NO-SQL structure as opposed to RDBMS.\n" +
+                        "It offers:\n" +
+                        "\n" +
+                        "Real time database\n" +
+                        "Different APIs\n" +
+                        "Multiple authentication types\n" +
+                        "and Hosting platform"));
+        questionsAns.add(new QuestionAnswerModel(136, "What are the different features of firebase ?",
+                "Firebase provides so many features to make us build better application, improve app quality, grow your business etc. The tools offers for these are like " +
+                        "\n" +
+                        "1.Cloud firestore\n" +
+                        "2.ML kit\n" +
+                        "3.Cloud function\n4.Hosting\n5.Authentication\n6.Realtime database\n7.Crashanalytics\n8.Performance Monitoring\n9.In App Messaging" +
+                        "\n10.Google analytics\n11.Remote config and so on \n" +
+                        "For more information please visit : https://firebase.google.com/"));
+        questionsAns.add(new QuestionAnswerModel(137, "What is cloud firestore ?",
+                "Store and sync data between users and devices - at global scale - using a cloud-hosted, NoSQL database. Cloud Firestore gives you live synchronization and offline support along with efficient data queries. Its integration with other Firebase products enables you to build truly serverless apps."));
+        questionsAns.add(new QuestionAnswerModel(138, "What is ML kit in firebase ?",
+                "Provides powerful machine learning features to your mobile app whether you're new or experienced in ML. Get started easily by using our ready-to-use APIs for common mobile use cases, or import your own custom models which can be hosted and served to your apps by Firebase. ML Kit APIs can run on-device or in the cloud, depending on the functionality, and some give you both choices."));
+        questionsAns.add(new QuestionAnswerModel(139, "What is firebase Authentication ?",
+                "Manage your users in a simple and secure way. Firebase Auth offers multiple methods to authenticate, including email and password, third-party providers like Google or Facebook, and using your existing account system directly. Build your own interface, or take advantage of our open source, fully customizable UI.\nImplementation : \n" +
+                        "https://firebase.google.com/docs/auth/android/firebaseui"));
+        questionsAns.add(new QuestionAnswerModel(140, "What is push method in firebase ?" ,
+                "We Use the Push() method to append data to a list in multiuser applications. The Push() method generates a unique key every time a new child is added to the specified Firebase reference.\n"));
+        questionsAns.add(new QuestionAnswerModel(141, "What is firebase Realtime database ?",
+                "The Firebase Realtime Database is a cloud-hosted database. Data is stored as JSON and synchronized in realtime to every connected client. When you build cross-platform apps with our iOS, Android, and JavaScript SDKs, all of your clients share one Realtime Database instance and automatically receive updates with the newest data."));
+        questionsAns.add(new QuestionAnswerModel(142, "What are the key features provided by Firebase Realtime database ?",
+                "The key capabilities of firebase are : \n" +
+                        "1.Realtime : Instead of typical HTTP requests, the Firebase Realtime Database uses data synchronization—every time data changes, any connected device receives that update within milliseconds. Provide collaborative and immersive experiences without thinking about networking code.\n" +
+                        "2.Offline : Firebase apps remain responsive even when offline because the Firebase Realtime Database SDK persists your data to disk. Once connectivity is reestablished, the client device receives any changes it missed, synchronizing it with the current server state.\n" +
+                        "3.Accessible from Client Devices : The Firebase Realtime Database can be accessed directly from a mobile device or web browser; there’s no need for an application server. Security and data validation are available through the Firebase Realtime Database Security Rules, expression-based rules that are executed when data is read or written.\n" +
+                        "4.Scalable : With Firebase Realtime Database on the Blaze pricing plan, you can support your app's data needs at scale by splitting your data across multiple database instances in the same Firebase project. Streamline authentication with Firebase Authentication on your project and authenticate users across your database instances. Control access to the data in each database with custom Firebase Realtime Database Rules for each database instance.\n" +
+                        ""));
+        questionsAns.add(new QuestionAnswerModel(143, "What are the different ways of saving data in firebase realtime database?",
+                "There are four different ways to save data in firebase : \n" +
+                        "1.set : Write or replace data to a defined path, like messages/users/<username>\n" +
+                        "2.update : Update some of the keys for a defined path without replacing all of the data\n" +
+                        "3.push : Add to a list of data in the database. Every time you push a new node onto a list, your database generates a unique key, like messages/users/<unique-user-id>/<username>\n" +
+                        "4.transaction : Use transactions when working with complex data that could be corrupted by concurrent updates\n" +
+                        "for complete implementation visit : \nhttps://firebase.google.com/docs/database/admin/save-data"));
+        questionsAns.add(new QuestionAnswerModel(144, "What listener do we use to make our firebase database application realtime ?",
+                "There are mainly two listener one is for single value(ValueEventListener) and one is for list child value(ChildEventListener). There is one more listener for single time update, suppose you need to update UI related thing for single time and then remove that" +
+                        "listener, for this purpose there is ListenerForSingleEventValue. You need to add the listener on DatabaseReference."));
+
+        questionsAns.add(new QuestionAnswerModel(145, "What are basic types supported in firebase write operations ?",
+                "We use setValue() to save data to specified reference in firebase, set value supports the basic data types as follow : \n" +
+                        "1.String\n2.Long\n3.Double\n4.Boolean\n5.Map<String, Object>\n6.List<Object>\n\n" +
+                        "And, We can also pass the custom object, if the class that defines is has a default constructor that takes no arguments, and has public getters for the properties to be assigned."));
+        questionsAns.add(new QuestionAnswerModel(146, "How do we know that our data is commited in firebase database ?",
+                "Firebase provides the completion listener which tells us that data has been comitted succesfully or failed to save. We use addOnSuccessListener() and addOnFailureListener() over setValue() and updateChildren() method."));
+
+        questionsAns.add(new QuestionAnswerModel(147, "What is firebase RemoteConfig ?",
+                "Firebase Remote Config is a cloud service that lets you change the behavior and appearance of your app without requiring users to download an app update. When using Remote Config, you create in-app default values that control the behavior and appearance of your app. Then, you can later use the Firebase console or the Remote Config REST API to override in-app default values for all app users or for segments of your user base. Your app controls when updates are applied, and it can frequently check for updates and apply them with a negligible impact on performance."));
+        questionsAns.add(new QuestionAnswerModel(148, "What are the key capabilities of Firebase RemoteConfig ?",
+                "The key capabilities are as follow : \n" +
+                        "1.Quickly roll out changes to your app's user base\n" +
+                        "2.Customize your app for segments of your user base\n" +
+                        "3.Run A/B tests to improve your app\n"));
+        questionsAns.add(new QuestionAnswerModel(149, "How to push the item  in a firebase list ?",
+                "We can use the push method provided by the firebase to generate a unqiue key everytime we want to add an object to list as follows :\n" +
+                        "Firebase newRequestRef = mDatabase.child(\"request\").push();\n" +
+                        "newRequestRef.setValue(newRequest);"));
+        questionsAns.add(new QuestionAnswerModel(150, "What are the advantages of Firebase?",
+                "Features of Firebase are:\n" +
+                        "\n" +
+                        "It offers simple control dashboard\n" +
+                        "Number of useful services to choose\n" +
+                        "Here, the data is real time which means that every change will update automatically\n" +
+                        "It is user friendly and simple"));
+        questionsAns.add(new QuestionAnswerModel(151, "What are the filtering methods in Firebase?",
+                "Firebase filtering methods are:\n" +
+                        "\n" +
+                        "startAt() method\n" +
+                        "endAt() method\n" +
+                        "equalTo() method etc"));
+//        questionsAns.add(new QuestionAnswerModel(152, "",""));
     }
 }
