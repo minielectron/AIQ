@@ -20,8 +20,7 @@ public class CustomFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
         // ...
 
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
+
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
