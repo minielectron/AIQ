@@ -86,7 +86,8 @@ public class PlaceholderFragment extends Fragment {
         final TextView question = root.findViewById(R.id.question_label);
         final TextView answer = root.findViewById(R.id.answer_label);
 
-        MobileAds.initialize(getContext(), "ca-app-pub-9503287726630019~3895030365");
+//        MobileAds.initialize(getContext(), "ca-app-pub-8264712955626792~6123467795"); // original app id
+        MobileAds.initialize(getContext(), "ca-app-pub-3940256099942544~3347511713");
         AdView mAdView = root.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder()
                 .build();

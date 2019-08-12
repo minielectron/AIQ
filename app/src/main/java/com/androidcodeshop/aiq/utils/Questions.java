@@ -1326,9 +1326,148 @@ public class Questions {
         questionsAns.add(new QuestionAnswerModel(151, "What are the filtering methods in Firebase?",
                 "Firebase filtering methods are:\n" +
                         "\n" +
-                        "startAt() method\n" +
-                        "endAt() method\n" +
-                        "equalTo() method etc"));
-//        questionsAns.add(new QuestionAnswerModel(152, "",""));
+                        "startAt() : Return items greater than or equal to the specified key or value, depending on the order-by method chosen.\n" +
+                        "endAt() : Return items less than or equal to the specified key or value, depending on the order-by method chosen.\n" +
+                        "equalTo() : Return items equal to the specified key or value, depending on the order-by method chosen.\n" +
+                        "limitToFirst() : Sets the maximum number of items to return from the beginning of the ordered list of results.\n" +
+                        "limitToLast() : Sets the maximum number of items to return from the end of the ordered list of results."));
+        questionsAns.add(new QuestionAnswerModel(152, "What are the different sorting method available for firebase realtime database ?",
+                "There are three methods provided by firebase to sort the data : \n" +
+                        "1.orderByChild() : Order results by the value of a specified child key or nested child path.\n" +
+                        "2.orderByKey() : Order results by child keys.\n" +
+                        "3.orderByValue()\tOrder results by child values."));
+
+        questionsAns.add(new QuestionAnswerModel(153,"What is the function of off() method in firebase realtime database ?",
+                "Callbacks are removed by calling the off() method on your Firebase database reference.\n" +
+                        "\n" +
+                        "You can remove a single listener by passing it as a parameter to off(). Calling off() on the location with no arguments removes all listeners at that location.\n" +
+                        "\n" +
+                        "Calling off() on a parent listener does not automatically remove listeners registered on its child nodes; off() must also be called on any child listeners to remove the callback."));
+
+
+        //---------------------------- Prograurd questions --------------------------------------------//
+        questionsAns.add(new QuestionAnswerModel(154,"What is proguard ?",
+                "ProGuard is an open source command-line tool that shrinks, optimizes and obfuscates Java code. It is able to optimize bytecode as well as detect and remove unused instructions. ProGuard is open source software.\n"));
+        questionsAns.add(new QuestionAnswerModel(155,"How to enable proguard ?",
+                "Follow these steps to enable proguard \n" +
+                        "1.Go to the build.gradle file of the app\n" +
+                        "2.enables the proguard minifyEnabled true\n" +
+                        "3.enable shrinkResources true to reduce the APK size by shrinking resources.\n" +
+                        "4.proguardFiles getDefaultProguardFile('proguard-android.txt') to enable the default one.\n\n" +
+                        "To check the proguard code snippet for different libray visit :https://github.com/krschultz/android-proguard-snippets/tree/master/libraries   "));
+
+        questionsAns.add(new QuestionAnswerModel(156,"What are the features of proguard ?",
+                "Features of Proguard : \n" +
+                        "1.Code shrinking (or tree-shaking) : ProGuard optimizes the bytecode, removes unused code instructions, and obfuscates the remaining classes, fields, and methods with short names.\n" +
+                        "2.Obfuscation : The obfuscated code makes your APK difficult to reverse engineer, which is especially valuable when your app uses security-sensitive features, such as licensing verification.\n" +
+                        "3.Resource shrinking: removes unused resources from your packaged app, including unused resources in your app’s library dependencies. It works in conjunction with code shrinking such that once unused code has been removed, any resources no longer referenced can be safely removed as well.\n" +
+                        "4.Optimization :  inspects and rewrites your code to further reduce the size of your app’s DEX files. For example, if R8 detects that the else {} branch for a given if/else statement is never taken, R8 removes the code for the else {} branch. \n" +
+                        "for more information visit : \nhttps://developer.android.com/studio/build/shrink-code"));
+
+        //------------------------------------------- Dalvik executables (DEX and MUTLI-DEX)---------------------------------------//
+        questionsAns.add(new QuestionAnswerModel(157,"What is DEX or .dex in android ?",
+                "dex file is a file that is executed on the Dalvik VM.\n" +
+                        "\n" +
+                        "Dalvik VM includes several features for performance optimization, verification, and monitoring, one of which is Dalvik Executable (DEX).\n" +
+                        "\n" +
+                        "Java source code is compiled by the Java compiler into .class files. Then the dx (dexer) tool, part of the Android SDK processes the .class files into a file format called DEX that contains Dalvik byte code. The dx tool eliminates all the redundant information that is present in the classes. In DEX all the classes of the application are packed into one file."));
+        questionsAns.add(new QuestionAnswerModel(158,"What is multidex ?",
+                "When your app and the libraries it references exceed 65,536 methods, you encounter a build error that indicates your app has reached the limit of the Android build architecture:\n" +
+                        "trouble writing output:\n" +
+                        "Too many field references: 131000; max is 65536.\n" +
+                        "You may try using --multi-dex option.\n\n" +
+                        "Multidex is used to resolve this issue, we add support for multidex in build.gradle file."));
+        questionsAns.add(new QuestionAnswerModel(159,"How to enable multidex support in android ?",
+                "For android version < 5.0(API-21) : ]\n" +
+                        "Step 1: add the dependency for multidex \n" +
+                        "dependencies {\n" +
+                        "    def multidex_version = \"2.0.1\"\n" +
+                        "    implementation 'androidx.multidex:multidex:$multidex_version'\n" +
+                        "}" +
+                        "\nStep 2: set multiDexEnabled true in default config \n" +
+                        "defaultConfig {\n" +
+                        "        ...\n" +
+                        "        minSdkVersion 15 \n" +
+                        "        targetSdkVersion 28\n" +
+                        "        multiDexEnabled true\n" +
+                        "    }\n\n" +
+                        "For android version >=5.0 (API-21): \n" +
+                        "In android 5.0 ART"));
+        questionsAns.add(new QuestionAnswerModel(160,"",""));
+        questionsAns.add(new QuestionAnswerModel(161,"",""));
+        questionsAns.add(new QuestionAnswerModel(162,"",""));
+        questionsAns.add(new QuestionAnswerModel(163,"",""));
+        questionsAns.add(new QuestionAnswerModel(164,"",""));
+        questionsAns.add(new QuestionAnswerModel(165,"",""));
+        questionsAns.add(new QuestionAnswerModel(166,"",""));
+        questionsAns.add(new QuestionAnswerModel(167,"",""));
+        questionsAns.add(new QuestionAnswerModel(168,"",""));
+        questionsAns.add(new QuestionAnswerModel(169,"",""));
+        questionsAns.add(new QuestionAnswerModel(170,"",""));
+        questionsAns.add(new QuestionAnswerModel(171,"",""));
+        questionsAns.add(new QuestionAnswerModel(172,"",""));
+        questionsAns.add(new QuestionAnswerModel(173,"",""));
+        questionsAns.add(new QuestionAnswerModel(174,"",""));
+        questionsAns.add(new QuestionAnswerModel(175,"",""));
+        questionsAns.add(new QuestionAnswerModel(176,"",""));
+        questionsAns.add(new QuestionAnswerModel(178,"",""));
+        questionsAns.add(new QuestionAnswerModel(179,"",""));
+        questionsAns.add(new QuestionAnswerModel(180,"",""));
+        questionsAns.add(new QuestionAnswerModel(181,"",""));
+        questionsAns.add(new QuestionAnswerModel(182,"",""));
+        questionsAns.add(new QuestionAnswerModel(183,"",""));
+        questionsAns.add(new QuestionAnswerModel(184,"",""));
+        questionsAns.add(new QuestionAnswerModel(185,"",""));
+        questionsAns.add(new QuestionAnswerModel(186,"",""));
+        questionsAns.add(new QuestionAnswerModel(188,"",""));
+        questionsAns.add(new QuestionAnswerModel(189,"",""));
+        questionsAns.add(new QuestionAnswerModel(190,"",""));
+        questionsAns.add(new QuestionAnswerModel(191,"",""));
+        questionsAns.add(new QuestionAnswerModel(192,"",""));
+        questionsAns.add(new QuestionAnswerModel(193,"",""));
+        questionsAns.add(new QuestionAnswerModel(194,"",""));
+        questionsAns.add(new QuestionAnswerModel(195,"",""));
+        questionsAns.add(new QuestionAnswerModel(196,"",""));
+        questionsAns.add(new QuestionAnswerModel(198,"",""));
+        questionsAns.add(new QuestionAnswerModel(199,"",""));
+        questionsAns.add(new QuestionAnswerModel(200,"",""));
+        questionsAns.add(new QuestionAnswerModel(201,"",""));
+        questionsAns.add(new QuestionAnswerModel(202,"",""));
+        questionsAns.add(new QuestionAnswerModel(203,"",""));
+        questionsAns.add(new QuestionAnswerModel(204,"",""));
+        questionsAns.add(new QuestionAnswerModel(205,"",""));
+        questionsAns.add(new QuestionAnswerModel(206,"",""));
+        questionsAns.add(new QuestionAnswerModel(207,"",""));
+        questionsAns.add(new QuestionAnswerModel(208,"",""));
+        questionsAns.add(new QuestionAnswerModel(209,"",""));
+        questionsAns.add(new QuestionAnswerModel(210,"",""));
+        questionsAns.add(new QuestionAnswerModel(211,"",""));
+        questionsAns.add(new QuestionAnswerModel(212,"",""));
+        questionsAns.add(new QuestionAnswerModel(213,"",""));
+        questionsAns.add(new QuestionAnswerModel(214,"",""));
+        questionsAns.add(new QuestionAnswerModel(215,"",""));
+        questionsAns.add(new QuestionAnswerModel(216,"",""));
+        questionsAns.add(new QuestionAnswerModel(217,"",""));
+        questionsAns.add(new QuestionAnswerModel(218,"",""));
+        questionsAns.add(new QuestionAnswerModel(219,"",""));
+        questionsAns.add(new QuestionAnswerModel(220,"",""));
+        questionsAns.add(new QuestionAnswerModel(221,"",""));
+        questionsAns.add(new QuestionAnswerModel(222,"",""));
+        questionsAns.add(new QuestionAnswerModel(223,"",""));
+        questionsAns.add(new QuestionAnswerModel(224,"",""));
+        questionsAns.add(new QuestionAnswerModel(225,"",""));
+        questionsAns.add(new QuestionAnswerModel(226,"",""));
+        questionsAns.add(new QuestionAnswerModel(227,"",""));
+        questionsAns.add(new QuestionAnswerModel(228,"",""));
+        questionsAns.add(new QuestionAnswerModel(229,"",""));
+        questionsAns.add(new QuestionAnswerModel(230,"",""));
+        questionsAns.add(new QuestionAnswerModel(231,"",""));
+        questionsAns.add(new QuestionAnswerModel(232,"",""));
+        questionsAns.add(new QuestionAnswerModel(233,"",""));
+        questionsAns.add(new QuestionAnswerModel(234,"",""));
+        questionsAns.add(new QuestionAnswerModel(235,"",""));
+        questionsAns.add(new QuestionAnswerModel(236,"",""));
+        questionsAns.add(new QuestionAnswerModel(237,"",""));
+
     }
 }

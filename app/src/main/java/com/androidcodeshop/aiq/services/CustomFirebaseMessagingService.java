@@ -1,4 +1,4 @@
-package com.androidcodeshop.aiq;
+package com.androidcodeshop.aiq.services;
 
 import android.app.Service;
 import android.content.Intent;

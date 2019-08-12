@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
         ArrayList<QuestionAnswerModel> answerModels = Questions.getInstance();
         Executors.newSingleThreadExecutor().execute(() -> {
             for (int i = 0; i < Questions.getNumberOfQuestion(); i++)
-                database.aiqDao().insert(Questions.getInstance().get(i));
+                database.aiqDao().insert(answerModels.get(i));
             Log.d(TAG, "insertAllDataToDb: All data inserted");
             editor.putString(SAVED, SAVED);
             editor.apply();
@@ -265,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT,
-                        "Hey check out my app at: https://www.androidcodeshop.com");
+                        "Hey check out my app at: https://play.google.com/store/apps/details?id=com.androidcodeshop.aiq and check code snippets here https://www.androidcodeshop.com");
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
                 drawerLayout.closeDrawer(GravityCompat.START);

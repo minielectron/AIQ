@@ -15,7 +15,7 @@
         android:usesCleartextTraffic="true">
 
         <service
-            android:name=".CustomFirebaseMessagingService"
+            android:name=".services.CustomFirebaseMessagingService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -38,8 +38,7 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,7 +51,10 @@
             android:resource="@array/preloaded_fonts" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-9503287726630019~3895030365" />
+            android:value="ca-app-pub-3940256099942544~3347511713" />
     </application>
 
 </manifest>
+
+<!--Original app id : ca-app-pub-8264712955626792~6123467795-->
+
