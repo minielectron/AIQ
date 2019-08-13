@@ -10,7 +10,7 @@
     <TextView
         android:textSize="16sp"
         android:textColor="@android:color/black"
-        android:text="Goto Question No:"
+        android:text="@string/goto_question_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -20,6 +20,7 @@
         android:layout_width="130dp"
         android:inputType="number"
         android:gravity="center"
+        android:maxLength="3"
         android:layout_height="wrap_content" />
 
     <LinearLayout

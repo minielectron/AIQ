@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.androidcodeshop.aiq.activities.MainActivity;
 import com.androidcodeshop.aiq.utils.Questions;
 import com.androidcodeshop.aiq.R;
 
@@ -45,9 +46,9 @@ public class AnswerDisplayDialogFragment extends FullScreenBottomSheetDialogFrag
         View view = inflater.inflate(R.layout.answer_display, container, false);
         Log.i(TAG, "onCreateView: page " + page);
         TextView ques = view.findViewById(R.id.question_label);
-        ques.setText(Questions.getInstance().get(page).getQuestion());
+        ques.setText(MainActivity.questionAnswerModelArrayList.get(page).getQuestion());
         TextView ans = view.findViewById(R.id.answer_label);
-        ans.setText(Questions.getInstance().get(page).getAnswer());
+        ans.setText(MainActivity.questionAnswerModelArrayList.get(page).getAnswer());
         return view;
     }
 

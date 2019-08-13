@@ -96,7 +96,7 @@ public class PlaceholderFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() != null) {
             firebaseUser = firebaseAuth.getCurrentUser();
-            databaseReference = firebaseDatabase.getReference(firebaseUser.getUid()).child(getContext().getString(R.string.bookmarked_ques));
+            databaseReference = firebaseDatabase.getReference().child("users").child(firebaseUser.getUid()).child(getContext().getString(R.string.bookmarked_ques));
         }
 
     }
@@ -107,7 +107,6 @@ public class PlaceholderFragment extends Fragment {
         final TextView question = root.findViewById(R.id.question_label);
         final TextView answer = root.findViewById(R.id.answer_label);
 
-//        MobileAds.initialize(getContext(), "ca-app-pub-8264712955626792~6123467795"); // original app id
         MobileAds.initialize(getContext(), getString(R.string.ad_app_id));
         AdView mAdView = root.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder()
@@ -118,7 +117,20 @@ public class PlaceholderFragment extends Fragment {
             question.setText(page.getQuestion());
             answer.setText(String.format(getString(R.string.answer), page.getAnswer()));
             questionNo.setText(String.valueOf(page.getQuestionNumber()));
-            if (database.aiqDao().getAllQuestionAnswers().get(page.getQuestionNumber() - 1).getBookmarked() == 1) {
+//            if(FirebaseAuth.getInstance().getCurrentUser() != null){
+//               databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+//                   @Override
+//                   public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                   }
+//
+//                   @Override
+//                   public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                   }
+//               });
+//            }
+            if (MainActivity.questionAnswerModelArrayList.get(page.getQuestionNumber() - 1).getBookmarked() == 1) {
                 bookmarkIb.setImageResource(R.drawable.ic_bookmark_gray_24dp);
             } else {
                 bookmarkIb.setImageResource(R.drawable.ic_bookmark_border_white_24dp);
@@ -137,9 +149,15 @@ public class PlaceholderFragment extends Fragment {
 
     @OnClick(R.id.bookmark_ib)
     void onViewClicked() {
-        if (firebaseUser == null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             Toast.makeText(getContext(), "Login to bookmark!", Toast.LENGTH_SHORT).show();
             return;
+        }else {
+            // reinitialize because oncreate is called once
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            firebaseAuth = FirebaseAuth.getInstance();
+            firebaseUser = firebaseAuth.getCurrentUser();
+            databaseReference = firebaseDatabase.getReference().child("users").child(firebaseUser.getUid()).child(getContext().getString(R.string.bookmarked_ques));
         }
 
         int quesNum = Integer.valueOf(questionNo.getText().toString());
@@ -150,7 +168,7 @@ public class PlaceholderFragment extends Fragment {
                 if (dataSnapshot.getValue() != null) {
                     currentQuestion.setBookmarked((dataSnapshot.getValue(QuestionAnswerModel.class).getBookmarked() + 1) % 2);
                     databaseReference.child(String.valueOf(quesNum)).setValue(currentQuestion);
-                }else{
+                } else {
                     currentQuestion.setBookmarked(1);
                     databaseReference.child(String.valueOf(quesNum)).setValue(currentQuestion);
                 }
@@ -161,9 +179,7 @@ public class PlaceholderFragment extends Fragment {
 
             }
         });
-//        currentQuestion.setBookmarked((database.aiqDao().getAllQuestionAnswers().get(quesNum - 1).getBookmarked() + 1) % 2);
         bookmarkIb.setVisibility(View.GONE);
         showSnackBar.showSnack();
-        Executors.newSingleThreadExecutor().execute(() -> database.aiqDao().replaceBookmark(quesNum, (database.aiqDao().getAllQuestionAnswers().get(quesNum - 1).getBookmarked() + 1) % 2));
     }
 }

@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
+import com.androidcodeshop.aiq.activities.MainActivity;
 import com.androidcodeshop.aiq.model.QuestionAnswerModel;
 import com.androidcodeshop.aiq.utils.Questions;
 
@@ -35,7 +36,7 @@ public class PageViewModel extends AndroidViewModel {
     }
 
     private void updateDbData() {
-        questionAnswerModels.addAll(Questions.getInstance());
+        questionAnswerModels.addAll(MainActivity.questionAnswerModelArrayList);
     }
 
     void setIndex(int index) {

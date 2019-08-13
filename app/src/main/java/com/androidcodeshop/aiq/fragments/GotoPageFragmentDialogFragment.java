@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.androidcodeshop.aiq.utils.Questions;
 import com.androidcodeshop.aiq.R;
+import com.androidcodeshop.aiq.utils.Utils;
 
 public class GotoPageFragmentDialogFragment extends DialogFragment {
     OnGotoFragmentLister fragmentLister;
@@ -48,19 +49,15 @@ public class GotoPageFragmentDialogFragment extends DialogFragment {
         number.setHint("page(1-"+ Questions.getNumberOfQuestion()+")");
         Button button = view.findViewById(R.id.goto_btn);
         Button lastButton = view.findViewById(R.id.last_btn);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(TextUtils.isEmpty(number.getText()))
-                    Toast.makeText(getContext(), "Plese enter a page number", Toast.LENGTH_SHORT).show();
-                else fragmentLister.gotoPage(Integer.valueOf(number.getText().toString()));
-            }
+        button.setOnClickListener(v -> {
+            if(TextUtils.isEmpty(number.getText()))
+                Toast.makeText(getContext(), "Plese enter a page number", Toast.LENGTH_SHORT).show();
+            else fragmentLister.gotoPage(Integer.valueOf(number.getText().toString()));
+            Utils.hideKeyboard(getActivity());
         });
-        lastButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragmentLister.gotoPage(Questions.getNumberOfQuestion());
-            }
+        lastButton.setOnClickListener(v -> {
+            fragmentLister.gotoPage(Questions.getNumberOfQuestion());
+            Utils.hideKeyboard(getActivity());
         });
     }
 

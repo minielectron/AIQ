@@ -1,5 +1,6 @@
 package com.androidcodeshop.aiq.activities;
 
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -41,8 +42,11 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     public static final String PAGE_NUM = "page_num";
     public static final String ICONIFIED = "iconified";
     private static final String SAVED = "saved";
-    private  static String userDispalyName = "User";
+    private static String userDispalyName = "User";
     private static final int RC_SIGN_IN = 100;
     @BindView(R.id.navigation_view)
     NavigationView navigationView;
@@ -74,9 +78,9 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     private AdView mAdView;
     public static SectionsPagerAdapter sectionsPagerAdapter;
     private FloatingActionButton fab;
+    private ProgressDialog progressDialog;
 
-
-//    ChildEventListener childEventListener = new ChildEventListener() {
+    //    ChildEventListener childEventListener = new ChildEventListener() {
 //        @Override
 //        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 //            if (dataSnapshot.getValue() != null)
@@ -112,9 +116,10 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     private FirebaseUser firebaseUser;
     private TextView name;
     private TextView state;
-    private FirebaseAuth mFirebaseAuth ;
+    private FirebaseAuth mFirebaseAuth;
     private ImageView headerProfileImage;
-    private ArrayList<QuestionAnswerModel> questionAnswerModelArrayList;
+    public static ArrayList<QuestionAnswerModel> questionAnswerModelArrayList;
+    private ValueEventListener valueEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,37 +130,54 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
         toolbar.setTitle("Android Questions");
         setSupportActionBar(toolbar);
         //--------initialize the variable --------------//
-        questionAnswerModelArrayList = Questions.getInstance();
+        questionAnswerModelArrayList = new ArrayList<>();
         // write all the questions message to db
         database = FirebaseDatabase.getInstance();
-        database.setPersistenceEnabled(true); // for offline support
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-//        myRef = database.getReference("questions");
-
+        myRef = database.getReference("questions");
 //        myRef.setValue(null);// clear the whole list
 //        for(int i = 0 ; i < Questions.getNumberOfQuestion() ; i++){
-//            myRef.push().setValue(Questions.getInstance().get(i));
+//            myRef.child(String.valueOf(i+1)).setValue(Questions.getInstance().get(i));
 //        }
-
 //        myRef.addChildEventListener(childEventListener);
 
         // firebase database code ended
-        Toast.makeText(this, ""+getString(R.string.test), Toast.LENGTH_LONG).show();
-        sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager(),questionAnswerModelArrayList);
         viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(sectionsPagerAdapter);
-        TabLayout tabs = findViewById(R.id.tabs);
-        tabs.setupWithViewPager(viewPager);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading Questions...");
+        progressDialog.show();
+        Toast.makeText(this, "" + getString(R.string.test), Toast.LENGTH_LONG).show();
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                questionAnswerModelArrayList.clear();
+                for (DataSnapshot question : dataSnapshot.getChildren()) {
+                    QuestionAnswerModel questionAnswerModel = question.getValue(QuestionAnswerModel.class);
+                    questionAnswerModelArrayList.add(questionAnswerModel);
+                }
+                sectionsPagerAdapter = new SectionsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), questionAnswerModelArrayList);
+                viewPager.setAdapter(sectionsPagerAdapter);
+                TabLayout tabs = findViewById(R.id.tabs);
+                tabs.setupWithViewPager(viewPager);
+                progressDialog.hide();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        myRef.addListenerForSingleValueEvent(valueEventListener);
 
         setUpNavigationDrawer();
         firebaseUser = mFirebaseAuth.getCurrentUser();
         //---------------set firebase firebaseUser -----------------//
-        if(firebaseUser != null){
+        if (firebaseUser != null) {
             name.setText(firebaseUser.getDisplayName());
             state.setText("Logout");
             Log.d(TAG, "onCreate: firebaseUser logged in already");
-        }else{
+        } else {
             name.setText(userDispalyName);
             state.setText("Login");
         }
@@ -167,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
             viewPager.setCurrentItem((viewPager.getCurrentItem() + 1) % Questions.getNumberOfQuestion());
         });
 
-        if (preferences.getString(SAVED, null) == null) insertAllDataToDb();
+//        if (preferences.getString(SAVED, null) == null) insertAllDataToDb();
     }
 
     private void insertAllDataToDb() {
@@ -201,13 +223,13 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
         actionBarDrawerToggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         headerview = navigationView.getHeaderView(0);
-        name  = headerview.findViewById(R.id.header_name_tv);
+        name = headerview.findViewById(R.id.header_name_tv);
         state = headerview.findViewById(R.id.header_email_tv);
         headerProfileImage = headerview.findViewById(R.id.header_profile_image);
         headerview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(firebaseUser == null) {
+                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
                     List<AuthUI.IdpConfig> providers = Arrays.asList(
                             new AuthUI.IdpConfig.PhoneBuilder().build(),
                             new AuthUI.IdpConfig.GoogleBuilder().build());
@@ -220,8 +242,8 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                                     .setLogo(R.drawable.qbitlogo)
                                     .build(),
                             RC_SIGN_IN);
-                }else {
-                    mFirebaseAuth.signOut();
+                } else {
+                    FirebaseAuth.getInstance().signOut();
                     userDispalyName = "User";
                     name.setText(userDispalyName);
                     state.setText("Login");
@@ -247,12 +269,17 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                 // Successfully signed in
                 firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                 Toast.makeText(this, "User logged in successfully" + firebaseUser.getDisplayName(), Toast.LENGTH_SHORT).show();
-                if(firebaseUser.getDisplayName() != null) userDispalyName = firebaseUser.getDisplayName();
+                if (firebaseUser.getPhoneNumber() != null) {
+                    userDispalyName = firebaseUser.getPhoneNumber();
+                } else if (firebaseUser.getDisplayName() != null) {
+                    userDispalyName = firebaseUser.getDisplayName();
+                }
                 name.setText(userDispalyName);
                 state.setText("Logout");
-                if(firebaseUser.getPhotoUrl() != null)
+                if (firebaseUser.getPhotoUrl() != null)
                     Glide.with(getApplicationContext()).load(firebaseUser.getPhotoUrl()).into(headerProfileImage);
-                else Glide.with(getApplicationContext()).load(R.drawable.ic_profile_icon).into(headerProfileImage);
+                else
+                    Glide.with(getApplicationContext()).load(R.drawable.ic_profile_icon).into(headerProfileImage);
                 // ...
             } else {
                 Toast.makeText(this, "Login Cancelled", Toast.LENGTH_SHORT).show();
@@ -282,10 +309,10 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                 break;
             case R.id.action_copy:
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("Label", Questions.getInstance()
+                ClipData clip = ClipData.newPlainText("Label", MainActivity.questionAnswerModelArrayList
                         .get(viewPager.getCurrentItem())
                         .getQuestion() +
-                        Questions.getInstance()
+                        MainActivity.questionAnswerModelArrayList
                                 .get(viewPager.getCurrentItem())
                                 .getAnswer());
                 if (clipboard != null) {
@@ -374,7 +401,8 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     @Override
     protected void onStop() {
         super.onStop();
-//        myRef.removeEventListener(childEventListener);
+        if (valueEventListener != null)
+            myRef.removeEventListener(valueEventListener);
         editor.putInt("last_visited_question", viewPager.getCurrentItem());
         editor.apply();
     }
