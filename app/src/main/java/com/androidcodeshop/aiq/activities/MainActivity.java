@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -40,8 +41,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -80,36 +85,39 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     private FloatingActionButton fab;
     private ProgressDialog progressDialog;
 
-    //    ChildEventListener childEventListener = new ChildEventListener() {
-//        @Override
-//        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//            if (dataSnapshot.getValue() != null)
-//                Toast.makeText(MainActivity.this, dataSnapshot.getValue(QuestionAnswerModel.class).getQuestion(), Toast.LENGTH_SHORT).show();
-//        }
-//
-//        @Override
-//        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//            if (dataSnapshot.getValue() != null) {
-//                Toast.makeText(MainActivity.this, dataSnapshot.getValue(QuestionAnswerModel.class).getQuestion() + "Changed", Toast.LENGTH_LONG).show();
-//                Log.d(TAG, "onChildChanged: "+dataSnapshot.getKey());
-//            }
-//        }
-//
-//        @Override
-//        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//        }
-//
-//        @Override
-//        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//        }
-//
-//        @Override
-//        public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//        }
-//    };
+        ChildEventListener childEventListener = new ChildEventListener() {
+        @Override
+        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            if (dataSnapshot.getValue() != null){
+                questionAnswerModelArrayList.add(dataSnapshot.getValue(QuestionAnswerModel.class));
+                sectionsPagerAdapter.notifyDataSetChanged();
+            }
+
+        }
+
+        @Override
+        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            if (dataSnapshot.getValue() != null) {
+                Toast.makeText(MainActivity.this, dataSnapshot.getValue(QuestionAnswerModel.class).getQuestion() + "Changed", Toast.LENGTH_LONG).show();
+                Log.d(TAG, "onChildChanged: "+dataSnapshot.getKey());
+            }
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    };
     private DatabaseReference myRef;
     private FirebaseDatabase database;
     private View headerview;
@@ -120,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     private ImageView headerProfileImage;
     public static ArrayList<QuestionAnswerModel> questionAnswerModelArrayList;
     private ValueEventListener valueEventListener;
+    private TabLayout tabs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
         questionAnswerModelArrayList = new ArrayList<>();
         // write all the questions message to db
         database = FirebaseDatabase.getInstance();
+        tabs = findViewById(R.id.tabs);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         myRef = database.getReference("questions");
@@ -144,6 +154,9 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
 
         // firebase database code ended
         viewPager = findViewById(R.id.view_pager);
+        sectionsPagerAdapter = new SectionsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), questionAnswerModelArrayList);
+        viewPager.setAdapter(sectionsPagerAdapter);
+        tabs.setupWithViewPager(viewPager);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading Questions...");
         progressDialog.show();
@@ -156,40 +169,42 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                     QuestionAnswerModel questionAnswerModel = question.getValue(QuestionAnswerModel.class);
                     questionAnswerModelArrayList.add(questionAnswerModel);
                 }
-                sectionsPagerAdapter = new SectionsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), questionAnswerModelArrayList);
-                viewPager.setAdapter(sectionsPagerAdapter);
-                TabLayout tabs = findViewById(R.id.tabs);
-                tabs.setupWithViewPager(viewPager);
-                progressDialog.hide();
+                sectionsPagerAdapter.notifyDataSetChanged();
+                progressDialog.dismiss();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                progressDialog.dismiss();
             }
         };
-        myRef.addListenerForSingleValueEvent(valueEventListener);
+        myRef.addValueEventListener(valueEventListener);
 
         setUpNavigationDrawer();
         firebaseUser = mFirebaseAuth.getCurrentUser();
         //---------------set firebase firebaseUser -----------------//
-        if (firebaseUser != null) {
-            name.setText(firebaseUser.getDisplayName());
-            state.setText("Logout");
-            Log.d(TAG, "onCreate: firebaseUser logged in already");
-        } else {
-            name.setText(userDispalyName);
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            name.setText("User");
             state.setText("Login");
+            Log.d(TAG, "onCreate: firebaseUser logged in already");
+        } else if (FirebaseAuth.getInstance().getCurrentUser().getProviderId().equals(GoogleAuthProvider.PROVIDER_ID)) {
+            name.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+            state.setText("Logout");
+        } else if (FirebaseAuth.getInstance().getCurrentUser().getProviderId().equals(EmailAuthProvider.PROVIDER_ID)) {
+            name.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+            state.setText("Logout");
+        } else if (FirebaseAuth.getInstance().getCurrentUser().getProviderId().equals(PhoneAuthProvider.PROVIDER_ID)) {
+            name.setText(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber());
+            state.setText("Logout");
         }
         //--------------------------------------------------//
         editor = getSharedPreferences(AIQ_PREFS, MODE_PRIVATE).edit();
         fab = findViewById(R.id.fab);
         preferences = getSharedPreferences(AIQ_PREFS, MODE_PRIVATE);
         fab.setOnClickListener(view -> {
-            viewPager.setCurrentItem((viewPager.getCurrentItem() + 1) % Questions.getNumberOfQuestion());
+            viewPager.setCurrentItem((viewPager.getCurrentItem() + 1) % MainActivity.questionAnswerModelArrayList.size());
         });
 
-//        if (preferences.getString(SAVED, null) == null) insertAllDataToDb();
     }
 
     private void insertAllDataToDb() {
@@ -229,32 +244,37 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
         headerview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-                    List<AuthUI.IdpConfig> providers = Arrays.asList(
-                            new AuthUI.IdpConfig.PhoneBuilder().build(),
-                            new AuthUI.IdpConfig.GoogleBuilder().build());
-                    startActivityForResult(
-                            AuthUI.getInstance()
-                                    .createSignInIntentBuilder()
-                                    .setAvailableProviders(providers)
-                                    .setIsSmartLockEnabled(false)
-                                    .setTheme(R.style.LoginTheme)
-                                    .setLogo(R.drawable.qbitlogo)
-                                    .build(),
-                            RC_SIGN_IN);
-                } else {
-                    FirebaseAuth.getInstance().signOut();
-                    userDispalyName = "User";
-                    name.setText(userDispalyName);
-                    state.setText("Login");
-                    Glide.with(getApplicationContext()).load(R.drawable.ic_profile_icon).into(headerProfileImage);
-                    Toast.makeText(MainActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
-                }
-                drawerLayout.closeDrawer(GravityCompat.START);
+                performLogin();
 
             }
         });
         actionBarDrawerToggle.getDrawerArrowDrawable().setColor(ContextCompat.getColor(this, R.color.white));
+    }
+
+    private void performLogin() {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            List<AuthUI.IdpConfig> providers = Arrays.asList(
+                    new AuthUI.IdpConfig.PhoneBuilder().build(),
+                    new AuthUI.IdpConfig.EmailBuilder().build(),
+                    new AuthUI.IdpConfig.GoogleBuilder().build());
+            startActivityForResult(
+                    AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setAvailableProviders(providers)
+                            .setIsSmartLockEnabled(false)
+                            .setTheme(R.style.LoginTheme)
+                            .setLogo(R.drawable.qbitlogo)
+                            .build(),
+                    RC_SIGN_IN);
+        } else {
+            FirebaseAuth.getInstance().signOut();
+            userDispalyName = "User";
+            name.setText(userDispalyName);
+            state.setText("Login");
+            Glide.with(getApplicationContext()).load(R.drawable.ic_profile_icon).into(headerProfileImage);
+            Toast.makeText(MainActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
     }
 
 
@@ -269,10 +289,12 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                 // Successfully signed in
                 firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                 Toast.makeText(this, "User logged in successfully" + firebaseUser.getDisplayName(), Toast.LENGTH_SHORT).show();
-                if (firebaseUser.getPhoneNumber() != null) {
+                if (response.getProviderType().equals(PhoneAuthProvider.PROVIDER_ID)) {
                     userDispalyName = firebaseUser.getPhoneNumber();
-                } else if (firebaseUser.getDisplayName() != null) {
+                } else if (response.getProviderType().equals(GoogleAuthProvider.PROVIDER_ID)) {
                     userDispalyName = firebaseUser.getDisplayName();
+                } else {
+                    userDispalyName = firebaseUser.getEmail();
                 }
                 name.setText(userDispalyName);
                 state.setText("Logout");
@@ -344,7 +366,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
 
     @Override
     public void gotoPage(int n) {
-        if (n <= Questions.getNumberOfQuestion()) {
+        if (n <= MainActivity.questionAnswerModelArrayList.size()) {
             viewPager.setCurrentItem(n - 1);
             dialog.dismiss();
         } else Toast.makeText(this, "Question number is invalid", Toast.LENGTH_SHORT).show();
@@ -394,6 +416,25 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                 startActivity(aboutIntent);
                 drawerLayout.closeDrawer(GravityCompat.START);
                 break;
+
+            case R.id.action_privacy_policy:
+                Intent privacyIntent = new Intent(this, PrivacyPolicyActivity.class);
+                privacyIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(privacyIntent);
+                drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+
+            case R.id.action_add_questions:
+                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                    Toast.makeText(this, "Login to Add", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent addIntent = new Intent(this, AddQuestions.class);
+                    addIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(addIntent);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
+                break;
+
         }
         return true;
     }

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.androidcodeshop.aiq.activities.MainActivity;
 import com.androidcodeshop.aiq.utils.Questions;
 import com.androidcodeshop.aiq.R;
 import com.androidcodeshop.aiq.utils.Utils;
@@ -46,7 +47,7 @@ public class GotoPageFragmentDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final EditText number = view.findViewById(R.id.page_number_et);
-        number.setHint("page(1-"+ Questions.getNumberOfQuestion()+")");
+        number.setHint("page(1-"+ MainActivity.questionAnswerModelArrayList.size()+")");
         Button button = view.findViewById(R.id.goto_btn);
         Button lastButton = view.findViewById(R.id.last_btn);
         button.setOnClickListener(v -> {
@@ -56,7 +57,7 @@ public class GotoPageFragmentDialogFragment extends DialogFragment {
             Utils.hideKeyboard(getActivity());
         });
         lastButton.setOnClickListener(v -> {
-            fragmentLister.gotoPage(Questions.getNumberOfQuestion());
+            fragmentLister.gotoPage(MainActivity.questionAnswerModelArrayList.size());
             Utils.hideKeyboard(getActivity());
         });
     }

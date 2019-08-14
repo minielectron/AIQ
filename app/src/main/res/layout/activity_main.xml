@@ -16,6 +16,8 @@
         android:fitsSystemWindows="false"
         android:id="@+id/navigation_view"
         app:menu="@menu/navigation_menu"
-        app:headerLayout="@layout/header_layout"/>
+        app:headerLayout="@layout/header_layout">
+
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

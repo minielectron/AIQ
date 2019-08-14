@@ -11,7 +11,6 @@ import androidx.lifecycle.Transformations;
 
 import com.androidcodeshop.aiq.activities.MainActivity;
 import com.androidcodeshop.aiq.model.QuestionAnswerModel;
-import com.androidcodeshop.aiq.utils.Questions;
 
 import java.util.ArrayList;
 
@@ -36,7 +35,8 @@ public class PageViewModel extends AndroidViewModel {
     }
 
     private void updateDbData() {
-        questionAnswerModels.addAll(MainActivity.questionAnswerModelArrayList);
+        if (MainActivity.questionAnswerModelArrayList != null)
+            questionAnswerModels.addAll(MainActivity.questionAnswerModelArrayList);
     }
 
     void setIndex(int index) {

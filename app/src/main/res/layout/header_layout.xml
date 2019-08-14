@@ -38,9 +38,9 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:text="@string/user"
+            android:singleLine="true"
             android:id="@+id/header_name_tv"
             android:paddingEnd="16dp"
-            android:paddingStart="16dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <TextView
@@ -48,7 +48,6 @@
             android:textSize="12sp"
             android:textColor="#fff"
             android:paddingEnd="16dp"
-            android:paddingStart="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lines="1"

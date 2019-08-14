@@ -14,14 +14,27 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_about_me"
-        android:icon="@drawable/ic_perm_identity_black_24dp"
-        android:title="@string/about_me"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/share_app"
         android:icon="@drawable/ic_share_white_24dp"
         android:title="@string/share_application"
         app:showAsAction="always" />
+    <group android:id="@+id/admin">
+        <item
+            android:id="@+id/action_add_questions"
+            android:icon="@drawable/ic_add_ques"
+            android:title="@string/add_ques"
+            app:showAsAction="always" />
+    </group>
+    <group android:id="@+id/others">
+        <item
+            android:id="@+id/action_about_me"
+            android:icon="@drawable/ic_perm_identity_black_24dp"
+            android:title="@string/about_me"
+            app:showAsAction="ifRoom" />
+        <item
+            android:id="@+id/action_privacy_policy"
+            android:icon="@drawable/privacy_icon"
+            android:title="@string/privacy"
+            app:showAsAction="ifRoom" />
+    </group>
 </menu>

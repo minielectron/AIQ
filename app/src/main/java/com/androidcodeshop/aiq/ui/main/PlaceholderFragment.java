@@ -161,7 +161,7 @@ public class PlaceholderFragment extends Fragment {
         }
 
         int quesNum = Integer.valueOf(questionNo.getText().toString());
-        QuestionAnswerModel currentQuestion = Questions.getInstance().get(quesNum - 1);
+        QuestionAnswerModel currentQuestion = MainActivity.questionAnswerModelArrayList.get(quesNum - 1);
         databaseReference.child(String.valueOf(quesNum)).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -172,6 +172,8 @@ public class PlaceholderFragment extends Fragment {
                     currentQuestion.setBookmarked(1);
                     databaseReference.child(String.valueOf(quesNum)).setValue(currentQuestion);
                 }
+                MainActivity.questionAnswerModelArrayList.add(quesNum-1, currentQuestion);
+                MainActivity.sectionsPagerAdapter.notifyDataSetChanged();
             }
 
             @Override
