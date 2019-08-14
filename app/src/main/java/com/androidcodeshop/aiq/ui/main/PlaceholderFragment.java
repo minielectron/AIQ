@@ -21,7 +21,6 @@ import com.androidcodeshop.aiq.activities.MainActivity;
 import com.androidcodeshop.aiq.interfaces.ShowSnackBar;
 import com.androidcodeshop.aiq.model.QuestionAnswerModel;
 import com.androidcodeshop.aiq.room.MyDatabase;
-import com.androidcodeshop.aiq.utils.Questions;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -32,8 +31,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.concurrent.Executors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -117,24 +114,7 @@ public class PlaceholderFragment extends Fragment {
             question.setText(page.getQuestion());
             answer.setText(String.format(getString(R.string.answer), page.getAnswer()));
             questionNo.setText(String.valueOf(page.getQuestionNumber()));
-//            if(FirebaseAuth.getInstance().getCurrentUser() != null){
-//               databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//                   @Override
-//                   public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                   }
-//
-//                   @Override
-//                   public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                   }
-//               });
-//            }
-            if (MainActivity.questionAnswerModelArrayList.get(page.getQuestionNumber() - 1).getBookmarked() == 1) {
-                bookmarkIb.setImageResource(R.drawable.ic_bookmark_gray_24dp);
-            } else {
-                bookmarkIb.setImageResource(R.drawable.ic_bookmark_border_white_24dp);
-            }
+            bookmarkIb.setImageResource(R.drawable.ic_bookmark_border_white_24dp);
         });
 
         unbinder = ButterKnife.bind(this, root);
@@ -152,7 +132,7 @@ public class PlaceholderFragment extends Fragment {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             Toast.makeText(getContext(), "Login to bookmark!", Toast.LENGTH_SHORT).show();
             return;
-        }else {
+        } else {
             // reinitialize because oncreate is called once
             firebaseDatabase = FirebaseDatabase.getInstance();
             firebaseAuth = FirebaseAuth.getInstance();
@@ -167,13 +147,15 @@ public class PlaceholderFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null) {
                     currentQuestion.setBookmarked((dataSnapshot.getValue(QuestionAnswerModel.class).getBookmarked() + 1) % 2);
+                    if (currentQuestion.getBookmarked() == 1)
+                        showSnackBar.showSnack("Added in Bookmark");
+                    else showSnackBar.showSnack("Removed From Bookmark");
                     databaseReference.child(String.valueOf(quesNum)).setValue(currentQuestion);
                 } else {
+                    showSnackBar.showSnack("Added in Bookmark");
                     currentQuestion.setBookmarked(1);
                     databaseReference.child(String.valueOf(quesNum)).setValue(currentQuestion);
                 }
-                MainActivity.questionAnswerModelArrayList.add(quesNum-1, currentQuestion);
-                MainActivity.sectionsPagerAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -181,7 +163,5 @@ public class PlaceholderFragment extends Fragment {
 
             }
         });
-        bookmarkIb.setVisibility(View.GONE);
-        showSnackBar.showSnack();
     }
 }

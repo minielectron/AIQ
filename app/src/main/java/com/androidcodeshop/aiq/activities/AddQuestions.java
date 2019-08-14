@@ -48,6 +48,12 @@ public class AddQuestions extends AppCompatActivity {
         ButterKnife.bind(this);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("questions");
+        setQuestionNumber();
+
+
+    }
+
+    private void setQuestionNumber() {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -60,10 +66,12 @@ public class AddQuestions extends AppCompatActivity {
 
             }
         });
-
-
     }
 
+    private void clear(){
+        questionTestView.setText("");
+        ansTextView.setText("");
+    }
     @OnClick(R.id.button)
     public void onViewClicked() {
 
@@ -79,13 +87,15 @@ public class AddQuestions extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         progressDialog.hide();
-                        Toast.makeText(AddQuestions.this, "Question Added Successfully", Toast.LENGTH_SHORT).show();
+                        clear();
+                        setQuestionNumber();
+                        Toast.makeText(AddQuestions.this, "Added Successfully", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         progressDialog.hide();
-                        Toast.makeText(AddQuestions.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddQuestions.this, "" + "Sorry! Not an Admin", Toast.LENGTH_SHORT).show();
                     }
                 });
             } else

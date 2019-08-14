@@ -16,4 +16,8 @@
         android:title="@string/search"
         android:icon="@drawable/ic_search_white_24dp"
         app:showAsAction="collapseActionView"/>
+    <item android:id="@+id/action_sync"
+        android:title="@string/sync"
+        android:icon="@drawable/ic_search_white_24dp"
+        app:showAsAction="collapseActionView"/>
 </menu>

@@ -7,8 +7,8 @@ android {
         applicationId "com.androidcodeshop.aiq"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 5
+        versionName "1.2.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -23,15 +23,15 @@ android {
 
         }
 
-        debug {
-            minifyEnabled false
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            resValue "string", "ad_app_id", "ca-app-pub-3940256099942544~3347511713"
-            resValue "string", "ad_unit_id", "ca-app-pub-3940256099942544/6300978111"
-            resValue "string", "test", "Debug mode is running"
-
-        }
+//        debug {
+//            minifyEnabled false
+//            shrinkResources false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            resValue "string", "ad_app_id", "ca-app-pub-3940256099942544~3347511713"
+//            resValue "string", "ad_unit_id", "ca-app-pub-3940256099942544/6300978111"
+//            resValue "string", "test", "Debug mode is running"
+//
+//        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -66,6 +66,7 @@ dependencies {
     // Glide library
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+
 
 
 }
