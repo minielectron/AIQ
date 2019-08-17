@@ -1,56 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.AddedQuestionsListActivity">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:id="@+id/toolbar"
+        android:background="@color/colorPrimary"
         app:title="Your Added Questions"
-        app:titleTextColor="@color/white"
-        android:background="@color/colorPrimary"/>
+        app:titleTextColor="@color/white" />
 
     <LinearLayout
-        android:layout_below="@id/toolbar"
         android:id="@+id/notify_llo"
-        android:padding="16dp"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:background="@color/LightGrey"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <TextView
-            android:text="Rejected"
-            android:background="@color/Red"
-            android:textColor="@color/Black"
-            android:layout_weight="1"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="8dp"
-            android:layout_height="wrap_content" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:text="Accepted"
-            android:layout_marginStart="16sp"
-            android:background="#FF00FF00"
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            <TextView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@color/Red"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/Black" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16sp"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:text="Rejected" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="8dp"
-            android:layout_height="wrap_content" />
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="#FF00FF00"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/Black" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16sp"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:text="Accepted" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="#FFF"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/Black" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16sp"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:text="@string/not_viewed" />
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/note_laebl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/notify_llo"
+            android:layout_marginBottom="10dp"
+            android:text="@string/note" />
 
     </LinearLayout>
-    <ListView
 
-        android:dividerHeight="1dp"
-        android:divider="@color/Black"
+
+    <ListView
+        android:longClickable="true"
         android:id="@+id/added_list_view"
-        android:layout_below="@id/notify_llo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/notify_llo"
+        android:divider="@color/Black"
+        android:dividerHeight="1dp" />
 
 </RelativeLayout>

@@ -55,8 +55,9 @@ public class AddQuestions extends AppCompatActivity {
         databaseReference.child("users").child(FirebaseAuth.getInstance().getUid()).child("add").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null)
+                if (dataSnapshot.getValue() != null){
                     quesNum = dataSnapshot.getChildrenCount() + 1;
+                }
                 addQuesNo.setText(String.format(getString(R.string.add_question_no_s), String.valueOf(quesNum)));
 
             }
@@ -85,7 +86,7 @@ public class AddQuestions extends AppCompatActivity {
             progressDialog.show();
             QuestionAnswerModel questionAnswerModel = new QuestionAnswerModel((int) quesNum, questionTestView.getText().toString(), ansTextView.getText().toString());
             if (databaseReference != null) {
-                databaseReference.child("users").child(FirebaseAuth.getInstance().getUid()).child("add").child(String.valueOf(quesNum)).setValue(questionAnswerModel)
+                databaseReference.child("users").child(FirebaseAuth.getInstance().getUid()).child("add").push().setValue(questionAnswerModel)
                         .addOnCompleteListener(task -> {
                             progressDialog.hide();
                             clear();

@@ -11,23 +11,23 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        app:titleTextColor="@color/white"
         android:background="@color/colorPrimary"
-        app:title="Pending Approval" />
+        app:title="Pending Approval"
+        app:titleTextColor="@color/white" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:layout_width="match_parent"
-        android:layout_below="@id/toolbar"
         android:id="@+id/swipeRefreshLayout"
-        android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
+
         <ListView
             android:id="@+id/approve_listview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@color/WhiteSmoke"
+            android:divider="@color/Black"
             android:dividerHeight="0.5dp" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
 
 
 </RelativeLayout>

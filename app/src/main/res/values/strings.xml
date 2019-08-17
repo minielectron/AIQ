@@ -5,7 +5,7 @@
     <string name="close">Close</string>
     <string name="user">User</string>
     <string name="login">Login</string>
-    <string name="answer">Answer : %s</string>
+    <string name="answer">%s</string>
     <string name="search">Search</string>
     <string name="go_to">Goto</string>
     <string name="bookmarked_questions">Bookmarked Questions</string>
@@ -92,4 +92,7 @@ This privacy policy page was created at privacypolicytemplate.net and modified/g
     <string name="cancel">Cancel</string>
     <string name="approve">Approve Requests</string>
     <string name="added">Added Questions</string>
+    <string name="note">Note : The rejected questions will be removed within month.</string>
+    <string name="not_viewed">Not Viewed</string>
+    <string name="delete">Delete</string>
 </resources>
