@@ -95,7 +95,6 @@ public class PlaceholderFragment extends Fragment {
             firebaseUser = firebaseAuth.getCurrentUser();
             databaseReference = firebaseDatabase.getReference().child("users").child(firebaseUser.getUid()).child(getContext().getString(R.string.bookmarked_ques));
         }
-
     }
 
     @Override

@@ -1,49 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:orientation="vertical"
     android:background="@android:color/white"
-    >
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <TextView
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
         android:id="@+id/question_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Question :" />
-    <ScrollView
-        android:layout_weight="1"
-        android:layout_marginTop="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:text="Question :"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/answer_label"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/answer_back_rectangle"
-            android:fontFamily="@font/roboto"
-            android:padding="10dp"
-            android:text="Answer :"
-            android:linksClickable="true"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textSize="14sp"
-            android:autoLink="all"
-            android:textIsSelectable="true"
-            android:textStyle="bold" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/answer_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="all"
+                android:background="@drawable/answer_back_rectangle"
+                android:fontFamily="@font/roboto"
+                android:linksClickable="true"
+                android:padding="10dp"
+                android:text="Answer :"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textIsSelectable="true"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/adView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="16dp"
+                    ads:adSize="BANNER"
+                    ads:adUnitId="@string/ad_unit_id" />
+            </LinearLayout>
+        </LinearLayout>
+
+
     </ScrollView>
+
     <Button
         android:id="@+id/doneButton"
-        android:text="Done"
-        android:textColor="@android:color/white"
-        android:backgroundTint="@color/colorPrimary"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Done"
+        android:textColor="@android:color/white" />
 </LinearLayout>

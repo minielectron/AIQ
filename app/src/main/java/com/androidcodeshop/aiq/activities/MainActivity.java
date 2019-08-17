@@ -38,6 +38,8 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -136,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     public static ArrayList<QuestionAnswerModel> questionAnswerModelArrayList;
     private ValueEventListener valueEventListener;
     private SharedPreferences sharedPreferences;
+    private boolean isAdmin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
 
     private void loginSetup(String user, String state, Uri photoUrl) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        isAdminLoggedIn();
         editor.putString("name", user);
         editor.putString("state", state);
         if (photoUrl != null)
@@ -222,20 +226,6 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
         super.onStart();
     }
 
-
-//    private void insertAllDataToDb() {
-//        MyDatabase database = MyDatabase.getDatabase(this);
-//        ArrayList<QuestionAnswerModel> answerModels = Questions.getInstance();
-//        Executors.newSingleThreadExecutor().execute(() -> {
-//            for (int i = 0; i < Questions.getNumberOfQuestion(); i++)
-//                database.aiqDao().insert(answerModels.get(i));
-//            Log.d(TAG, "insertAllDataToDb: All data inserted");
-//            editor.putString(SAVED, SAVED);
-//            editor.apply();
-//        });
-//    }
-//
-
     private void setUpNavigationDrawer() {
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close) {
             @Override
@@ -246,10 +236,13 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-//                Toast.makeText(HomeActivity.this, "Close", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
             }
         };
 
+        // --------------------------- hide and show admin menu --------------------//
+        isAdminLoggedIn();
+        //---------------------------------------------------------------------------//
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
@@ -264,6 +257,20 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
             }
         });
         actionBarDrawerToggle.getDrawerArrowDrawable().setColor(ContextCompat.getColor(this, R.color.white));
+    }
+
+    private void isAdminLoggedIn() {
+        Menu navMenu = navigationView.getMenu();
+        database.getReference("is_admin").setValue("Random value").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                MenuItem menuItem = navMenu.findItem(R.id.action_approve);
+                if (!task.isSuccessful()) {
+                    menuItem.setVisible(false);
+                } else menuItem.setVisible(true);
+
+            }
+        });
     }
 
     private void performLogin() {
@@ -293,6 +300,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                             // Continue with delete operation
                             AuthUI.getInstance().signOut(getApplicationContext());
                             signOutSetup();
+                            navigationView.getMenu().findItem(R.id.action_approve).setVisible(false);
                             Toast.makeText(MainActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
                         }
                     })
@@ -307,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
         sharedPreferences.edit().clear().apply();
         userDispalyName = "User";
         name.setText(userDispalyName);
-        state.setText("Login");
+        state.setText(getString(R.string.login));
         Glide.with(getApplicationContext()).load(R.drawable.ic_profile_icon).into(headerProfileImage);
     }
 
@@ -320,22 +328,24 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
+
                 firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                Toast.makeText(this, "Login Successful" , Toast.LENGTH_SHORT).show();
-                if (response.getProviderType().equals(PhoneAuthProvider.PROVIDER_ID)) {
-                    userDispalyName = firebaseUser.getPhoneNumber();
-                    Glide.with(getApplicationContext()).load(R.drawable.ic_profile_icon).into(headerProfileImage);
-                    loginSetup(userDispalyName, "Logout", null);
-                } else if (response.getProviderType().equals(GoogleAuthProvider.PROVIDER_ID)) {
-                    userDispalyName = firebaseUser.getDisplayName();
-                    Glide.with(getApplicationContext()).load(firebaseUser.getPhotoUrl()).into(headerProfileImage);
-                    loginSetup(userDispalyName, "Logout", firebaseUser.getPhotoUrl());
-                } else {
-                    userDispalyName = firebaseUser.getEmail();
-                    loginSetup(userDispalyName, "Logout", null);
-                }
+                Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
+                if (response != null)
+                    if (response.getProviderType().equals(PhoneAuthProvider.PROVIDER_ID)) {
+                        userDispalyName = firebaseUser.getPhoneNumber();
+                        Glide.with(getApplicationContext()).load(R.drawable.ic_profile_icon).into(headerProfileImage);
+                        loginSetup(userDispalyName, "Logout", null);
+                    } else if (response.getProviderType().equals(GoogleAuthProvider.PROVIDER_ID)) {
+                        userDispalyName = firebaseUser.getDisplayName();
+                        Glide.with(getApplicationContext()).load(firebaseUser.getPhotoUrl()).into(headerProfileImage);
+                        loginSetup(userDispalyName, "Logout", firebaseUser.getPhotoUrl());
+                    } else {
+                        userDispalyName = firebaseUser.getEmail();
+                        loginSetup(userDispalyName, "Logout", null);
+                    }
                 name.setText(userDispalyName);
-                state.setText("Logout");
+                state.setText(getString(R.string.logout));
             } else {
                 sharedPreferences.edit().clear().apply();
                 Toast.makeText(this, "Login Cancelled", Toast.LENGTH_SHORT).show();
@@ -409,6 +419,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     @Override
     protected void onResume() {
         super.onResume();
+//        loadAllQuestions();
         if (preferences != null) {
             int lastVisited = preferences.getInt("last_visited_question", 0);
             viewPager.setCurrentItem(lastVisited);
@@ -450,6 +461,17 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                 drawerLayout.closeDrawer(GravityCompat.START);
                 break;
 
+            case R.id.action_added_list:
+                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                    Toast.makeText(this, "Please ! Login to see", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent added = new Intent(this, AddedQuestionsListActivity.class);
+                    added.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(added);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
+                break;
+
             case R.id.action_privacy_policy:
                 Intent privacyIntent = new Intent(this, PrivacyPolicyActivity.class);
                 privacyIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -459,9 +481,19 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
 
             case R.id.action_add_questions:
                 if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-                    Toast.makeText(this, "Login Admin to Add", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Please ! Login to Add", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent addIntent = new Intent(this, AddQuestions.class);
+                    addIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(addIntent);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
+                break;
+            case R.id.action_approve:
+                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                    Toast.makeText(this, "Login Admin", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent addIntent = new Intent(this, ApproveListActivity.class);
                     addIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(addIntent);
                     drawerLayout.closeDrawer(GravityCompat.START);
@@ -497,3 +529,16 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
 }
 
 //125 page number
+
+//    private void insertAllDataToDb() {
+//        MyDatabase database = MyDatabase.getDatabase(this);
+//        ArrayList<QuestionAnswerModel> answerModels = Questions.getInstance();
+//        Executors.newSingleThreadExecutor().execute(() -> {
+//            for (int i = 0; i < Questions.getNumberOfQuestion(); i++)
+//                database.aiqDao().insert(answerModels.get(i));
+//            Log.d(TAG, "insertAllDataToDb: All data inserted");
+//            editor.putString(SAVED, SAVED);
+//            editor.apply();
+//        });
+//    }
+//

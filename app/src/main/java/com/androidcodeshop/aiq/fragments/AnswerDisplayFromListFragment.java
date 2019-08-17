@@ -1,7 +1,6 @@
 package com.androidcodeshop.aiq.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,33 +11,27 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.androidcodeshop.aiq.R;
-import com.androidcodeshop.aiq.activities.MainActivity;
+import com.androidcodeshop.aiq.model.QuestionAnswerModel;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
 import electrophile.mutils.fragments.FullScreenBottomSheetDialogFragment;
 
-import static android.content.ContentValues.TAG;
+public class AnswerDisplayFromListFragment extends FullScreenBottomSheetDialogFragment {
 
-public class AnswerDisplayDialogFragment extends FullScreenBottomSheetDialogFragment {
+    private QuestionAnswerModel question;
 
-    public AnswerDisplayDialogFragment() {
+    public AnswerDisplayFromListFragment(QuestionAnswerModel question) {
         super();
-    }
-
-    private static int page = 0;
-
-    public static AnswerDisplayDialogFragment getInstance(int page) {
-        AnswerDisplayDialogFragment answerDisplayDialogFragment = new AnswerDisplayDialogFragment();
-        AnswerDisplayDialogFragment.page = page;
-        return answerDisplayDialogFragment;
+        this.question = question;
     }
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Nullable
@@ -46,11 +39,10 @@ public class AnswerDisplayDialogFragment extends FullScreenBottomSheetDialogFrag
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setRetainInstance(true);
         View view = inflater.inflate(R.layout.answer_display, container, false);
-        Log.i(TAG, "onCreateView: page " + page);
         TextView ques = view.findViewById(R.id.question_label);
-        ques.setText(MainActivity.questionAnswerModelArrayList.get(page).getQuestion());
+        ques.setText(question.getQuestion());
         TextView ans = view.findViewById(R.id.answer_label);
-        ans.setText(MainActivity.questionAnswerModelArrayList.get(page).getAnswer());
+        ans.setText(question.getAnswer());
         return view;
     }
 
@@ -64,6 +56,7 @@ public class AnswerDisplayDialogFragment extends FullScreenBottomSheetDialogFrag
         mAdView.loadAd(adRequest);
         Button doneButton = view.findViewById(R.id.doneButton);
         doneButton.setOnClickListener(v -> dismiss());
+
     }
 
 

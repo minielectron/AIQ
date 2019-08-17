@@ -23,8 +23,19 @@
             android:id="@+id/action_add_questions"
             android:icon="@drawable/ic_add_ques"
             android:title="@string/add_ques"
-            app:showAsAction="always" />
+            app:showAsAction="ifRoom" />
+        <item
+            android:id="@+id/action_added_list"
+            android:icon="@drawable/added_ic"
+            android:title="@string/added"
+            app:showAsAction="collapseActionView" />
+        <item
+            android:id="@+id/action_approve"
+            android:icon="@drawable/approve_ic"
+            android:title="@string/approve"
+            app:showAsAction="collapseActionView" />
     </group>
+
     <group android:id="@+id/others">
         <item
             android:id="@+id/action_about_me"
