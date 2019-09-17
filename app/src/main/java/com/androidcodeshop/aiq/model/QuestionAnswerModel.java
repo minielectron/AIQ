@@ -75,6 +75,10 @@ public class QuestionAnswerModel implements Parcelable {
         this.bookmarked = bookmarked;
     }
 
+    public void setQuestionNumber(int questionNumber) {
+        this.questionNumber = questionNumber;
+    }
+
     @Override
     public int describeContents() {
         return 0;

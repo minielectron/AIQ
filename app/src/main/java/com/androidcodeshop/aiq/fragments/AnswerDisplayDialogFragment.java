@@ -17,8 +17,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
-import electrophile.mutils.fragments.FullScreenBottomSheetDialogFragment;
-
 import static android.content.ContentValues.TAG;
 
 public class AnswerDisplayDialogFragment extends FullScreenBottomSheetDialogFragment {

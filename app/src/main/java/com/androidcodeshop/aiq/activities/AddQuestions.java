@@ -85,7 +85,7 @@ public class AddQuestions extends AppCompatActivity {
             progressDialog.setMessage("Saving Question...");
             progressDialog.show();
             QuestionAnswerModel questionAnswerModel = new QuestionAnswerModel((int) quesNum, questionTestView.getText().toString(), ansTextView.getText().toString());
-            if (databaseReference != null) {
+            if (databaseReference != null ) {
                 databaseReference.child("users").child(FirebaseAuth.getInstance().getUid()).child("add").push().setValue(questionAnswerModel)
                         .addOnCompleteListener(task -> {
                             progressDialog.hide();

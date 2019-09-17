@@ -1,8 +1,11 @@
 package com.androidcodeshop.aiq.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +23,6 @@ import com.androidcodeshop.aiq.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import electrophile.mutils.MiniNetworkingUtils;
 
 public class WebViewActivity extends AppCompatActivity {
     private static final String DEFAULT_URL = "https://androidcodeshop.com/about-me/";
@@ -49,7 +51,7 @@ public class WebViewActivity extends AppCompatActivity {
         // AppUtils.makeActivityFullScreen(getWindow());
         // check the internet connection
 
-        if (MiniNetworkingUtils.isConnected(this)) {
+        if (isConnected()) {
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String request) {
@@ -105,4 +107,10 @@ public class WebViewActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    private boolean isConnected() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 }

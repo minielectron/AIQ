@@ -4,13 +4,20 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.preference.PreferenceManager;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -45,11 +51,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -69,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     public static final String PAGE_NUM = "page_num";
     public static final String ICONIFIED = "iconified";
     private static final String SAVED = "saved";
+    private static final String PRIVACY_DIALOG_SHOWN = "is privacy dialog shown";
     private static String userDispalyName = "User";
     private static final int RC_SIGN_IN = 100;
     @BindView(R.id.navigation_view)
@@ -94,39 +101,6 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     public static SectionsPagerAdapter sectionsPagerAdapter;
     private ProgressDialog progressDialog;
 
-    ChildEventListener childEventListener = new ChildEventListener() {
-        @Override
-        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            if (dataSnapshot.getValue() != null) {
-                questionAnswerModelArrayList.add(dataSnapshot.getValue(QuestionAnswerModel.class));
-                sectionsPagerAdapter.notifyDataSetChanged();
-            }
-
-        }
-
-        @Override
-        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            if (dataSnapshot.getValue() != null) {
-                Toast.makeText(MainActivity.this, dataSnapshot.getValue(QuestionAnswerModel.class).getQuestion() + "Changed", Toast.LENGTH_LONG).show();
-                Log.d(TAG, "onChildChanged: " + dataSnapshot.getKey());
-            }
-        }
-
-        @Override
-        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-        }
-
-        @Override
-        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    };
     private DatabaseReference myRef;
     private FirebaseDatabase database;
     private View headerview;
@@ -198,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                 viewPager.setAdapter(sectionsPagerAdapter);
                 tabs.setupWithViewPager(viewPager);
                 progressDialog.dismiss();
+                showPrivacyDialog();
             }
 
             @Override
@@ -298,7 +273,6 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                     .setPositiveButton("Logout", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // Continue with delete operation
-                            AuthUI.getInstance().signOut(getApplicationContext());
                             signOutSetup();
                             navigationView.getMenu().findItem(R.id.action_approve).setVisible(false);
                             Toast.makeText(MainActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
@@ -311,7 +285,76 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
         }
     }
 
+    public static void openAppRating(Context context) {
+        // you can also use BuildConfig.APPLICATION_ID
+        String appId = context.getPackageName();
+        Intent rateIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("market://details?id=" + appId));
+        boolean marketFound = false;
+        // find all applications able to handle our rateIntent
+        final List<ResolveInfo> otherApps = context.getPackageManager()
+                .queryIntentActivities(rateIntent, 0);
+        for (ResolveInfo otherApp : otherApps) {
+            // look for Google Play application
+            if (otherApp.activityInfo.applicationInfo.packageName
+                    .equals("com.android.vending")) {
+
+                ActivityInfo otherAppActivity = otherApp.activityInfo;
+                ComponentName componentName = new ComponentName(
+                        otherAppActivity.applicationInfo.packageName,
+                        otherAppActivity.name
+                );
+                // make sure it does NOT open in the stack of your activity
+                rateIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                // task reparenting if needed
+                rateIntent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                // if the Google Play was already open in a search result
+                //  this make sure it still go to the app page you requested
+                rateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                // this make sure only the Google Play app is allowed to
+                // intercept the intent
+                rateIntent.setComponent(componentName);
+                context.startActivity(rateIntent);
+                marketFound = true;
+                break;
+
+            }
+        }
+
+        // if GP not present on device, open web browser
+        if (!marketFound) {
+            Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=" + appId));
+            context.startActivity(webIntent);
+        }
+    }
+
+    private void showPrivacyDialog() {
+        if (!PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean(PRIVACY_DIALOG_SHOWN, false)) {
+
+            String privacy_pol = "<a href='https://sites.google.com/view/aiqprivacypolicy/home'> Privacy Policy </a>";
+            String toc = "<a href='https://sites.google.com/view/aiqprivacypolicy/home'> T&C </a>";
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setMessage(Html.fromHtml("By using this application, you agree to " + privacy_pol + " and " + toc + " of this application."))
+                    .setPositiveButton("ACCEPT", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putBoolean(PRIVACY_DIALOG_SHOWN, true).apply();
+                        }
+                    })
+                    .setNegativeButton("DECLINE", null)
+                    .setCancelable(false)
+                    .create();
+
+            dialog.show();
+            TextView textView = dialog.findViewById(android.R.id.message);
+            textView.setLinksClickable(true);
+            textView.setClickable(true);
+            textView.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+    }
+
     private void signOutSetup() {
+        AuthUI.getInstance().signOut(getApplicationContext());
         sharedPreferences.edit().clear().apply();
         userDispalyName = "User";
         name.setText(userDispalyName);
@@ -340,7 +383,13 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                         userDispalyName = firebaseUser.getDisplayName();
                         Glide.with(getApplicationContext()).load(firebaseUser.getPhotoUrl()).into(headerProfileImage);
                         loginSetup(userDispalyName, "Logout", firebaseUser.getPhotoUrl());
-                    } else {
+                    } else if (response.getProviderType().equals(EmailAuthProvider.PROVIDER_ID)) {
+                        if (!firebaseUser.isEmailVerified()) {
+                            Toast.makeText(this, "User is not verified, Link is sent for verification", Toast.LENGTH_SHORT).show();
+                            firebaseUser.sendEmailVerification();
+                            signOutSetup();
+                            return;
+                        }
                         userDispalyName = firebaseUser.getEmail();
                         loginSetup(userDispalyName, "Logout", null);
                     }
@@ -374,13 +423,13 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                 break;
             case R.id.action_copy:
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("Label", MainActivity.questionAnswerModelArrayList
-                        .get(viewPager.getCurrentItem())
-                        .getQuestion() +
-                        MainActivity.questionAnswerModelArrayList
-                                .get(viewPager.getCurrentItem())
-                                .getAnswer());
-                if (clipboard != null) {
+                if (clipboard != null && questionAnswerModelArrayList != null) {
+                    ClipData clip = ClipData.newPlainText("Label", MainActivity.questionAnswerModelArrayList
+                            .get(viewPager.getCurrentItem())
+                            .getQuestion() +
+                            MainActivity.questionAnswerModelArrayList
+                                    .get(viewPager.getCurrentItem())
+                                    .getAnswer());
                     clipboard.setPrimaryClip(clip);
                     Toast.makeText(this, "Q & A Copied Successfully to share", Toast.LENGTH_SHORT).show();
                     Intent sharingIntent = new Intent(Intent.ACTION_SEND);
@@ -388,7 +437,9 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                     sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Important Question");
                     sharingIntent.putExtra(Intent.EXTRA_TEXT, clipboard.getText().toString());
                     startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_using)));
-                }
+                } else
+                    Toast.makeText(this, "Cannot perform this action now !", Toast.LENGTH_SHORT).show();
+
                 break;
             case R.id.action_search:
                 Intent searchActivityIntent = new Intent(this, QuestionsListActivity.class);
@@ -498,6 +549,14 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                     startActivity(addIntent);
                     drawerLayout.closeDrawer(GravityCompat.START);
                 }
+                break;
+            case R.id.action_update:
+                openAppRating(this);
+                drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+            case R.id.action_feedback:
+                openAppRating(this);
+                drawerLayout.closeDrawer(GravityCompat.START);
                 break;
 
         }

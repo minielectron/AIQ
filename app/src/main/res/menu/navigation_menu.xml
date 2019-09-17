@@ -48,4 +48,17 @@
             android:title="@string/privacy"
             app:showAsAction="ifRoom" />
     </group>
+
+    <group android:id="@+id/app_related">
+        <item
+            android:id="@+id/action_update"
+            android:icon="@drawable/update_ic"
+            android:title="@string/update"
+            app:showAsAction="ifRoom" />
+        <item
+            android:id="@+id/action_feedback"
+            android:icon="@drawable/feedback_ic"
+            android:title="@string/feedback"
+            app:showAsAction="ifRoom" />
+    </group>
 </menu>

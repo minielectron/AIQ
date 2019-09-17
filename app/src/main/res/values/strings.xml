@@ -95,4 +95,6 @@ This privacy policy page was created at privacypolicytemplate.net and modified/g
     <string name="note">Note : The rejected questions will be removed within month.</string>
     <string name="not_viewed">Not Viewed</string>
     <string name="delete">Delete</string>
+    <string name="update">Update</string>
+    <string name="feedback">Feedback</string>
 </resources>

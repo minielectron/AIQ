@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:padding="24dp"
     android:gravity="center"
+    android:elevation="24dp"
     >
 
     <TextView
@@ -28,19 +29,20 @@
         android:layout_height="wrap_content">
         <Button
             android:text="last"
+            android:drawableEnd="@drawable/ic_navigate_next_white_24dp"
             android:id="@+id/last_btn"
             android:layout_marginTop="10dp"
             android:textColor="@android:color/white"
-            android:background="@color/colorPrimary"
+            android:backgroundTint="@color/colorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <Button
             android:text="goto"
+            android:drawableEnd="@drawable/ic_navigate_next_white_24dp"
             android:id="@+id/goto_btn"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
             android:textColor="@android:color/white"
-            android:background="@color/colorPrimary"
+            android:backgroundTint="@color/colorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

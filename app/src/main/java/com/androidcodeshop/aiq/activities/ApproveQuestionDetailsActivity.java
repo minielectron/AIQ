@@ -14,8 +14,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.androidcodeshop.aiq.R;
 import com.androidcodeshop.aiq.model.QuestionAnswerModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -82,17 +80,7 @@ public class ApproveQuestionDetailsActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_approve:
-                if (questionAnswerModel != null)
-                    databaseReference.child(String.valueOf(quesNumber)).setValue(questionAnswerModel, new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                            if (databaseError == null) {
-                                Toast.makeText(ApproveQuestionDetailsActivity.this, "Successfully Added", Toast.LENGTH_SHORT).show();
-                                removeOnReject();
-                            } else
-                                Toast.makeText(ApproveQuestionDetailsActivity.this, "Database error occurred", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                approveQuestions();
                 break;
             case R.id.action_reject:
                 removeOnReject();
@@ -102,6 +90,22 @@ public class ApproveQuestionDetailsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void approveQuestions() {
+        if (questionAnswerModel != null) {
+            questionAnswerModel.setQuestionNumber((int) quesNumber);
+            databaseReference.child(String.valueOf(quesNumber)).setValue(questionAnswerModel, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                    if (databaseError == null) {
+                        Toast.makeText(ApproveQuestionDetailsActivity.this, "Successfully Added", Toast.LENGTH_SHORT).show();
+                        removeOnReject();
+                    } else
+                        Toast.makeText(ApproveQuestionDetailsActivity.this, "Database error occurred", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
     private void removeOnReject() {
         addRequestDbRequestReference.child(deleteKey).setValue(null, new DatabaseReference.CompletionListener() {
             @Override
@@ -109,7 +113,7 @@ public class ApproveQuestionDetailsActivity extends AppCompatActivity {
                 if (databaseError != null) {
                     Toast.makeText(ApproveQuestionDetailsActivity.this, "Some error occurred", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(ApproveQuestionDetailsActivity.this, "Successfully Removed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ApproveQuestionDetailsActivity.this, "Successfully Updated list", Toast.LENGTH_SHORT).show();
                     onBackPressed();
                 }
             }

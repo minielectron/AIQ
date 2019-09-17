@@ -15,8 +15,10 @@ import java.util.ArrayList;
 
 public class AddedQuestionAdapter extends BaseAdapter {
 
-    ArrayList<QuestionAnswerModel> arrayList;
-    Context context;
+    private ArrayList<QuestionAnswerModel> arrayList;
+    private Context context;
+    private ViewHolder holder;
+
 
     public AddedQuestionAdapter(ArrayList<QuestionAnswerModel> arrayList, Context context) {
         this.arrayList = arrayList;
@@ -40,7 +42,6 @@ public class AddedQuestionAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
         if (convertView == null) {
             //will be called once to fetch the id not multiple times
             convertView = LayoutInflater.from(context).inflate(R.layout.question_list_item_1, parent, false);

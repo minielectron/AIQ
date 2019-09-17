@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.AddedQuestionsListActivity"></activity>
+        <activity android:name=".activities.AddedQuestionsListActivity" />
         <activity android:name=".activities.ApproveQuestionDetailsActivity" />
         <activity android:name=".activities.ApproveListActivity" />
         <activity android:name=".activities.PrivacyPolicyActivity" />

@@ -3,7 +3,7 @@
     android:color="@color/Green">
     <item android:id="@android:id/mask">
         <shape android:shape="oval">
-            <solid android:color="?android:colorPrimary"/>
+            <solid android:color="@color/colorPrimary"/>
         </shape>
         <color android:color="@android:color/white"/>
     </item>
