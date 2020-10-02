@@ -15,9 +15,9 @@ import com.google.firebase.database.IgnoreExtraProperties;
 public class QuestionAnswerModel implements Parcelable {
 
     @NonNull
-    private String question;
+    private String question = "";
     @NonNull
-    private String answer;
+    private String answer = "";
     @PrimaryKey
 
     private int questionNumber;
@@ -28,13 +28,13 @@ public class QuestionAnswerModel implements Parcelable {
         // for room database to write the object to the realtime db, it is mandatory to use this
     }
 
-    public QuestionAnswerModel(int questionNumber, String question, String answer) {
+    public QuestionAnswerModel(final int questionNumber, @NonNull final String question, @NonNull final String answer) {
         this.question = question;
         this.answer = answer;
         this.questionNumber = questionNumber;
     }
 
-    protected QuestionAnswerModel(Parcel in) {
+    protected QuestionAnswerModel(final Parcel in) {
         question = in.readString();
         answer = in.readString();
         questionNumber = in.readInt();
@@ -43,12 +43,12 @@ public class QuestionAnswerModel implements Parcelable {
 
     public static final Creator<QuestionAnswerModel> CREATOR = new Creator<QuestionAnswerModel>() {
         @Override
-        public QuestionAnswerModel createFromParcel(Parcel in) {
+        public QuestionAnswerModel createFromParcel(final Parcel in) {
             return new QuestionAnswerModel(in);
         }
 
         @Override
-        public QuestionAnswerModel[] newArray(int size) {
+        public QuestionAnswerModel[] newArray(final int size) {
             return new QuestionAnswerModel[size];
         }
     };
@@ -71,11 +71,11 @@ public class QuestionAnswerModel implements Parcelable {
         return bookmarked;
     }
 
-    public void setBookmarked(int bookmarked) {
+    public void setBookmarked(final int bookmarked) {
         this.bookmarked = bookmarked;
     }
 
-    public void setQuestionNumber(int questionNumber) {
+    public void setQuestionNumber(final int questionNumber) {
         this.questionNumber = questionNumber;
     }
 
@@ -85,7 +85,7 @@ public class QuestionAnswerModel implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(final Parcel dest, final int flags) {
         dest.writeString(question);
         dest.writeString(answer);
         dest.writeInt(questionNumber);

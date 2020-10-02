@@ -10,7 +10,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -44,7 +43,7 @@ public class AddedQuestionsListActivity extends AppCompatActivity {
     private AddedQuestionAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_added_questions_list);
         ButterKnife.bind(this);
@@ -56,12 +55,9 @@ public class AddedQuestionsListActivity extends AppCompatActivity {
         addedListView.setAdapter(adapter);
         registerForContextMenu(addedListView);
 //        loadList();
-        addedListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AnswerDisplayFromListFragment display = new AnswerDisplayFromListFragment(questionsAddedList.get(position));
-                display.show(getSupportFragmentManager(), "answer-display");
-            }
+        addedListView.setOnItemClickListener((parent, view, position, id) -> {
+            final AnswerDisplayFromListFragment display = new AnswerDisplayFromListFragment(questionsAddedList.get(position));
+            display.show(getSupportFragmentManager(), "answer-display");
         });
 
     }
@@ -73,18 +69,18 @@ public class AddedQuestionsListActivity extends AppCompatActivity {
     }
 
     private void loadList() {
-        ProgressDialog progressDialog = new ProgressDialog(this);
+        final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading questions...");
         progressDialog.show();
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+        if (null != FirebaseAuth.getInstance().getCurrentUser()) {
             databaseReference = database.getReference("users").child(FirebaseAuth.getInstance().getUid()).child("add");
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.getValue() != null) {
+                public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                    if (null != dataSnapshot.getValue()) {
                         questionsAddedList.clear();
-                        for (DataSnapshot ques : dataSnapshot.getChildren()) {
-                            if (ques.getValue(QuestionAnswerModel.class) != null) {
+                        for (final DataSnapshot ques : dataSnapshot.getChildren()) {
+                            if (null != ques.getValue(QuestionAnswerModel.class)) {
                                 questionsAddedList.add(ques.getValue(QuestionAnswerModel.class));
                                 keys.add(ques.getKey());
                             }
@@ -95,46 +91,48 @@ public class AddedQuestionsListActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                public void onCancelled(@NonNull final DatabaseError databaseError) {
                     progressDialog.hide();
                 }
             });
-        } else Toast.makeText(this, "Log in to check list", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Log in to check list", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         getMenuInflater().inflate(R.menu.delete_contextual_menu, menu);
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_delete) {
-            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-            int index = info.position;
+    public boolean onContextItemSelected(final MenuItem item) {
+        if (R.id.action_delete == item.getItemId()) {
+            final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            final int index = info.position;
             deleteItem(index);
         }
         return super.onContextItemSelected(item);
     }
 
-    private void deleteItem(int key) {
-        ProgressDialog progressDialog = new ProgressDialog(this);
+    private void deleteItem(final int key) {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading questions...");
         progressDialog.show();
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+        if (null != FirebaseAuth.getInstance().getCurrentUser()) {
             databaseReference = database.getReference("users").child(FirebaseAuth.getInstance().getUid()).child("add").child(keys.get(key));
-            databaseReference.removeValue(new DatabaseReference.CompletionListener() {
-                @Override
-                public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                    progressDialog.dismiss();
-                    if (databaseError == null) {
-                        Toast.makeText(AddedQuestionsListActivity.this, "Deleted Successfully", Toast.LENGTH_SHORT).show();
-                        loadList();
-                    } else
-                        Toast.makeText(AddedQuestionsListActivity.this, "Internet/Server issue", Toast.LENGTH_SHORT).show();
+            databaseReference.removeValue((databaseError, databaseReference) -> {
+                progressDialog.dismiss();
+                if (null == databaseError) {
+                    Toast.makeText(this, "Deleted Successfully", Toast.LENGTH_SHORT).show();
+                    loadList();
+                } else {
+                    Toast.makeText(this, "Internet/Server issue", Toast.LENGTH_SHORT).show();
                 }
             });
-        } else Toast.makeText(this, "Log in to check list", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Log in to check list", Toast.LENGTH_SHORT).show();
+        }
     }
 }

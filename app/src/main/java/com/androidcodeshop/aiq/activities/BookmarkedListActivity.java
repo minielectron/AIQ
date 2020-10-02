@@ -42,14 +42,14 @@ public class BookmarkedListActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookmarked_list);
         ButterKnife.bind(this);
         toolbar.setTitle("Bookmarked Questions");
         setSupportActionBar(toolbar);
-        ArrayList<QuestionAnswerModel> questionAnswerModels = new ArrayList<>();
-        MyDatabase database = MyDatabase.getDatabase(this);
+        final ArrayList<QuestionAnswerModel> questionAnswerModels = new ArrayList<>();
+        final MyDatabase database = MyDatabase.getDatabase(this);
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             Toast.makeText(this, "Login to see bookmarked questions", Toast.LENGTH_SHORT).show();
             return;

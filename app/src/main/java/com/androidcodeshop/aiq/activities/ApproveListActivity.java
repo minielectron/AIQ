@@ -3,8 +3,6 @@ package com.androidcodeshop.aiq.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -42,7 +40,7 @@ public class ApproveListActivity extends AppCompatActivity implements SwipeRefre
     private ArrayAdapter<String> adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_approve_list);
         ButterKnife.bind(this);
@@ -52,31 +50,25 @@ public class ApproveListActivity extends AppCompatActivity implements SwipeRefre
         questionsList = new ArrayList<>();
         keys = new ArrayList<>();
 
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference("add_request");
 
         adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, questions);
         approveListview.setAdapter(adapter);
-
-//        loadQuestionsToApprove();
-
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
                 android.R.color.holo_green_dark,
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
 
-        approveListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("question", questionsList.get(position));
-                bundle.putString("key", keys.get(position));
-                Intent intent = new Intent(getApplicationContext(), ApproveQuestionDetailsActivity.class);
-                intent.putExtras(bundle);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
+        approveListview.setOnItemClickListener((parent, view, position, id) -> {
+            final Bundle bundle = new Bundle();
+            bundle.putParcelable("question", questionsList.get(position));
+            bundle.putString("key", keys.get(position));
+            final Intent intent = new Intent(getApplicationContext(), ApproveQuestionDetailsActivity.class);
+            intent.putExtras(bundle);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         });
 
     }
@@ -88,31 +80,32 @@ public class ApproveListActivity extends AppCompatActivity implements SwipeRefre
     }
 
     private void loadQuestionsToApprove() {
-        ProgressDialog progressDialog = new ProgressDialog(this);
+        final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading Questions");
         progressDialog.show();
         mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 questionsList.clear();
                 questions.clear();
                 keys.clear();
-                if (dataSnapshot.getValue() != null) {
-                    for (DataSnapshot ques : dataSnapshot.getChildren()) {
-                        if (ques.getValue(QuestionAnswerModel.class) != null) {
+                if (null != dataSnapshot.getValue()) {
+                    for (final DataSnapshot ques : dataSnapshot.getChildren()) {
+                        if (null != ques.getValue(QuestionAnswerModel.class)) {
                             questions.add(ques.getValue(QuestionAnswerModel.class).getQuestion());
                             questionsList.add(ques.getValue(QuestionAnswerModel.class));
                             keys.add(ques.getKey());
                         }
                     }
-                    if (questions.size() > 0)
+                    if (!questions.isEmpty()) {
                         adapter.notifyDataSetChanged();
+                    }
                 }
                 progressDialog.hide();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull final DatabaseError databaseError) {
                 progressDialog.hide();
             }
         });

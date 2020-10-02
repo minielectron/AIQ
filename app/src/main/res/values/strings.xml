@@ -23,7 +23,7 @@
     \nInstructions for better acceptance\n1.Add questions that is not in list\n2.Write clear answers, link can be added\n3.Use simple words for better understanding.\n4.No offensive words
     </string>
     <string name="write_question">Write question</string>
-    <string name="add_question_no_s">Your Question No. %s</string>
+    <string name="add_question_no_s">Your Question No. %d</string>
     <string name="add_ques">Add Questions</string>
     <string name="privacy">Privacy Policy</string>
     <string name="policy_description"><![CDATA[QubitX built the Android Interview Questions app as an Ad Supported app. This SERVICE is provided by QubitX at no cost and is intended for use as is.

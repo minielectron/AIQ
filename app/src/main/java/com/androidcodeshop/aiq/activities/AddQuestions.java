@@ -3,7 +3,6 @@ package com.androidcodeshop.aiq.activities;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,38 +31,33 @@ public class AddQuestions extends AppCompatActivity {
     EditText questionTestView;
     @BindView(R.id.ans_text)
     EditText ansTextView;
-    @BindView(R.id.button)
-    Button buttonSubmit;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private long quesNum = 1;
     private long addRequestQuesNum = 1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_questions);
         ButterKnife.bind(this);
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
         setQuestionNumber();
-
-
     }
 
     private void setQuestionNumber() {
         databaseReference.child("users").child(FirebaseAuth.getInstance().getUid()).child("add").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null){
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                if (null != dataSnapshot.getValue()){
                     quesNum = dataSnapshot.getChildrenCount() + 1;
                 }
-                addQuesNo.setText(String.format(getString(R.string.add_question_no_s), String.valueOf(quesNum)));
+                addQuesNo.setText(String.format(getString(R.string.add_question_no_s), quesNum));
 
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull final DatabaseError databaseError) {
 
             }
         });
@@ -81,21 +75,21 @@ public class AddQuestions extends AppCompatActivity {
         if (TextUtils.isEmpty(questionTestView.getText()) || TextUtils.isEmpty(ansTextView.getText())) {
             Toast.makeText(this, "Please add questions and answer", Toast.LENGTH_SHORT).show();
         } else {
-            ProgressDialog progressDialog = new ProgressDialog(this);
+            final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setMessage("Saving Question...");
             progressDialog.show();
-            QuestionAnswerModel questionAnswerModel = new QuestionAnswerModel((int) quesNum, questionTestView.getText().toString(), ansTextView.getText().toString());
-            if (databaseReference != null ) {
+            final QuestionAnswerModel questionAnswerModel = new QuestionAnswerModel((int) quesNum, questionTestView.getText().toString(), ansTextView.getText().toString());
+            if (null != databaseReference) {
                 databaseReference.child("users").child(FirebaseAuth.getInstance().getUid()).child("add").push().setValue(questionAnswerModel)
                         .addOnCompleteListener(task -> {
                             progressDialog.hide();
                             clear();
                             setQuestionNumber();
-                            Toast.makeText(AddQuestions.this, "Added Successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Added Successfully", Toast.LENGTH_SHORT).show();
                         })
                         .addOnFailureListener(e -> {
                             progressDialog.hide();
-                            Toast.makeText(AddQuestions.this, "" + "Sorry! Internet/Server issue", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "" + "Sorry! Internet/Server issue", Toast.LENGTH_SHORT).show();
                         });
 
                 databaseReference.child("add_request").push().setValue(questionAnswerModel)
@@ -103,28 +97,29 @@ public class AddQuestions extends AppCompatActivity {
                             progressDialog.hide();
                             clear();
                             setTotalQuestionNumber();
-                            Toast.makeText(AddQuestions.this, "Request : " + addRequestQuesNum + " Added!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, "Request : " + addRequestQuesNum + " Added!", Toast.LENGTH_LONG).show();
                         })
                         .addOnFailureListener(e -> {
                             progressDialog.hide();
-                            Toast.makeText(AddQuestions.this, "" + "Sorry! Internet/Server issue", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "" + "Sorry! Internet/Server issue", Toast.LENGTH_SHORT).show();
                         });
-            } else
+            } else {
                 Toast.makeText(this, "Database reference is not valid", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     private void setTotalQuestionNumber() {
         databaseReference.child("add_request").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                if (null != dataSnapshot.getValue()) {
                     addRequestQuesNum = dataSnapshot.getChildrenCount() + 1;
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull final DatabaseError databaseError) {
 
             }
         });

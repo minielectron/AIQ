@@ -236,15 +236,12 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
 
     private void isAdminLoggedIn() {
         Menu navMenu = navigationView.getMenu();
-        database.getReference("is_admin").setValue("Random value").addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                MenuItem menuItem = navMenu.findItem(R.id.action_approve);
-                if (!task.isSuccessful()) {
-                    menuItem.setVisible(false);
-                } else menuItem.setVisible(true);
+        database.getReference("is_admin").setValue("Random value").addOnCompleteListener(task -> {
+            MenuItem menuItem = navMenu.findItem(R.id.action_approve);
+            if (!task.isSuccessful()) {
+                menuItem.setVisible(false);
+            } else menuItem.setVisible(true);
 
-            }
         });
     }
 
