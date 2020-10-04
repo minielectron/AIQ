@@ -28,39 +28,39 @@ public class AnswerDisplayDialogFragment extends FullScreenBottomSheetDialogFrag
     private static int page = 0;
 
     public static AnswerDisplayDialogFragment getInstance(int page) {
-        AnswerDisplayDialogFragment answerDisplayDialogFragment = new AnswerDisplayDialogFragment();
+        final AnswerDisplayDialogFragment answerDisplayDialogFragment = new AnswerDisplayDialogFragment();
         AnswerDisplayDialogFragment.page = page;
         return answerDisplayDialogFragment;
     }
 
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
         setRetainInstance(true);
-        View view = inflater.inflate(R.layout.answer_display, container, false);
+        final View view = inflater.inflate(R.layout.answer_display, container, false);
         Log.i(TAG, "onCreateView: page " + page);
-        TextView ques = view.findViewById(R.id.question_label);
+        final TextView ques = view.findViewById(R.id.question_label);
         ques.setText(MainActivity.questionAnswerModelArrayList.get(page).getQuestion());
-        TextView ans = view.findViewById(R.id.answer_label);
+        final TextView ans = view.findViewById(R.id.answer_label);
         ans.setText(MainActivity.questionAnswerModelArrayList.get(page).getAnswer());
         return view;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MobileAds.initialize(getContext(), getString(R.string.ad_app_id));
-        AdView mAdView = view.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
+        MobileAds.initialize(getContext());
+        final AdView mAdView = view.findViewById(R.id.adView);
+        final AdRequest adRequest = new AdRequest.Builder()
                 .build();
         mAdView.loadAd(adRequest);
-        Button doneButton = view.findViewById(R.id.doneButton);
+        final Button doneButton = view.findViewById(R.id.doneButton);
         doneButton.setOnClickListener(v -> dismiss());
     }
 

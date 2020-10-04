@@ -4,14 +4,14 @@ import com.androidcodeshop.aiq.model.QuestionAnswerModel;
 
 import java.util.ArrayList;
 
-public class Questions {
+public final class Questions {
     private static ArrayList<QuestionAnswerModel> questionsAns;
 
     private Questions() {
     }
 
     public static ArrayList<QuestionAnswerModel> getInstance() {
-        if (questionsAns == null) {
+        if (null == questionsAns) {
             questionsAns = new ArrayList<>();
 //            populateQuestions();
         }

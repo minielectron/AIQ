@@ -17,29 +17,32 @@ import java.util.ArrayList;
 public class PageViewModel extends AndroidViewModel {
 
     private static final String TAG = "PageViewModel";
-    private ArrayList<QuestionAnswerModel> questionAnswerModels = new ArrayList<>();
-    private MutableLiveData<Integer> mIndex = new MutableLiveData<>();
+    private final ArrayList<QuestionAnswerModel> questionAnswerModels = new ArrayList<>();
+    private final MutableLiveData<Integer> mIndex = new MutableLiveData<>();
     /**
      * This method maps the Questions and Answer according to fargment index
      */
-    private LiveData<QuestionAnswerModel> questionAnswerModelLiveData = Transformations.map(mIndex, input -> {
+    private final LiveData<QuestionAnswerModel> questionAnswerModelLiveData = Transformations.map(mIndex, input -> {
         Log.i(TAG, "apply: input" + input);
-        if (input <= questionAnswerModels.size() - 1)
+        if (input <= questionAnswerModels.size() - 1) {
             return questionAnswerModels.get(input);
-        else return new QuestionAnswerModel(0, "NA", "NA");
+        } else {
+            return new QuestionAnswerModel(0, "NA", "NA");
+        }
     });
 
-    public PageViewModel(@NonNull Application application) {
+    public PageViewModel(@NonNull final Application application) {
         super(application);
         updateDbData();
     }
 
     private void updateDbData() {
-        if (MainActivity.questionAnswerModelArrayList != null)
+        if (null != MainActivity.questionAnswerModelArrayList) {
             questionAnswerModels.addAll(MainActivity.questionAnswerModelArrayList);
+        }
     }
 
-    void setIndex(int index) {
+    void setIndex(final int index) {
         mIndex.setValue(index);
     }
 

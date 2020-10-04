@@ -1,14 +1,11 @@
 package com.androidcodeshop.aiq.services;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class CustomFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "CustomFirebaseMessaging";
@@ -16,7 +13,7 @@ public class CustomFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
+    public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         // ...
 
@@ -24,7 +21,7 @@ public class CustomFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
-        if (remoteMessage.getData().size() > 0) {
+        if (!remoteMessage.getData().isEmpty()) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
             if (/* Check if data needs to be processed by long running job */ true) {
@@ -38,13 +35,13 @@ public class CustomFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
+        if (null != remoteMessage.getNotification()) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
     }
 
     @Override
-    public void onNewToken(String token) {
+    public void onNewToken(@NonNull String token) {
         Log.d(TAG, "Refreshed token: " + token);
 
         // If you want to send messages to this application instance or

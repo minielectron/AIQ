@@ -25,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class WebViewActivity extends AppCompatActivity {
-    private static final String DEFAULT_URL = "https://androidcodeshop.com/about-me/";
+    private static final String DEFAULT_URL = "https://androidprodev.com/about-me/";
     @BindView(R.id.web_view)
     WebView webView;
     @BindView(R.id.progress_bar)
@@ -37,15 +37,16 @@ public class WebViewActivity extends AppCompatActivity {
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
         ButterKnife.bind(this);
         String url = DEFAULT_URL;
-        Intent intent = getIntent();
-        Uri data = intent.getData();
-        if (data != null)
+        final Intent intent = getIntent();
+        final Uri data = intent.getData();
+        if (null != data) {
             url = data.toString();
+        }
         setSupportActionBar(toolbar);
         toolbarText.setText(url);
         // AppUtils.makeActivityFullScreen(getWindow());
@@ -54,26 +55,26 @@ public class WebViewActivity extends AppCompatActivity {
         if (isConnected()) {
             webView.setWebViewClient(new WebViewClient() {
                 @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String request) {
+                public boolean shouldOverrideUrlLoading(final WebView view, final String request) {
                     view.loadUrl(request);
                     toolbarText.setText(request);
                     return super.shouldOverrideUrlLoading(view, request);
                 }
 
                 @Override
-                public void onPageFinished(WebView view, String url) {
+                public void onPageFinished(final WebView view, final String url) {
                     super.onPageFinished(view, url);
                     progressBar.setVisibility(View.INVISIBLE);
                 }
 
                 @Override
-                public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                public void onPageStarted(final WebView view, final String url, final Bitmap favicon) {
                     super.onPageStarted(view, url, favicon);
                     progressBar.setVisibility(View.VISIBLE);
                 }
             });
             webView.getSettings().setJavaScriptEnabled(true);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (Build.VERSION_CODES.O <= Build.VERSION.SDK_INT) {
                 webView.getSettings().setSafeBrowsingEnabled(true);
             }
             webView.getSettings().setAllowContentAccess(true);
@@ -92,8 +93,8 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+    public boolean onKeyDown(final int keyCode, final KeyEvent event) {
+        if (KeyEvent.ACTION_DOWN == event.getAction()) {
             switch (keyCode) {
                 case KeyEvent.KEYCODE_BACK:
                     if (webView.canGoBack()) {
@@ -108,9 +109,9 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     private boolean isConnected() {
-        ConnectivityManager connectivityManager
+        final ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        final NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return null != activeNetworkInfo && activeNetworkInfo.isConnected();
     }
 }

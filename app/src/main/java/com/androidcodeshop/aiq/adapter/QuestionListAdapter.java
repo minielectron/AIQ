@@ -17,11 +17,11 @@ import static android.content.ContentValues.TAG;
 
 public class QuestionListAdapter extends BaseAdapter {
 
-    private ArrayList<QuestionAnswerModel> questionAnswerModel; // original list
-    private ArrayList<QuestionAnswerModel> questionAnswerModelCopy = new ArrayList<>(); // copy list
-    private Context context;
+    private final ArrayList<QuestionAnswerModel> questionAnswerModel; // original list
+    private final ArrayList<QuestionAnswerModel> questionAnswerModelCopy = new ArrayList<>(); // copy list
+    private final Context context;
 
-    public QuestionListAdapter(ArrayList<QuestionAnswerModel> questionAnswerModel, Context context) {
+    public QuestionListAdapter(final ArrayList<QuestionAnswerModel> questionAnswerModel, final Context context) {
         this.questionAnswerModel = questionAnswerModel;
         questionAnswerModelCopy.addAll(questionAnswerModel);
         this.context = context;
@@ -29,23 +29,23 @@ public class QuestionListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return questionAnswerModelCopy == null ? 0 : questionAnswerModelCopy.size();
+        return questionAnswerModelCopy.size();
     }
 
     @Override
-    public Object getItem(int position) {
+    public Object getItem(final int position) {
         return null;
     }
 
     @Override
-    public long getItemId(int position) {
+    public long getItemId(final int position) {
         return 0;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
+        final ViewHolder holder;
+        if (null == convertView) {
             //will be called once to fetch the id not multiple times
             convertView = LayoutInflater.from(context).inflate(R.layout.question_list_item, parent, false);
             holder = new ViewHolder(convertView);
@@ -57,12 +57,12 @@ public class QuestionListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void filter(String queryText) {
+    public void filter(final String queryText) {
         questionAnswerModelCopy.clear();
         if (queryText.isEmpty()) {
             questionAnswerModelCopy.addAll(questionAnswerModel);
         } else {
-            for (QuestionAnswerModel question : questionAnswerModel) {
+            for (final QuestionAnswerModel question : questionAnswerModel) {
                 if (question.getQuestion().toLowerCase().contains(queryText.toLowerCase())) {
                     questionAnswerModelCopy.add(question);
                 }
@@ -71,11 +71,11 @@ public class QuestionListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    private class ViewHolder {
+    private static class ViewHolder {
 
         TextView question, qno;
 
-        ViewHolder(View view) {
+        ViewHolder(final View view) {
             question = view.findViewById(R.id.question_label);
             qno = view.findViewById(R.id.question_number);
         }

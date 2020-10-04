@@ -19,41 +19,43 @@ import com.androidcodeshop.aiq.R;
 import com.androidcodeshop.aiq.utils.Utils;
 
 public class GotoPageFragmentDialogFragment extends DialogFragment {
-    OnGotoFragmentLister fragmentLister;
+    private OnGotoFragmentLister fragmentLister;
     public GotoPageFragmentDialogFragment() {
         super();
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull final Context context) {
         super.onAttach(context);
         fragmentLister = (OnGotoFragmentLister) context;
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.goto_layout,container,false);
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.goto_layout,container,false);
         setRetainInstance(true);
         return view;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final EditText number = view.findViewById(R.id.page_number_et);
         number.setHint("page(1-"+ MainActivity.questionAnswerModelArrayList.size()+")");
-        Button button = view.findViewById(R.id.goto_btn);
-        Button lastButton = view.findViewById(R.id.last_btn);
+        final Button button = view.findViewById(R.id.goto_btn);
+        final Button lastButton = view.findViewById(R.id.last_btn);
         button.setOnClickListener(v -> {
-            if(TextUtils.isEmpty(number.getText()))
+            if(TextUtils.isEmpty(number.getText())) {
                 Toast.makeText(getContext(), "Plese enter a page number", Toast.LENGTH_SHORT).show();
-            else fragmentLister.gotoPage(Integer.valueOf(number.getText().toString()));
+            } else {
+                fragmentLister.gotoPage(Integer.valueOf(number.getText().toString()));
+            }
             Utils.hideKeyboard(getActivity());
         });
         lastButton.setOnClickListener(v -> {

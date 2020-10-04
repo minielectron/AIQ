@@ -16,7 +16,6 @@ import com.androidcodeshop.aiq.R;
 import com.androidcodeshop.aiq.adapter.QuestionListAdapter;
 import com.androidcodeshop.aiq.fragments.AnswerDisplayDialogFragment;
 import com.androidcodeshop.aiq.model.QuestionAnswerModel;
-import com.androidcodeshop.aiq.room.MyDatabase;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -49,42 +48,42 @@ public class BookmarkedListActivity extends AppCompatActivity {
         toolbar.setTitle("Bookmarked Questions");
         setSupportActionBar(toolbar);
         final ArrayList<QuestionAnswerModel> questionAnswerModels = new ArrayList<>();
-        final MyDatabase database = MyDatabase.getDatabase(this);
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (null == FirebaseAuth.getInstance().getCurrentUser()) {
             Toast.makeText(this, "Login to see bookmarked questions", Toast.LENGTH_SHORT).show();
             return;
         }
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child(getString(R.string.bookmarked_ques));
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child(getString(R.string.bookmarked_ques));
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 questionAnswerModels.clear();
                 QuestionAnswerModel model;
-                for (DataSnapshot ques : dataSnapshot.getChildren()) {
+                for (final DataSnapshot ques : dataSnapshot.getChildren()) {
                     model = ques.getValue(QuestionAnswerModel.class);
-                    if (model != null && model.getBookmarked() == 1)
+                    if (null != model && 1 == model.getBookmarked()) {
                         questionAnswerModels.add(model);
+                    }
                 }
                 listViewBookmark.setAdapter(new QuestionListAdapter(questionAnswerModels, getApplicationContext()));
                 progressDialog.dismiss();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull final DatabaseError databaseError) {
                 progressDialog.dismiss();
 
             }
         });
 
         listViewBookmark.setOnItemClickListener((parent, view, position, id) -> {
-            TextView qestTv = view.findViewById(R.id.question_number);
-            int pageNum = Integer.valueOf(qestTv.getText().toString());
+            final TextView qestTv = view.findViewById(R.id.question_number);
+            final int pageNum = Integer.valueOf(qestTv.getText().toString());
             Log.i(TAG, "onItemClick: page from questTv" + pageNum);
-            FragmentManager manager = getSupportFragmentManager();
-            AnswerDisplayDialogFragment displayDialog = AnswerDisplayDialogFragment.getInstance(pageNum - 1);
+            final FragmentManager manager = getSupportFragmentManager();
+            final AnswerDisplayDialogFragment displayDialog = AnswerDisplayDialogFragment.getInstance(pageNum - 1);
             displayDialog.show(manager, "answer-display");
         });
     }
@@ -92,7 +91,7 @@ public class BookmarkedListActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(progressDialog!=null && progressDialog.isShowing()){
+        if (null != progressDialog && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
     }

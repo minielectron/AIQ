@@ -32,7 +32,6 @@ public class ApproveListActivity extends AppCompatActivity implements SwipeRefre
     Toolbar toolbar;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
-    private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     private ArrayList<String> questions;
     private ArrayList<String> keys;

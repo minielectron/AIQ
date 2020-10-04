@@ -18,7 +18,7 @@
         android:icon="@drawable/ic_share_white_24dp"
         android:title="@string/share_application"
         app:showAsAction="always" />
-    <group android:id="@+id/admin">
+    <group>
         <item
             android:id="@+id/action_add_questions"
             android:icon="@drawable/ic_add_ques"
@@ -36,7 +36,7 @@
             app:showAsAction="collapseActionView" />
     </group>
 
-    <group android:id="@+id/others">
+    <group>
         <item
             android:id="@+id/action_about_me"
             android:icon="@drawable/ic_perm_identity_black_24dp"
@@ -49,7 +49,7 @@
             app:showAsAction="ifRoom" />
     </group>
 
-    <group android:id="@+id/app_related">
+    <group>
         <item
             android:id="@+id/action_update"
             android:icon="@drawable/update_ic"

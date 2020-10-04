@@ -7,12 +7,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
-public class Utils {
+public final class Utils {
 
     private Utils(){}
-    public static void makeActivityFullScreen(Window window) {
-        View decorView = window.getDecorView();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+    public static void makeActivityFullScreen(final Window window) {
+        final View decorView = window.getDecorView();
+        if (Build.VERSION_CODES.P <= Build.VERSION.SDK_INT) {
             window.getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
         }
         decorView.setSystemUiVisibility(
@@ -27,12 +27,12 @@ public class Utils {
         );
     }
 
-    public static void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+    public static void hideKeyboard(final Activity activity) {
+        final InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.
         View view = activity.getCurrentFocus();
         //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
+        if (null == view) {
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

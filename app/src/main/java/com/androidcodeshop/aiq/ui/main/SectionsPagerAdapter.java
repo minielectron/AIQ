@@ -2,6 +2,7 @@ package com.androidcodeshop.aiq.ui.main;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -17,21 +18,22 @@ import java.util.ArrayList;
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-    ArrayList<QuestionAnswerModel> questionAnswerModels;
+    private final ArrayList<QuestionAnswerModel> questionAnswerModels;
 
-    public SectionsPagerAdapter(Context context, FragmentManager fm, ArrayList<QuestionAnswerModel> questionAnswerModelArrayList) {
+    public SectionsPagerAdapter(final Context context, final FragmentManager fm, final ArrayList<QuestionAnswerModel> questionAnswerModelArrayList) {
         super(fm);
         this.questionAnswerModels = questionAnswerModelArrayList;
     }
 
+    @NonNull
     @Override
-    public Fragment getItem(int position) {
+    public Fragment getItem(final int position) {
         return PlaceholderFragment.newInstance(position);
     }
 
     @Nullable
     @Override
-    public CharSequence getPageTitle(int position) {
+    public CharSequence getPageTitle(final int position) {
         return "Question : " + (position + 1);
     }
 

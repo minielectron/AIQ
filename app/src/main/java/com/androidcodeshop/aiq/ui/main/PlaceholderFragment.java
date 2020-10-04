@@ -49,7 +49,6 @@ public class PlaceholderFragment extends Fragment {
     private Unbinder unbinder;
     @BindView(R.id.bookmark_ib)
     ImageButton bookmarkIb;
-    private MyDatabase database;
 
     private PageViewModel pageViewModel;
     private ShowSnackBar showSnackBar;
@@ -63,14 +62,14 @@ public class PlaceholderFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         showSnackBar = (MainActivity) context;
     }
 
-    static PlaceholderFragment newInstance(int index) {
-        PlaceholderFragment fragment = new PlaceholderFragment();
-        Bundle bundle = new Bundle();
+    static PlaceholderFragment newInstance(final int index) {
+        final PlaceholderFragment fragment = new PlaceholderFragment();
+        final Bundle bundle = new Bundle();
         bundle.putInt(ARG_SECTION_NUMBER, index);
         fragment.setArguments(bundle);
         return fragment;
@@ -78,38 +77,36 @@ public class PlaceholderFragment extends Fragment {
 
     @SuppressLint("HardwareIds")
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String test_device = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-        database = MyDatabase.getDatabase(getContext());
         pageViewModel = ViewModelProviders.of(this).get(PageViewModel.class);
         int index = 0;
-        if (getArguments() != null) {
+        if (null != getArguments()) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
         pageViewModel.setIndex(index);
         Log.i(TAG, "onCreate: index" + index);
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
-        if (firebaseAuth.getCurrentUser() != null) {
+        if (null != firebaseAuth.getCurrentUser()) {
             firebaseUser = firebaseAuth.getCurrentUser();
             databaseReference = firebaseDatabase.getReference().child("users").child(firebaseUser.getUid()).child(getContext().getString(R.string.bookmarked_ques));
         }
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_main, container, false);
+    public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+        final View root = inflater.inflate(R.layout.fragment_main, container, false);
         final TextView question = root.findViewById(R.id.question_label);
         final TextView answer = root.findViewById(R.id.answer_label);
 
-        MobileAds.initialize(getContext(), getString(R.string.ad_app_id));
-        AdView mAdView = root.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
+        MobileAds.initialize(getContext());
+        final AdView mAdView = root.findViewById(R.id.adView);
+        final AdRequest adRequest = new AdRequest.Builder()
                 .build();
         mAdView.loadAd(adRequest);
 
-        pageViewModel.getQuestionAnswers().observe(this, page -> {
+        pageViewModel.getQuestionAnswers().observe(getViewLifecycleOwner(), page -> {
             question.setText(page.getQuestion());
             answer.setText(String.format(getString(R.string.answer), page.getAnswer()));
             questionNo.setText(String.valueOf(page.getQuestionNumber()));
@@ -128,7 +125,7 @@ public class PlaceholderFragment extends Fragment {
 
     @OnClick(R.id.bookmark_ib)
     void onViewClicked() {
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (null == FirebaseAuth.getInstance().getCurrentUser()) {
             Toast.makeText(getContext(), "Login to bookmark!", Toast.LENGTH_SHORT).show();
             return;
         } else {
@@ -139,22 +136,23 @@ public class PlaceholderFragment extends Fragment {
             databaseReference = firebaseDatabase.getReference().child("users").child(firebaseUser.getUid()).child(getContext().getString(R.string.bookmarked_ques));
         }
 
-        int quesNum = Integer.valueOf(questionNo.getText().toString());
-        QuestionAnswerModel currentQuestion = MainActivity.questionAnswerModelArrayList.get(quesNum - 1);
+        final int quesNum = Integer.valueOf(questionNo.getText().toString());
+        final QuestionAnswerModel currentQuestion = MainActivity.questionAnswerModelArrayList.get(quesNum - 1);
         databaseReference.child(String.valueOf(quesNum)).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                if (null != dataSnapshot.getValue()) {
                     currentQuestion.setBookmarked((dataSnapshot.getValue(QuestionAnswerModel.class).getBookmarked() + 1) % 2);
-                    if (currentQuestion.getBookmarked() == 1)
+                    if (1 == currentQuestion.getBookmarked()) {
                         showSnackBar.showSnack("Added in Bookmark");
-                    else showSnackBar.showSnack("Removed From Bookmark");
-                    databaseReference.child(String.valueOf(quesNum)).setValue(currentQuestion);
+                    } else {
+                        showSnackBar.showSnack("Removed From Bookmark");
+                    }
                 } else {
                     showSnackBar.showSnack("Added in Bookmark");
                     currentQuestion.setBookmarked(1);
-                    databaseReference.child(String.valueOf(quesNum)).setValue(currentQuestion);
                 }
+                databaseReference.child(String.valueOf(quesNum)).setValue(currentQuestion);
             }
 
             @Override

@@ -31,7 +31,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/answer_white_back_rectangle"
-        android:elevation="4dp"
         android:ems="10"
         android:hint="@string/write_question"
         android:maxEms="250"
@@ -41,7 +40,8 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/ans_text"
@@ -52,8 +52,8 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/answer_white_back_rectangle"
-        android:elevation="4dp"
         android:gravity="start"
+        android:inputType="text"
         android:hint="@string/write_answer"
         android:maxEms="5000"
         android:padding="8dp"
@@ -72,8 +72,8 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:height="64dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="Submit"
+        android:background="@color/colorPrimary"
+        android:text="@string/submit"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -86,7 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Your question will be live once approved!"
+        android:text="@string/your_question_will_be_live_once_approved"
         android:textColor="@color/AntiqueWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

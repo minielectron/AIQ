@@ -1,48 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="24dp"
     android:gravity="center"
-    >
+    android:orientation="vertical"
+    android:padding="24dp">
 
     <TextView
-        android:textSize="16sp"
-        android:textColor="@android:color/black"
-        android:text="@string/goto_question_no"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/goto_question_no"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
 
     <EditText
-        android:layout_marginTop="10dp"
         android:id="@+id/page_number_et"
         android:layout_width="130dp"
-        android:inputType="number"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:gravity="center"
-        android:maxLength="3"
-        android:layout_height="wrap_content" />
+        android:inputType="number"
+        android:maxLength="3" />
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
         <Button
-            android:text="last"
             android:id="@+id/last_btn"
-            android:layout_marginTop="10dp"
-            android:textColor="@android:color/white"
-            android:background="@color/colorPrimary"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary"
+            android:text="last"
+            style="?android:borderlessButtonStyle"
+            android:textColor="@android:color/white" />
+
         <Button
-            android:text="goto"
             android:id="@+id/goto_btn"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@android:color/white"
-            android:background="@color/colorPrimary"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            style="?android:borderlessButtonStyle"
+            android:background="@color/colorPrimary"
+            android:text="goto"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 

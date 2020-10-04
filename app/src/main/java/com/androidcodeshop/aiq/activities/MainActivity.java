@@ -65,16 +65,14 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements GotoPageFragmentDialogFragment.OnGotoFragmentLister, NavigationView.OnNavigationItemSelectedListener, ShowSnackBar {
 
-    private static final String TAG = "MainActivity";
-    public static final String PAGE_NUM = "page_num";
     public static final String ICONIFIED = "iconified";
-    private static final String SAVED = "saved";
     private static final String PRIVACY_DIALOG_SHOWN = "is privacy dialog shown";
     private static String userDispalyName = "User";
     private static final int RC_SIGN_IN = 100;
@@ -93,11 +91,9 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     @BindView(R.id.fab)
     FloatingActionButton fab;
     private GotoPageFragmentDialogFragment dialog;
-    int page = 0;
     public static final String AIQ_PREFS = "aiqp";
     private SharedPreferences.Editor editor;
     private SharedPreferences preferences;
-    private AdView mAdView;
     public static SectionsPagerAdapter sectionsPagerAdapter;
     private ProgressDialog progressDialog;
 
@@ -146,13 +142,15 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
 
 
     private void loadUserDetails() {
-        if (!sharedPreferences.getString("name", "").equals("")) {
+        if (!Objects.requireNonNull(sharedPreferences.getString("name", "")).isEmpty()) {
             name.setText(sharedPreferences.getString("name", "defUser"));
             state.setText(sharedPreferences.getString("state", "defLogin"));
-            String url = sharedPreferences.getString("url", null);
-            if (url != null) {
+            final String url = sharedPreferences.getString("url", null);
+            if (null != url) {
                 Glide.with(this).load(Uri.parse(url)).into(headerProfileImage);
-            } else Glide.with(this).load(R.drawable.ic_profile_icon).into(headerProfileImage);
+            } else {
+                Glide.with(this).load(R.drawable.ic_profile_icon).into(headerProfileImage);
+            }
         }
     }
 
@@ -162,10 +160,10 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
         progressDialog.show();
         valueEventListener = new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 questionAnswerModelArrayList.clear();
-                for (DataSnapshot question : dataSnapshot.getChildren()) {
-                    QuestionAnswerModel questionAnswerModel = question.getValue(QuestionAnswerModel.class);
+                for (final DataSnapshot question : dataSnapshot.getChildren()) {
+                    final QuestionAnswerModel questionAnswerModel = question.getValue(QuestionAnswerModel.class);
                     questionAnswerModelArrayList.add(questionAnswerModel);
                 }
                 sectionsPagerAdapter = new SectionsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), questionAnswerModelArrayList);
@@ -176,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull final DatabaseError databaseError) {
                 progressDialog.dismiss();
                 fab.setEnabled(false);
                 Toast.makeText(MainActivity.this, "Check internet connection and sync", Toast.LENGTH_LONG).show();
@@ -186,23 +184,19 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     }
 
 
-    private void loginSetup(String user, String state, Uri photoUrl) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+    private void loginSetup(final String user, final String state, final Uri photoUrl) {
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
         isAdminLoggedIn();
         editor.putString("name", user);
         editor.putString("state", state);
-        if (photoUrl != null)
+        if (null != photoUrl) {
             editor.putString("url", photoUrl.toString());
+        }
         editor.apply();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
     private void setUpNavigationDrawer() {
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close) {
+        final ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -225,30 +219,26 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
         name = headerview.findViewById(R.id.header_name_tv);
         state = headerview.findViewById(R.id.header_email_tv);
         headerProfileImage = headerview.findViewById(R.id.header_profile_image);
-        headerview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                performLogin();
-            }
-        });
+        headerview.setOnClickListener(v -> performLogin());
         actionBarDrawerToggle.getDrawerArrowDrawable().setColor(ContextCompat.getColor(this, R.color.white));
     }
 
     private void isAdminLoggedIn() {
-        Menu navMenu = navigationView.getMenu();
+        final Menu navMenu = navigationView.getMenu();
         database.getReference("is_admin").setValue("Random value").addOnCompleteListener(task -> {
-            MenuItem menuItem = navMenu.findItem(R.id.action_approve);
+            final MenuItem menuItem = navMenu.findItem(R.id.action_approve);
             if (!task.isSuccessful()) {
                 menuItem.setVisible(false);
-            } else menuItem.setVisible(true);
-
+            } else {
+                menuItem.setVisible(true);
+            }
         });
     }
 
     private void performLogin() {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             drawerLayout.closeDrawer(GravityCompat.START);
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
+            final List<AuthUI.IdpConfig> providers = Arrays.asList(
                     new AuthUI.IdpConfig.PhoneBuilder().build(),
                     new AuthUI.IdpConfig.EmailBuilder().build(),
                     new AuthUI.IdpConfig.GoogleBuilder().build());
@@ -267,13 +257,11 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                     .setTitle("Confirm Logout")
                     .setMessage("Are you sure you want to logout?")
 
-                    .setPositiveButton("Logout", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Continue with delete operation
-                            signOutSetup();
-                            navigationView.getMenu().findItem(R.id.action_approve).setVisible(false);
-                            Toast.makeText(MainActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
-                        }
+                    .setPositiveButton("Logout", (dialog, which) -> {
+                        // Continue with delete operation
+                        signOutSetup();
+                        navigationView.getMenu().findItem(R.id.action_approve).setVisible(false);
+                        Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
                     })
                     .setNegativeButton("Cancel", null)
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -282,10 +270,10 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
         }
     }
 
-    public static void openAppRating(Context context) {
+    public static void openAppRating(final Context context) {
         // you can also use BuildConfig.APPLICATION_ID
-        String appId = context.getPackageName();
-        Intent rateIntent = new Intent(Intent.ACTION_VIEW,
+        final String appId = context.getPackageName();
+        final Intent rateIntent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse("market://details?id=" + appId));
         boolean marketFound = false;
         // find all applications able to handle our rateIntent
@@ -329,21 +317,17 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     private void showPrivacyDialog() {
         if (!PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean(PRIVACY_DIALOG_SHOWN, false)) {
 
-            String privacy_pol = "<a href='https://sites.google.com/view/aiqprivacypolicy/home'> Privacy Policy </a>";
-            String toc = "<a href='https://sites.google.com/view/aiqprivacypolicy/home'> T&C </a>";
-            AlertDialog dialog = new AlertDialog.Builder(this)
+            final String privacy_pol = "<a href='https://sites.google.com/view/aiqprivacypolicy/home'> Privacy Policy </a>";
+            final String toc = "<a href='https://sites.google.com/view/aiqprivacypolicy/home'> T&C </a>";
+            final AlertDialog dialog = new AlertDialog.Builder(this)
                     .setMessage(Html.fromHtml("By using this application, you agree to " + privacy_pol + " and " + toc + " of this application."))
-                    .setPositiveButton("ACCEPT", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putBoolean(PRIVACY_DIALOG_SHOWN, true).apply();
-                        }
-                    })
+                    .setPositiveButton("ACCEPT", (dialog1, which) -> PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putBoolean(PRIVACY_DIALOG_SHOWN, true).apply())
                     .setNegativeButton("DECLINE", null)
                     .setCancelable(false)
                     .create();
 
             dialog.show();
-            TextView textView = dialog.findViewById(android.R.id.message);
+            final TextView textView = dialog.findViewById(android.R.id.message);
             textView.setLinksClickable(true);
             textView.setClickable(true);
             textView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -361,17 +345,17 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
+        if (RC_SIGN_IN == requestCode) {
+            final IdpResponse response = IdpResponse.fromResultIntent(data);
 
-            if (resultCode == RESULT_OK) {
+            if (RESULT_OK == resultCode) {
                 // Successfully signed in
 
                 firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                 Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
-                if (response != null)
+                if (null != response) {
                     if (response.getProviderType().equals(PhoneAuthProvider.PROVIDER_ID)) {
                         userDispalyName = firebaseUser.getPhoneNumber();
                         Glide.with(getApplicationContext()).load(R.drawable.ic_profile_icon).into(headerProfileImage);
@@ -390,6 +374,7 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                         userDispalyName = firebaseUser.getEmail();
                         loginSetup(userDispalyName, "Logout", null);
                     }
+                }
                 name.setText(userDispalyName);
                 state.setText(getString(R.string.logout));
             } else {
@@ -447,12 +432,6 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-
-        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -521,27 +500,27 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
                 break;
 
             case R.id.action_privacy_policy:
-                Intent privacyIntent = new Intent(this, PrivacyPolicyActivity.class);
+                final Intent privacyIntent = new Intent(this, PrivacyPolicyActivity.class);
                 privacyIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(privacyIntent);
                 drawerLayout.closeDrawer(GravityCompat.START);
                 break;
 
             case R.id.action_add_questions:
-                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                if (null == FirebaseAuth.getInstance().getCurrentUser()) {
                     Toast.makeText(this, "Please ! Login to Add", Toast.LENGTH_SHORT).show();
                 } else {
-                    Intent addIntent = new Intent(this, AddQuestions.class);
+                    final Intent addIntent = new Intent(this, AddQuestions.class);
                     addIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(addIntent);
                     drawerLayout.closeDrawer(GravityCompat.START);
                 }
                 break;
             case R.id.action_approve:
-                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                if (null == FirebaseAuth.getInstance().getCurrentUser()) {
                     Toast.makeText(this, "Login Admin", Toast.LENGTH_SHORT).show();
                 } else {
-                    Intent addIntent = new Intent(this, ApproveListActivity.class);
+                    final Intent addIntent = new Intent(this, ApproveListActivity.class);
                     addIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(addIntent);
                     drawerLayout.closeDrawer(GravityCompat.START);
@@ -563,22 +542,20 @@ public class MainActivity extends AppCompatActivity implements GotoPageFragmentD
     @Override
     protected void onStop() {
         super.onStop();
-        if (valueEventListener != null)
+        if (null != valueEventListener) {
             myRef.removeEventListener(valueEventListener);
+        }
         editor.putInt("last_visited_question", viewPager.getCurrentItem());
         editor.apply();
     }
 
     @Override
-    public void showSnack(String bookmarked) {
-        Snackbar.make(fab, bookmarked + "! Check ", Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, BookmarkedListActivity.class);
-                intent.putExtra("bookmarked", true);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
+    public void showSnack(final String bookmarked) {
+        Snackbar.make(fab, bookmarked + "! Check ", Snackbar.LENGTH_LONG).setAction("OK", v -> {
+            final Intent intent = new Intent(this, BookmarkedListActivity.class);
+            intent.putExtra("bookmarked", true);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }).show();
     }
 

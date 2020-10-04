@@ -7,8 +7,8 @@ android {
         applicationId "com.androidcodeshop.aiq"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 10
-        versionName "1.3.2"
+        versionCode 12
+        versionName "1.4.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -19,7 +19,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             resValue "string", "ad_app_id", "ca-app-pub-8264712955626792~6123467795"
             resValue "string", "ad_unit_id", "ca-app-pub-8264712955626792/7659663320"
-            resValue "string", "test", "Release mode is running"
 
 
         }
@@ -30,7 +29,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             resValue "string", "ad_app_id", "ca-app-pub-3940256099942544~3347511713"
             resValue "string", "ad_unit_id", "ca-app-pub-3940256099942544/6300978111"
-            resValue "string", "test", "Debug mode is running"
 
         }
     }

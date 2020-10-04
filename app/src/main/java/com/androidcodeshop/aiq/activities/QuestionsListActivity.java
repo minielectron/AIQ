@@ -36,7 +36,7 @@ public class QuestionsListActivity extends AppCompatActivity implements SearchVi
     private QuestionListAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questions_list);
         ButterKnife.bind(this);
@@ -45,28 +45,24 @@ public class QuestionsListActivity extends AppCompatActivity implements SearchVi
         icon = getIntent().getBooleanExtra(MainActivity.ICONIFIED, true);
         adapter = new QuestionListAdapter(MainActivity.questionAnswerModelArrayList, this);
         listView.setAdapter(adapter);
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        Activity activity = this;
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView qestTv = view.findViewById(R.id.question_number);
-                int pageNum = Integer.valueOf(qestTv.getText().toString());
-                Log.i(TAG, "onItemClick: page from questTv" + pageNum);
-                FragmentManager manager = getSupportFragmentManager();
-                AnswerDisplayDialogFragment displayDialog = AnswerDisplayDialogFragment.getInstance(pageNum - 1);
-                displayDialog.show(manager, "answer-display");
-                Utils.hideKeyboard(activity);
-            }
+        final Activity activity = this;
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            final TextView qestTv = view.findViewById(R.id.question_number);
+            final int pageNum = Integer.valueOf(qestTv.getText().toString());
+            Log.i(TAG, "onItemClick: page from questTv" + pageNum);
+            final FragmentManager manager = getSupportFragmentManager();
+            final AnswerDisplayDialogFragment displayDialog = AnswerDisplayDialogFragment.getInstance(pageNum - 1);
+            displayDialog.show(manager, "answer-display");
+            Utils.hideKeyboard(activity);
         });
     }
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
-        MenuItem searchViewItem = menu.findItem(R.id.app_bar_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchViewItem);
+        final MenuItem searchViewItem = menu.findItem(R.id.app_bar_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchViewItem);
         searchView.setQueryHint("Search Question");
         searchView.setIconified(icon);
         searchView.setOnQueryTextListener(this);
@@ -74,12 +70,12 @@ public class QuestionsListActivity extends AppCompatActivity implements SearchVi
     }
 
     @Override
-    public boolean onQueryTextSubmit(String s) {
+    public boolean onQueryTextSubmit(final String s) {
         return false;
     }
 
     @Override
-    public boolean onQueryTextChange(String s) {
+    public boolean onQueryTextChange(final String s) {
         adapter.filter(s);
         return true;
     }

@@ -24,9 +24,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-
-/**
+ *
  * This class will simply provide the full screen bottom sheet dialog behaviour
  * But the limitation is that u cannot use the onCreateDialog in child class
  * usage : Extend this fragment and use the onCreateView to create the UI logic
@@ -35,11 +33,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 public class FullScreenBottomSheetDialogFragment extends BottomSheetDialogFragment {
     // final keyword will insure that child should not override this method
     @Override
-    final public Dialog onCreateDialog(Bundle savedInstanceState) {
-        BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+    public final Dialog onCreateDialog(final Bundle savedInstanceState) {
+        final BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
         bottomSheetDialog.setOnShowListener(dialog -> {
-            BottomSheetDialog dg = (BottomSheetDialog) dialog;
-            FrameLayout bottomSheet = dg.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            final BottomSheetDialog dg = (BottomSheetDialog) dialog;
+            final FrameLayout bottomSheet = dg.findViewById(com.google.android.material.R.id.design_bottom_sheet);
             BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
             BottomSheetBehavior.from(bottomSheet).setSkipCollapsed(true);
             BottomSheetBehavior.from(bottomSheet).setHideable(true);

@@ -15,9 +15,9 @@ public abstract class MyDatabase extends RoomDatabase {
     private static volatile MyDatabase INSTANCE;
 
     public static MyDatabase getDatabase(final Context context) {
-        if (INSTANCE == null) {
+        if (null == INSTANCE) {
             synchronized (MyDatabase.class) {
-                if (INSTANCE == null) {
+                if (null == INSTANCE) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             MyDatabase.class, "AIQ_TABLE")
                             .allowMainThreadQueries()
